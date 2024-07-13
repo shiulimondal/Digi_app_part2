@@ -19,6 +19,17 @@ import Help from './src/Screens/Help/Help';
 import CategoryScreen from './src/Screens/Home/CategoryScreen/CategoryScreen';
 import SubCategoryScreen from './src/Screens/Home/SubCategoryScreen.js/SubCategoryScreen';
 import { setuser } from './src/Redux/reducer/User';
+import { AboutUs } from './src/Screens/DrawerScreen/AboutUs';
+import { MyProfile } from './src/Screens/DrawerScreen/MyProfile';
+import { MyBankAccount } from './src/Screens/DrawerScreen/MyBankAccount';
+import { MyMember } from './src/Screens/DrawerScreen/MyMember';
+import { MyIncome } from './src/Screens/DrawerScreen/MyIncome';
+import { DrawerWorks } from './src/Screens/DrawerScreen/DrawerWorks';
+import { Settings } from './src/Screens/DrawerScreen/Settings';
+import ChangePassword from './src/Screens/DrawerScreen/ChangePassword';
+import NotificationScreen from './src/Screens/NotificationScreen/NotificationScreen';
+import FillBankDitails from './src/Screens/DrawerScreen/FillBankDitails';
+import EditBankAccount from './src/Screens/DrawerScreen/EditBankAccount';
 
 const { height, width } = Dimensions.get('screen');
 const Stack = createStackNavigator();
@@ -64,6 +75,17 @@ const App = () => {
               <Stack.Screen name="Help" component={Help} />
               <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
               <Stack.Screen name="SubCategoryScreen" component={SubCategoryScreen} />
+              <Stack.Screen name="AboutUs" component={AboutUs} />
+              <Stack.Screen name="MyProfile" component={MyProfile} />
+              <Stack.Screen name="MyBankAccount" component={MyBankAccount} />
+              <Stack.Screen name="MyMember" component={MyMember} />
+              <Stack.Screen name="MyIncome" component={MyIncome} />
+              <Stack.Screen name="DrawerWorks" component={DrawerWorks} />
+              <Stack.Screen name="Settings" component={Settings} />
+              <Stack.Screen name="ChangePassword" component={ChangePassword} />
+              <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
+              <Stack.Screen name="FillBankDitails" component={FillBankDitails} />
+              <Stack.Screen name="EditBankAccount" component={EditBankAccount} />
             </>
           
             :

@@ -9,9 +9,11 @@ import { FONTS } from '../../Constants/Fonts';
 import { useSharedValue, withTiming, runOnJS } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native';
 
+
 const HomeHeader = () => {
   const navigation = useNavigation();
   const progress = useSharedValue(0);
+
 
   const openDrawer = () => {
     navigation.dispatch(DrawerActions.openDrawer());
@@ -22,7 +24,6 @@ const HomeHeader = () => {
   };
 
   const handlePress = (item) => {
-    console.log('opendrawerrrrrrrrrrrrr',item);
     progress.value = withTiming(1, {}, (isFinished) => {
       if (isFinished) {
         runOnJS(openDrawer)();

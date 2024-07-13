@@ -90,7 +90,7 @@ const Home = ({ navigation }) => {
             height:moderateScale(28),
             width:moderateScale(28),
           }}>
-            <Text style={{...styles.user_name,color:Colors.buttonColor}}>{userData.first_name.charAt(0).toUpperCase()}</Text>
+            <Text style={{...styles.user_name,color:Colors.buttonColor}}>{userData?.first_name?.charAt(0).toUpperCase()}</Text>
           </View>
           <Text style={{...styles.user_name,
             marginLeft:moderateScale(7)

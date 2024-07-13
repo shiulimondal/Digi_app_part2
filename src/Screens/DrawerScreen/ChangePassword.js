@@ -115,7 +115,7 @@ const ChangePassword = ({ navigation }) => {
                 title="Change Password"
                 style={styles.button}
                 textStyle={styles.button_txt}
-                onPress={() => { navigation.navigate('BottomNavigation_User') }}
+                onPress={() => { navigation.navigate('BottomTab') }}
             />
 
         </View>

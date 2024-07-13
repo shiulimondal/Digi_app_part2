@@ -6,63 +6,80 @@ import { moderateScale } from '../../Constants/PixelRatio';
 import { Colors } from '../../Constants/Colors';
 import { FONTS } from '../../Constants/Fonts';
 import NavigationService from '../../Services/Navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import AuthService from '../../Services/Auth';
+import { logout } from '../../Redux/reducer/User';
+import Toast from "react-native-simple-toast";
 
 const DrawerCard = ({ navigation }) => {
+    const dispatch = useDispatch()
+    const {userData} = useSelector(state => state.User)
+    console.log('userData==============',userData);
 
     const drawerScreen = [
         {
             img: require('../../assets/images/dhome.png'),
             title: 'Home',
-            // handleClick: 'DrawerHome'
+            handleClick: 'Home'
         },
         {
             img: require('../../assets/images/duser.png'),
             title: 'My Profile',
-            // handleClick: 'MyProfile'
+            handleClick: 'MyProfile'
         },
         {
             img: require('../../assets/images/dbank.png'),
             title: 'My Bank Account',
-            // handleClick: 'MyBankAccount'
+            handleClick: 'MyBankAccount'
         },
         {
             img: require('../../assets/images/duser.png'),
             title: 'My Member',
-            // handleClick: 'MyMember'
+            handleClick: 'MyMember'
         },
         {
             img: require('../../assets/images/dwallate.png'),
             title: 'My Income',
-            // handleClick: 'MyIncome'
+            handleClick: 'MyIncome'
         },
         {
             img: require('../../assets/images/dwork.png'),
             title: 'How It Works',
-            // handleClick: 'DrawerWorks'
+            handleClick: 'DrawerWorks'
         },
         {
             img: require('../../assets/images/dsupport.png'),
             title: 'Support',
-            handleClick: 'Support'
+            handleClick: 'Help'
         },
         {
             img: require('../../assets/images/dgroup.png'),
             title: 'About Us',
-            // handleClick: 'AboutUs'
+            handleClick: 'AboutUs'
         },
         {
             img: require('../../assets/images/dsettings.png'),
             title: 'Settings',
-            // handleClick: 'Settings'
+            handleClick: 'Settings'
         },
     ];
 
     const handleDrawerScreen = (item) => {
         if (item) {
             NavigationService.openDrawer()
+            NavigationService.navigate(item.handleClick);
             NavigationService.closeDrawer()
         }
     }
+
+
+    const logoutUser = () => {
+        Toast.show('Logged Out Successfully ', Toast.LONG);
+        AuthService.setToken(null)
+        AuthService.setAccount(null);
+        dispatch(logout());
+    
+      };
 
     return (
         <View style={styles.container_sty}>
@@ -70,9 +87,9 @@ const DrawerCard = ({ navigation }) => {
                 <Pressable style={{ ...styles.main_view }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.user_circle}>
-                            <Text style={{ fontSize: 20, color: '#fff' }}>U</Text>
+                            <Text style={{ fontSize: 20, color: '#fff' }}>{userData?.first_name?.charAt(0).toUpperCase()}</Text>
                         </View>
-                        <Text style={styles.user_name}>Sumqan Jana</Text>
+                        <Text style={styles.user_name}>{userData.full_name}</Text>
                     </View>
                     <Icon name='right' type='AntDesign' size={22} />
                 </Pressable>
