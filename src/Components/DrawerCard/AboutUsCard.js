@@ -8,16 +8,15 @@ const { height, width } = Dimensions.get('screen');
 
 const AboutUsCard = ({ item, index }) => {
     const [expanded, setExpanded] = useState(false);
-
     const toggleExpand = () => {
         setExpanded(!expanded);
     };
 
     return (
         <View key={index} style={styles.container}>
-            <Text style={styles.heading_txt}>{index + 1}.<Text>{' '}{item.heading}</Text></Text>
-            <Image source={item.cat_logo} style={styles.img_sty} />
-            <Text numberOfLines={expanded ? undefined : 4} style={styles.title_txt}>{item.title}</Text>
+            <Text style={styles.heading_txt}>{index + 1}.<Text>{' '}{item.title}</Text></Text>
+            <Image source={{ uri: item.image_path }} style={styles.img_sty} />
+            <Text numberOfLines={expanded ? undefined : 4} style={styles.title_txt}>{item.description}</Text>
             <Pressable onPress={toggleExpand}>
                 <Text style={styles.toggle_txt}>{expanded ? 'See Less' : 'See More'}</Text>
             </Pressable>
@@ -27,7 +26,7 @@ const AboutUsCard = ({ item, index }) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: moderateScale(7),
+        marginTop: moderateScale(10),
         marginHorizontal: moderateScale(15),
         marginBottom: moderateScale(20),
     },
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
         color: Colors.black,
     },
     toggle_txt: {
-        fontFamily: FONTS.regular,
+        fontFamily: FONTS.medium,
         fontSize: moderateScale(12),
         color: Colors.buttonColor,
         marginTop: moderateScale(5),

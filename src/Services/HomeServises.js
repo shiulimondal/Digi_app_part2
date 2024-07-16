@@ -21,9 +21,29 @@ const deleteBankAcc = async (data) => {
     return HttpClient.post('/bank-accounts/delete', data);
 }
 const updateBankAcc = async (data) => {
-    return HttpClient.post('/bank-accounts/updat', data);
+    return HttpClient.post('/bank-accounts/update', data);
 }
-
+const getUserProfile = async (data) => {
+    return HttpClient.post('/get-user', data);
+}
+const getCategoryData = async () => {
+    return HttpClient.post('/categories');
+}
+const getsub_CategoryData = async (data) => {
+    return HttpClient.post('/sub-categories', data);
+}
+const fatchState_list = async () => {
+    return HttpClient.post('/states');
+}
+const fatchDist_list = async (data) => {
+    return HttpClient.post('/district-list',data);
+}
+const updateProfile = async (data) => {
+    return HttpClient.post('/update-profile',data);
+}
+const setAboutUs = async (data) => {
+    return HttpClient.post('/help/create',data);
+}
 
 const HomeService = {
     getAccount,
@@ -32,7 +52,14 @@ const HomeService = {
     getBankAccList,
     addBankAcc,
     deleteBankAcc,
-    updateBankAcc
+    updateBankAcc,
+    getUserProfile,
+    getCategoryData,
+    getsub_CategoryData,
+    fatchState_list,
+    fatchDist_list,
+    updateProfile,
+    setAboutUs
 }
 
 export default HomeService;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Pressable,Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Pressable, Image, ActivityIndicator } from 'react-native';
 import HomeHeader from '../../Components/Header/HomeHeader';
 import { Colors } from '../../Constants/Colors';
 import { moderateScale } from '../../Constants/PixelRatio';
@@ -11,165 +11,222 @@ import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimen
 import UserDataCard from '../../Components/HomeCard/UserDataCard';
 import { useSelector } from 'react-redux';
 import NavigationService from '../../Services/Navigation';
+import HomeService from '../../Services/HomeServises';
 
 const { height, width } = Dimensions.get('screen');
 const Home = ({ navigation }) => {
-  const {userData} = useSelector(state => state.User)
-  console.log('userData==============',userData);
-
+  const { userData } = useSelector(state => state.User)
   const [isModalVisible, setModalVisible] = useState(false);
+  const [categoryData, setcategoryData] = useState('')
+  const [loading, setLoading] = useState(true);
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const categoryData = [
-    {
-      cat_logo: require('../../assets/images/wedding.png'),
-      title: 'Marriage'
-    },
-    {
-      cat_logo: require('../../assets/images/job.png'),
-      title: 'Job'
-    },
-    {
-      cat_logo: require('../../assets/images/buy.png'),
-      title: 'Buy Sell & Rent'
-    },
-    {
-      cat_logo: require('../../assets/images/education.png'),
-      title: 'Education'
-    },
-    {
-      cat_logo: require('../../assets/images/mechanic.png'),
-      title: 'Mechanic'
-    },
-    {
-      cat_logo: require('../../assets/images/driver.png'),
-      title: 'Driver & Operator'
-    },
-    {
-      cat_logo: require('../../assets/images/buildings.png'),
-      title: 'House & Building'
-    },
-    // {
-    //   cat_logo: require('../../assets/images/language.png'),
-    //   title: 'Language Learning Course'
-    // },
-  ];
+  useEffect(() => {
+    fatchCategory();
+  }, [])
+  const fatchCategory = async () => {
+    setLoading(true)
+    HomeService.getCategoryData()
+      .then((res) => {
+        setLoading(false)
+        if (res && res.success == true) {
+          console.log('homcatttttttttttttttt', res.data);
+          setcategoryData(res.data)
+        }
+      })
+      .catch((err) => {
+        setLoading(false)
+      })
+  }
 
   const UserData = [
     {
       img: require('../../assets/images/member.png'),
-      title: 'My Member'
+      title: 'My Member',
+      handleClick: 'MyMember'
     },
     {
       img: require('../../assets/images/income.png'),
-      title: 'My Income'
+      title: 'My Income',
+      // handleClick: 'Home'
     },
     {
       img: require('../../assets/images/funding.png'),
-      title: 'Funding Details'
+      title: 'Funding Details',
+      // handleClick: 'Home'
     },
     {
       img: require('../../assets/images/share.png'),
-      title: 'Refer & Earn'
+      title: 'Refer & Earn',
+      // handleClick: 'Home'
     }
   ]
+  const handleScreen = () => {
+    NavigationService.navigate(item.handleClick);
+    
+}
 
   return (
     <View style={styles.container}>
       <HomeHeader navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.top_view}>
-          <View style={{flexDirection:'row',alignItems:'center',}}>
-          <View style={{
-            alignItems:'center',
-            justifyContent:'center',
-            backgroundColor:Colors.background,
-            borderRadius:moderateScale(30),
-            height:moderateScale(28),
-            width:moderateScale(28),
-          }}>
-            <Text style={{...styles.user_name,color:Colors.buttonColor}}>{userData?.first_name?.charAt(0).toUpperCase()}</Text>
+        {loading ? (
+          <View style={styles.loaderContainer}>
+            <View style={{
+              backgroundColor: 'rgba(95,37,158,0.1)',
+              height: moderateScale(55),
+              width: width - moderateScale(30),
+              borderRadius: moderateScale(10),
+              alignSelf: 'center',
+              marginTop: moderateScale(10)
+            }}>
+            </View>
           </View>
-          <Text style={{...styles.user_name,
-            marginLeft:moderateScale(7)
-          }}>{userData.full_name}</Text>
+        ) :
+          <View style={styles.top_view}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+              <View style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: Colors.background,
+                borderRadius: moderateScale(30),
+                height: moderateScale(28),
+                width: moderateScale(28),
+              }}>
+                <Text style={{ ...styles.user_name, color: Colors.buttonColor }}>{userData?.first_name?.charAt(0).toUpperCase()}</Text>
+              </View>
+              <Text style={{
+                ...styles.user_name,
+                marginLeft: moderateScale(7)
+              }}>{userData.full_name}</Text>
+            </View>
+
+            <Text style={styles.user_id}> ID - <Text>{userData.user_referral_code}</Text></Text>
           </View>
-         
-          <Text style={styles.user_id}> ID - <Text>{userData.user_referral_code}</Text></Text>
-        </View>
+        }
         <View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={styles.category_view}>
-              {
-                categoryData.map((item, index) => (
-                  <CategoryCard item={item} key={index} />
-                ))
-              }
+          {loading ? (
+            <View style={{
+              marginTop: moderateScale(10),
+              paddingHorizontal: moderateScale(10)
+            }}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {[...Array(4)].map((_, index) => (
+                  <View
+                    key={index}
+                    style={styles.categoryloder}
+                  ></View>
+                ))}
+              </ScrollView>
             </View>
-          </ScrollView>
+          ) :
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={styles.category_view}>
+                {categoryData &&
+                  categoryData?.map((item, index) => (
+                    <CategoryCard item={item} key={index} />
+                  ))
+                }
+              </View>
+            </ScrollView>
+          }
         </View>
-        <View style={{ height: moderateScale(180),}}>
-          <TouchableOpacity
-            onPress={() => NavigationService.navigate('CategoryScreen')}
-            style={{ height: moderateScale(180), alignItems: 'center' }}>
-            <Image source={require('../../assets/images/home_banner.png')} style={styles.home_banner} />
-          </TouchableOpacity>
-        </View>
+        {
+          loading ?
+            <View style={styles.homeB_loder}></View>
+            :
+            <TouchableOpacity
+              onPress={() => NavigationService.navigate('CategoryScreen')}
+              style={{ alignItems: 'center' }}>
+              <Image source={require('../../assets/images/home_banner.png')} style={styles.home_banner} />
+            </TouchableOpacity>
+        }
 
-        <View style={styles.primary_view}>
-          <View style={{ alignItems: 'center' }}>
-            <Text style={styles.primary_txt}>Refer commission will keep coming Life time</Text>
-          </View>
-
-          <View style={styles.secondary_view}>
-            <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={styles.primary_txt}>Your refer income (Upto 2 depth)</Text>
-              <Text style={styles.amount_txt}>₹ 2050</Text>
-            </View>
-            <View style={styles.button_view}>
-              <Pressable style={styles.botton_sty}>
-                <Text style={styles.button_txt}>Income Structure</Text>
-              </Pressable>
-              <Pressable style={styles.botton_sty}>
-                <Text style={styles.button_txt}>Withdraw Request</Text>
-              </Pressable>
-            </View>
-
-            <TouchableOpacity onPress={toggleModal} style={styles.end_view}>
-              <Text style={styles.Click_txt}>View Term & Condition for referral income</Text>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.primary_txt}>Click hare</Text>
-                <Icon name='arrowright' type='AntDesign' color={Colors.secondaryFont} style={{ marginLeft: 10 }} />
+        {
+          loading ?
+            <View style={{ ...styles.homeB_loder, height: moderateScale(220) }}></View>
+            :
+            <View style={styles.primary_view}>
+              <View style={{ alignItems: 'center' }}>
+                <Text style={styles.primary_txt}>Refer commission will keep coming Life time</Text>
               </View>
 
-            </TouchableOpacity>
+              <View style={styles.secondary_view}>
+                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={styles.primary_txt}>Your refer income (Upto 2 depth)</Text>
+                  <Text style={styles.amount_txt}>₹ 2050</Text>
+                </View>
+                <View style={styles.button_view}>
+                  <Pressable style={styles.botton_sty}>
+                    <Text style={styles.button_txt}>Income Structure</Text>
+                  </Pressable>
+                  <Pressable style={styles.botton_sty}>
+                    <Text style={styles.button_txt}>Withdraw Request</Text>
+                  </Pressable>
+                </View>
+                <TouchableOpacity onPress={toggleModal} style={styles.end_view}>
+                  <Text style={styles.Click_txt}>View Term & Condition for referral income</Text>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={styles.primary_txt}>Click hare</Text>
+                    <Icon name='arrowright' type='AntDesign' color={Colors.secondaryFont} style={{ marginLeft: 10 }} />
+                  </View>
+
+                </TouchableOpacity>
+
+              </View>
+            </View>
+        }
+
+
+        {loading ? (
+          <View style={{
+            marginTop: moderateScale(10),
+            paddingHorizontal: moderateScale(10)
+          }}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: moderateScale(15), justifyContent: 'space-between' }}>
+              {[...Array(4)].map((_, index) => (
+                <View
+                  key={index}
+                  style={{
+                    ...styles.categoryloder, width: moderateScale(140),
+                    height: moderateScale(100)
+                  }}
+                ></View>
+              ))}
+            </View>
+          </View>
+        ) :
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: moderateScale(15), justifyContent: 'space-between' }}>
+            {
+              UserData.map((item, index) => {
+                return (
+                  <UserDataCard item={item} key={index} />
+                )
+              })
+            }
 
           </View>
-        </View>
+        }
 
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: moderateScale(15), justifyContent: 'space-between' }}>
-          {
-            UserData.map((item, index) => {
-              return (
-                <UserDataCard item={item} key={index} />
-              )
-            })
-          }
+        {
+          loading ?
+            <View style={styles.homeB_loder}></View>
+            :
+            <View style={styles.bottom_banner}>
+              <Text style={styles.top_txt}>Know the seeciality of this app</Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: moderateScale(15) }}>
+                <Text style={styles.top_txt}>Passive</Text>
+                <Image style={{ height: moderateScale(35), width: moderateScale(50), marginHorizontal: moderateScale(20) }}
+                  source={require('../../assets/images/youtube.png')} />
+                <Text style={styles.top_txt}>Income</Text>
+              </View>
+              <Text style={{ ...styles.top_txt, marginTop: moderateScale(10) }}>Know the seeciality of this app</Text>
+            </View>
+        }
 
-        </View>
-
-        <View style={styles.bottom_banner}>
-          <Text style={styles.top_txt}>Know the seeciality of this app</Text>
-          <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',marginTop:moderateScale(15)}}>
-          <Text style={styles.top_txt}>Passive</Text>
-          <Image style={{height:moderateScale(35),width:moderateScale(50),marginHorizontal:moderateScale(20)}} 
-          source={require('../../assets/images/youtube.png')}/>
-          <Text style={styles.top_txt}>Income</Text>
-          </View>
-          <Text style={{...styles.top_txt,marginTop:moderateScale(10)}}>Know the seeciality of this app</Text>
-        </View>
 
       </ScrollView>
 
@@ -231,7 +288,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semibold,
     color: Colors.secondaryFont,
     fontSize: moderateScale(13),
-    
+
   },
   user_id: {
     fontFamily: FONTS.bold,
@@ -245,9 +302,17 @@ const styles = StyleSheet.create({
     marginBottom: moderateScale(20)
   },
   home_banner: {
-    height: height - moderateScale(180),
     resizeMode: 'contain',
-    width: width - moderateScale(10)
+    width: width - moderateScale(20),
+    height: moderateScale(180)
+  },
+  homeB_loder: {
+    width: width - moderateScale(20),
+    height: moderateScale(160),
+    backgroundColor: 'rgba(95,37,158,0.1)',
+    alignSelf: 'center',
+    borderRadius: moderateScale(10),
+    marginBottom: moderateScale(15)
   },
   primary_view: {
     backgroundColor: Colors.blue,
@@ -358,7 +423,16 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     fontSize: moderateScale(20),
     color: Colors.secondaryFont,
-    textAlign:'center'
+    textAlign: 'center'
+  },
+  categoryloder: {
+    backgroundColor: 'rgba(95,37,158,0.1)',
+    height: moderateScale(90),
+    width: moderateScale(92),
+    borderRadius: moderateScale(10),
+    alignSelf: 'center',
+    marginHorizontal: moderateScale(5),
+    marginBottom: moderateScale(15)
   }
 });
 

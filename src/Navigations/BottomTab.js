@@ -21,8 +21,8 @@ const BottomTab = () => {
                 tabBarActiveTintColor: Colors.buttonColor,
                 tabBarInactiveTintColor: '#777',
                 tabBarLabelStyle: {
-                    fontSize: 10,
-                    fontFamily:FONTS.regular,
+                    fontSize:moderateScale(10) ,
+                    fontFamily:FONTS.semibold,
                     marginBottom: moderateScale(10),
                 },
                 tabBarStyle: {

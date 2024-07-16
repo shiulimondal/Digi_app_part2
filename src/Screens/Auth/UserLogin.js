@@ -12,8 +12,7 @@ import Header from '../../Components/Header/Header';
 import { setuser } from '../../Redux/reducer/User';
 import { useDispatch } from 'react-redux';
 import Toast from "react-native-simple-toast";
-import NavigationService from '../../Services/Navigation';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 // create a component
 const UserLogin = ({ navigation }) => {
@@ -31,22 +30,16 @@ const UserLogin = ({ navigation }) => {
             "password": password,
             "device_token": ""
         };
-        console.log("Responsedataaaaaa:==========++++++++++++++++++++++++++++", data);
         setBtnLoader(true);
         AuthService.getLogin(data)
             .then((res) => {
-                console.log("Responseloggggggggg:==============================0000000000000000", res);
-                console.log("Responseloggggggggg:==============================token", res.token);
-                console.log("Responseloggggggggg:==============================user", res.data);
                 setBtnLoader(false);
                 if (res.status === true) {
                     AuthService.setAccount(res.data);
                     AuthService.setToken(res?.token);
                     dispatch(setuser(res.data))
-                    // NavigationService.navigate('Home')
                 } else {
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-                    console.log('logggggggggggggggggggg');
                 }
             })
             .catch((err) => {
@@ -56,35 +49,7 @@ const UserLogin = ({ navigation }) => {
             });
     };
 
-    // const getUseLogin = async () => {
-    //     let data = {
-    //         "phone": RegisterData?.phone,
-    //         "password": password,
-    //         "device_token": ""
-    //     };
-    //     console.log("Responsedataaaaaa:==========++++++++++++++++++++++++++++", data);
-    //     setBtnLoader(true);
-    //     try {
-    //         const res = await AuthService.getLogin(data);
-    //         console.log("Responseloggggggggg:==============================0000000000000000", res);
-    //         console.log("Responseloggggggggg:==============================token", res.token);
-    //         console.log("Responseloggggggggg:==============================user", res.data);
-    //         setBtnLoader(false);
-    //         if (res.status === true) {
-    //             await AsyncStorage.setItem('userData', JSON.stringify(res.data));
-    //             await AsyncStorage.setItem('token', res.token);
-    //             NavigationService.navigate('BottomTab');
-    //         } else {
-    //             Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-    //             console.log('logggggggggggggggggggg');
-    //         }
-    //     } catch (err) {
-    //         console.error("Error================00000000000000000000000000:", err);
-    //         Toast.show("Error sending OTP", Toast.SHORT, Toast.BOTTOM);
-    //         setBtnLoader(false);
-    //     }
-    // };
-
+   
 
 
     return (

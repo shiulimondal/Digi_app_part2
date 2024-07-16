@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(15),
   },
   header_txt: {
-    fontFamily: FONTS.regular,
+    fontFamily: FONTS.semibold,
     fontSize: responsiveHeight(2),
     color: Colors.secondaryFont,
   },

@@ -11,6 +11,7 @@ import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dim
 import HomeService from '../../Services/HomeServises';
 import Toast from "react-native-simple-toast";
 import { useRoute } from '@react-navigation/native';
+import ScreenHeader from '../../Components/Header/ScreenHeader';
 
 const EditBankAccount = () => {
     const route = useRoute();
@@ -57,13 +58,12 @@ const EditBankAccount = () => {
             account_no: accountNumber,
             ifsc_code: ifsc
         };
-
         console.log('Update Data:', data);
         setBtnLoader(true);
-        HomeService.addBankAcc(data)
+        HomeService.updateBankAcc(data)
             .then((res) => {
                 setBtnLoader(false);
-                console.log('Update Response:', res);
+                console.log('Update Response:==================', res);
                 if (res.status === true) {
                     NavigationService.navigate('MyBankAccount');
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
@@ -80,13 +80,13 @@ const EditBankAccount = () => {
 
     return (
         <View style={styles.container}>
-            <HomeHeader />
+          <ScreenHeader />
 
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ alignSelf: 'flex-end' }}>
                         <Pressable onPress={() => NavigationService.goBack()}>
-                            <Icon name='left' type='AntDesign' size={22} />
+                        <Icon name='chevron-left' type='FontAwesome5' size={23} />
                         </Pressable>
                     </View>
                     <View style={{ alignItems: 'center', flex: 1 }}>

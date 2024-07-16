@@ -1,7 +1,6 @@
 //import liraries
 import React, { Component, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
-import HomeHeader from '../../Components/Header/HomeHeader';
 import { AppButton, AppTextInput, Icon } from 'react-native-basic-elements';
 import NavigationService from '../../Services/Navigation';
 import { moderateScale } from '../../Constants/PixelRatio';
@@ -11,6 +10,7 @@ import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dim
 import HomeService from '../../Services/HomeServises';
 import Toast from "react-native-simple-toast";
 import { useRoute } from '@react-navigation/native';
+import ScreenHeader from '../../Components/Header/ScreenHeader';
 
 // create a component
 const FillBankDitails = () => {
@@ -53,13 +53,13 @@ const FillBankDitails = () => {
 
     return (
         <View style={styles.container}>
-            <HomeHeader />
+            <ScreenHeader />
 
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ alignSelf: 'flex-end' }}>
                         <Pressable onPress={() => NavigationService.goBack()}>
-                            <Icon name='left' type='AntDesign' size={22} />
+                        <Icon name='chevron-left' type='FontAwesome5' size={23} />
                         </Pressable>
                     </View>
                     <View style={{ alignItems: 'center', flex: 1 }}>

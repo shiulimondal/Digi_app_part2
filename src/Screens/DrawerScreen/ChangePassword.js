@@ -7,6 +7,7 @@ import { FONTS } from '../../Constants/Fonts';
 import HomeHeader from '../../Components/Header/HomeHeader';
 import { Icon, AppTextInput, AppButton } from 'react-native-basic-elements';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from "react-native-responsive-dimensions";
+import ScreenHeader from '../../Components/Header/ScreenHeader';
 
 // create a component
 const ChangePassword = ({ navigation }) => {
@@ -15,12 +16,12 @@ const ChangePassword = ({ navigation }) => {
     const [reConfirmPasswordShow, setReConfirmPasswordShow] = useState(true);
     return (
         <View style={styles.container}>
-            <HomeHeader navigation={navigation} />
+            <ScreenHeader />
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ alignSelf: 'flex-end' }}>
                         <Pressable onPress={() => navigation.goBack()}>
-                            <Icon name='left' type='AntDesign' size={22} />
+                        <Icon name='chevron-left' type='FontAwesome5' size={23} />
                         </Pressable>
                     </View>
                     <View style={{ alignItems: 'center', flex: 1 }}>

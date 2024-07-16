@@ -8,6 +8,7 @@ import { Colors } from '../../Constants/Colors';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { FONTS } from '../../Constants/Fonts';
 import { Switch } from 'react-native-switch';
+import ScreenHeader from '../../Components/Header/ScreenHeader';
 
 // create a component
 const Settings = ({ navigation }) => {
@@ -16,12 +17,12 @@ const Settings = ({ navigation }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     return (
         <View style={styles.container}>
-            <HomeHeader navigation={navigation} />
+             <ScreenHeader />
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ alignSelf: 'flex-end' }}>
                         <Pressable onPress={() => navigation.goBack()}>
-                            <Icon name='left' type='AntDesign' size={22} />
+                        <Icon name='chevron-left' type='FontAwesome5' size={23} />
                         </Pressable>
                     </View>
                     <View style={{ alignItems: 'center', flex: 1 }}>

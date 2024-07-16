@@ -1,8 +1,6 @@
-//import liraries
-import React, { Component, useCallback, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, TouchableOpacity, RefreshControl,ScrollView } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, TouchableOpacity, RefreshControl, ScrollView, ActivityIndicator } from 'react-native';
 import HomeService from '../../Services/HomeServises';
-import HomeHeader from '../../Components/Header/HomeHeader';
 import { Colors } from '../../Constants/Colors';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { AppButton, Card, Icon } from 'react-native-basic-elements';
@@ -11,32 +9,39 @@ import { FONTS } from '../../Constants/Fonts';
 import { Image } from 'react-native';
 import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
 import Toast from "react-native-simple-toast";
+import ScreenHeader from '../../Components/Header/ScreenHeader';
+import { useFocusEffect } from '@react-navigation/native';
 
 // create a component
 const MyBankAccount = () => {
-    const [accountList, setAccountList] = useState();
+    const [accountList, setAccountList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(true); // Add loading state
 
-    useEffect(() => {
-        fatchBank_list();
-    }, [])
     const fatchBank_list = async () => {
-        // setLoder(true)
+        setLoading(true); // Show loader
         HomeService.getBankAccList()
             .then((res) => {
                 console.log('blockdataaa1111111111111111111111111', res);
-                if (res && res.status == true) {
-                    setAccountList(res.data)
-                    // setLoder(false)
+                if (res && res.status === true) {
+                    setAccountList(res.data);
                 }
+                setLoading(false); // Hide loader
             })
             .catch((err) => {
-                // setLoder(false)
-            })
-    }
+                setLoading(false); // Hide loader
+            });
+    };
+
+    useFocusEffect(
+        useCallback(() => {
+            fatchBank_list();
+        }, [])
+    );
+
     const onRefresh = useCallback(() => {
         setRefreshing(true);
-        fatchBank_list()
+        fatchBank_list();
 
         setTimeout(() => {
             setRefreshing(false);
@@ -52,24 +57,25 @@ const MyBankAccount = () => {
             .then((res) => {
                 console.log("Responsedataaaaaa:===============", res);
                 if (res.status === true) {
-                    Toast.show('Your BankAccount Detete Successfully');
+                    Toast.show('Your Bank Account Deleted Successfully');
+                    fatchBank_list(); // Refresh list after delete
                 } else {
-                    Toast.show('Something Wrong, Please Try after Sometime!');
-                    console.log('logggggggggggggggggggg==========');
+                    Toast.show('Something went wrong, please try again later!');
                 }
             })
             .catch((err) => {
-                console.error("Error================00000000000000000000000000:", err);
+                console.error("Error:", err);
             });
     };
+
     return (
         <View style={styles.container}>
-            <HomeHeader />
+            <ScreenHeader />
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ alignSelf: 'flex-end' }}>
                         <Pressable onPress={() => NavigationService.goBack()}>
-                            <Icon name='left' type='AntDesign' size={22} />
+                            <Icon name='chevron-left' type='FontAwesome5' size={23} />
                         </Pressable>
                     </View>
                     <View style={{ alignItems: 'center', flex: 1 }}>
@@ -78,94 +84,105 @@ const MyBankAccount = () => {
                 </View>
             </View>
             {
-                accountList && accountList.length === null ?
-                    <>
-                        <View style={{
-                            marginTop: moderateScale(70)
-                        }}>
-                            <Image style={styles.bank_img} source={require('../../assets/images/bank.png')} />
-                        </View>
+                loading ? ( 
+                    <View style={styles.loader}>
+                        <ActivityIndicator size="large" color={Colors.buttonColor} />
+                    </View>
+                ) : (
+                    accountList && accountList.length === 0 ?
+                        <>
+                            <View style={{
+                                marginTop: moderateScale(70)
+                            }}>
+                                <Image style={styles.bank_img} source={require('../../assets/images/bank.png')} />
+                            </View>
 
-                        <AppButton
-                            title="Add Bank Account"
-                            style={styles.button}
-                            textStyle={styles.button_txt}
-                            onPress={() => { NavigationService.navigate('FillBankDitails') }}
-                        />
-                    </>
-                    :
-                    <ScrollView showsVerticalScrollIndicator={false}
-                        refreshControl={
-                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                        }
-                    >
-                        {
-                            accountList?.map((item, index) => {
-                                return (
-                                    <Card key={index} style={{
-                                        marginHorizontal: moderateScale(10),
-                                        marginTop: moderateScale(20)
-                                    }}>
-                                        <TouchableOpacity onPress={() => NavigationService.navigate('FillBankDitails')}
-                                            style={styles.add_button}>
-                                            <Text style={styles.add_txt}>[+] Add New Account</Text>
-                                        </TouchableOpacity>
-
-                                        <View style={{
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            marginTop: moderateScale(7)
+                            <AppButton
+                                title="Add Bank Account"
+                                style={styles.button}
+                                textStyle={styles.button_txt}
+                                onPress={() => {
+                                    NavigationService.navigate('FillBankDitails', {
+                                        onGoBack: () => fatchBank_list() 
+                                    })
+                                }}
+                            />
+                        </>
+                        :
+                        <ScrollView showsVerticalScrollIndicator={false}
+                            refreshControl={
+                                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                            }
+                        >
+                            {
+                                accountList?.map((item, index) => {
+                                    return (
+                                        <Card key={index} style={{
+                                            marginHorizontal: moderateScale(10),
+                                            marginTop: moderateScale(20)
                                         }}>
-                                            <Text style={{
-                                                fontFamily: FONTS.semibold,
-                                                color: Colors.black,
-                                                fontSize: moderateScale(14),
-                                            }}>{item.account_holder_name}</Text>
-                                            <TouchableOpacity
-                                                onPress={() => NavigationService.navigate('EditBankAccount',{bId:item.id})}
-                                                style={styles.add_icon_circle}>
-                                                <Icon name='pen' size={13} type='FontAwesome5' color={'#fff'} />
+                                            <TouchableOpacity onPress={() => NavigationService.navigate('FillBankDitails', {
+                                                onGoBack: () => fatchBank_list()
+                                            })}
+                                                style={styles.add_button}>
+                                                <Text style={styles.add_txt}>[+] Add New Account</Text>
                                             </TouchableOpacity>
+                                            <View style={{
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                marginTop: moderateScale(7)
+                                            }}>
+                                                <Text style={{
+                                                    fontFamily: FONTS.semibold,
+                                                    color: Colors.black,
+                                                    fontSize: moderateScale(14),
+                                                }}>{item.account_holder_name}</Text>
+                                                <TouchableOpacity
+                                                    onPress={() => NavigationService.navigate('EditBankAccount', { bId: item.id })}
+                                                    style={styles.add_icon_circle}>
+                                                    <Icon name='pen' size={13} type='FontAwesome5' color={'#fff'} />
+                                                </TouchableOpacity>
 
-                                        </View>
-                                        <Text style={{
-                                            fontFamily: FONTS.medium,
-                                            color: Colors.black,
-                                            fontSize: moderateScale(14),
-                                            marginTop: moderateScale(5)
-                                        }}>{item.account_no}</Text>
-                                        <Text style={{
-                                            fontFamily: FONTS.medium,
-                                            color: Colors.black,
-                                            fontSize: moderateScale(14),
-                                            marginTop: moderateScale(5)
-                                        }}>{item.branch_name}</Text>
-
-                                        <View style={{
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            marginTop: moderateScale(7)
-                                        }}>
+                                            </View>
                                             <Text style={{
-                                                fontFamily: FONTS.semibold,
+                                                fontFamily: FONTS.medium,
                                                 color: Colors.black,
                                                 fontSize: moderateScale(14),
-                                            }}>{item.ifsc_code}</Text>
-                                            <Pressable onPress={() => setdelBankAcc(item.id)} style={{ ...styles.add_icon_circle, backgroundColor: '#FF3434' }}>
-                                                <Icon name='delete' size={13} type='AntDesign' color={'#fff'} />
-                                            </Pressable>
+                                                marginTop: moderateScale(5)
+                                            }}>{item.account_no}</Text>
+                                            <Text style={{
+                                                fontFamily: FONTS.medium,
+                                                color: Colors.black,
+                                                fontSize: moderateScale(14),
+                                                marginTop: moderateScale(5)
+                                            }}>{item.branch_name}</Text>
 
-                                        </View>
+                                            <View style={{
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                marginTop: moderateScale(7)
+                                            }}>
+                                                <Text style={{
+                                                    fontFamily: FONTS.semibold,
+                                                    color: Colors.black,
+                                                    fontSize: moderateScale(14),
+                                                }}>{item.ifsc_code}</Text>
+                                                <Pressable onPress={() => setdelBankAcc(item.id)} style={{ ...styles.add_icon_circle, backgroundColor: '#FF3434' }}>
+                                                    <Icon name='delete' size={13} type='AntDesign' color={'#fff'} />
+                                                </Pressable>
 
-                                    </Card>
-                                )
-                            })
-                        }
-                    </ScrollView>
+                                            </View>
+
+                                        </Card>
+                                    )
+                                })
+                            }
+                        </ScrollView>
+                )
             }
-        </View >
+        </View>
     );
 };
 
@@ -211,7 +228,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: Colors.buttonColor,
-        borderRadius: moderateScale(7)
+        borderRadius: moderateScale(7),
     },
     add_txt: {
         color: Colors.secondaryFont,
@@ -225,6 +242,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#194CFF',
         borderRadius: moderateScale(13)
+    },
+    loader: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

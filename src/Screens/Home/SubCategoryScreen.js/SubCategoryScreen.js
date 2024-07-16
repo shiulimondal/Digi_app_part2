@@ -1,17 +1,48 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
+import React, { Component, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, FlatList, ActivityIndicator, Image } from 'react-native';
 import { moderateScale } from '../../../Constants/PixelRatio';
 import { FONTS } from '../../../Constants/Fonts';
 import { Colors } from '../../../Constants/Colors';
 import SubCategoryCard from '../../../Components/HomeCard/SubCategoryCard';
-import { Icon } from 'react-native-basic-elements';
+import { AppButton, Icon } from 'react-native-basic-elements';
 import { ScrollView } from 'react-native';
-import HomeHeader from '../../../Components/Header/HomeHeader';
 import NavigationService from '../../../Services/Navigation';
+import HomeService from '../../../Services/HomeServises';
+import { useRoute } from '@react-navigation/native';
+import ScreenHeader from '../../../Components/Header/ScreenHeader';
+import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
 
 // create a component
 const SubCategoryScreen = () => {
+    const [subcategoryData, setsubcategoryData] = useState([])
+    const [loading, setLoading] = useState(true);
+    const route = useRoute();
+    const catID = route.params.cat_id;
+    const categoryName = route.params.cat_name;
+
+    useEffect(() => {
+        fatchSubCategory();
+    }, [])
+
+    const fatchSubCategory = async () => {
+        setLoading(true);
+        let data = {
+            "category_id": catID
+        }
+        HomeService.getsub_CategoryData(data)
+            .then((res) => {
+                if (res && res.success == true) {
+                    setLoading(false);
+                    console.log('subbbbbbbbbbbbbbbbbbbbb', res.data);
+                    setsubcategoryData(res.data)
+                }
+            })
+            .catch((err) => {
+                setLoading(false);
+            })
+    }
+
     const categoryData = [
         {
             cat_logo: require('../../../assets/images/sub1.png'),
@@ -38,54 +69,64 @@ const SubCategoryScreen = () => {
             title: 'Musical party '
         }
     ];
+
     return (
         <View style={styles.container}>
-            <HomeHeader/>
-            <View style={styles.top_view}>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ alignSelf: 'flex-end' }}>
-                        <Pressable onPress={() => NavigationService.goBack()}>
-                            <Icon name='left' type='AntDesign' size={22} />
-                        </Pressable>
-                    </View>
-                    <View style={{ alignItems: 'center', flex: 1 }}>
-                        <Text style={styles.header_txt}>Marriage Subcategory</Text>
-                    </View>
+            <ScreenHeader />
+
+            {loading ? (
+                <View style={styles.loader}>
+                    <ActivityIndicator size="large" color={Colors.buttonColor} />
                 </View>
-            </View>
-            <ScrollView>
-                <View style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    paddingHorizontal:moderateScale(15),
-                     justifyContent:'space-between',
-                     marginTop:moderateScale(15)
-                }}>
+            ) : (
+                <>
                     {
-                        categoryData.map((item, index) => {
-                            return (
-                                <SubCategoryCard item={item} key={index} />
-                            )
-                        })
+                        subcategoryData.length === 0 ?
+                            <View style={styles.loader}>
+                                <Image source={require('../../../assets/images/nodata.png')} style={styles.nodata_sty} />
+                                <View style={styles.button}>
+                                    <Text style={styles.button_txt}>No Sub-Category Found</Text>
+                                </View>
+                            </View>
+                            :
+                            <>
+                                <View style={styles.top_view}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <View style={{ alignSelf: 'flex-end' }}>
+                                            <Pressable onPress={() => NavigationService.goBack()}>
+                                                <Icon name='left' type='AntDesign' size={22} />
+                                            </Pressable>
+                                        </View>
+                                        <View style={{ alignItems: 'center', flex: 1 }}>
+                                            <Text style={styles.header_txt}>{categoryName}Subcategory</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                <ScrollView>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        flexWrap: 'wrap',
+                                        paddingHorizontal: moderateScale(15),
+                                        justifyContent: 'space-between',
+                                        marginTop: moderateScale(15)
+                                    }}>
+                                        {
+                                            subcategoryData.map((item, index) => {
+                                                return (
+                                                    <SubCategoryCard item={item} key={index} />
+                                                )
+                                            })
+                                        }
+
+                                    </View>
+
+                                </ScrollView>
+                            </>
                     }
 
-                </View>
 
-            </ScrollView>
-
-            {/* <View style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap'
-            }}>
-                <FlatList
-                    data={categoryData}
-                    renderItem={({ item, index }) => (
-                       
-                    )}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-            </View> */}
-
+                </>
+            )}
 
         </View>
     );
@@ -107,7 +148,34 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
-    }
+    },
+    loader: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    nodata_sty: {
+        height: moderateScale(150),
+        width: moderateScale(150),
+        resizeMode: 'contain',
+        tintColor: 'rgba(95,37,158,0.3)',
+    },
+    button: {
+        height: responsiveWidth(11),
+        // borderColor: 'rgba(95,37,158,0.3)',
+        marginTop: responsiveWidth(5),
+        marginBottom: responsiveWidth(6),
+        // borderWidth: 2,
+        marginHorizontal: moderateScale(40),
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: moderateScale(280)
+    },
+    button_txt: {
+        color: Colors.buttonColor,
+        fontFamily: FONTS.semibold,
+        fontSize: responsiveFontSize(2.5)
+    },
 });
 
 //make this component available to the app

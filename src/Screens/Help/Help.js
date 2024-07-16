@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import HomeHeader from '../../Components/Header/HomeHeader';
 import { Icon, AppTextInput, AppButton } from 'react-native-basic-elements';
@@ -7,9 +7,43 @@ import { Colors } from '../../Constants/Colors';
 import { FONTS } from '../../Constants/Fonts';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from "react-native-responsive-dimensions";
+import HomeService from '../../Services/HomeServises';
+import { useSelector } from 'react-redux';
+import Toast from 'react-native-simple-toast';
 
 // create a component
 const Help = ({ navigation }) => {
+    const { userData } = useSelector(state => state.User)
+    const [details, setDetails] = useState('')
+    const [useName, setuseName] = useState(userData.full_name);
+    const [mobileno, setmobileno] = useState(userData.phone);
+    const [btnLoader, setBtnLoader] = useState(false);
+    const getHelp = async () => {
+        let data = {
+            "question": details,
+            "name": useName,
+            "phone": mobileno,
+        };
+        setBtnLoader(true);
+        HomeService.setAboutUs(data)
+            .then((res) => {
+                setBtnLoader(false);
+                if (res.status === true) {
+                    console.log('ressssssssssssssssssss',res.data);
+                    Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+
+                } else {
+                    Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+                    console.error("Error===jhgkjhlkhjlkjn==========00000000000000000000000000:", res.message);
+                }
+            })
+            .catch((err) => {
+                console.error("Error================00000000000000000000000000:", err);
+                Toast.show("Error sending OTP", Toast.SHORT, Toast.BOTTOM);
+                setBtnLoader(false);
+            });
+    };
+
     return (
         <View style={styles.container}>
             <HomeHeader navigation={navigation} />
@@ -35,6 +69,7 @@ const Help = ({ navigation }) => {
 
                 <Text style={styles.input_title_txt}>Your Name</Text>
                 <AppTextInput
+                    editable={false}
                     placeholder='Your Name'
                     inputContainerStyle={{
                         marginHorizontal: moderateScale(15),
@@ -44,9 +79,12 @@ const Help = ({ navigation }) => {
                     mainContainerStyle={{
                         marginTop: moderateScale(5)
                     }}
+                    value={useName}
+                    onChangeText={(val) => setuseName(val)}
                 />
                 <Text style={styles.input_title_txt}>Your Mobile Number</Text>
                 <AppTextInput
+                    editable={false}
                     placeholder='Your Mobile Number'
                     inputContainerStyle={{
                         marginHorizontal: moderateScale(15),
@@ -56,6 +94,8 @@ const Help = ({ navigation }) => {
                     mainContainerStyle={{
                         marginTop: moderateScale(5)
                     }}
+                    value={mobileno}
+                    onChangeText={(val) => setmobileno(val)}
                 />
                 <Text style={styles.input_title_txt}>Your message</Text>
                 <AppTextInput
@@ -70,6 +110,8 @@ const Help = ({ navigation }) => {
                         marginTop: moderateScale(5)
                     }}
                     textAlignVertical="top"
+                    value={details}
+                    onChangeText={(val) => setDetails(val)}
                 />
 
 
@@ -77,7 +119,17 @@ const Help = ({ navigation }) => {
                     title="Send To Admin"
                     style={styles.button}
                     textStyle={styles.button_txt}
-                    // onPress={() => { navigation.navigate('BottomNavigation_User') }}
+                    onPress={() => { getHelp() }}
+                    loader={
+                        btnLoader
+                            ? {
+                                position: "right",
+                                color: "#fff",
+                                size: "small",
+                            }
+                            : null
+                    }
+                    disabled={btnLoader}
                 />
             </ScrollView>
         </View>
@@ -136,4 +188,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Help ;
+export default Help;

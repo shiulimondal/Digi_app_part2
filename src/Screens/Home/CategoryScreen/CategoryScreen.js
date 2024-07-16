@@ -1,48 +1,36 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList, Pressable, Dimensions } from 'react-native';
 import { Colors } from '../../../Constants/Colors';
 import HomeHeader from '../../../Components/Header/HomeHeader';
 import { moderateScale } from '../../../Constants/PixelRatio';
 import { Icon } from 'react-native-basic-elements';
 import { FONTS } from '../../../Constants/Fonts';
 import CategoryListCard from '../../../Components/HomeCard/CategoryListCard';
+import HomeService from '../../../Services/HomeServises';
 
+
+const { height, width } = Dimensions.get('screen');
 const CategoryScreen = ({ navigation }) => {
-    
-  const categoryData = [
-    {
-      cat_logo: require('../../../assets/images/wedding.png'),
-      title: 'Marriage'
-    },
-    {
-      cat_logo: require('../../../assets/images/job.png'),
-      title: 'Job'
-    },
-    {
-      cat_logo: require('../../../assets/images/buy.png'),
-      title: 'Buy Sell & Rent'
-    },
-    {
-      cat_logo: require('../../../assets/images/education.png'),
-      title: 'Education'
-    },
-    {
-      cat_logo: require('../../../assets/images/mechanic.png'),
-      title: 'Mechanic'
-    },
-    {
-      cat_logo: require('../../../assets/images/driver.png'),
-      title: 'Driver & Operator'
-    },
-    {
-      cat_logo: require('../../../assets/images/buildings.png'),
-      title: 'House & Building'
-    },
-    {
-      cat_logo: require('../../../assets/images/language.png'),
-      title: 'Language Learning Course'
-    },
-  ];
+
+  const [categoryData, setcategoryData] = useState('')
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fatchCategory();
+  }, [])
+  const fatchCategory = async () => {
+    setLoading(true)
+    HomeService.getCategoryData()
+      .then((res) => {
+        if (res && res.success == true) {
+          console.log('catttttttttttttttttttttttt',res.data);
+          setLoading(false)
+          setcategoryData(res.data)
+        }
+      })
+      .catch((err) => {
+        setLoading(false)
+      })
+  }
 
   return (
     <View style={styles.container}>
@@ -59,13 +47,31 @@ const CategoryScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <FlatList
-        data={categoryData}
-        renderItem={({ item, index }) => (
-          <CategoryListCard item={item} index={index} />
-        )}
-        keyExtractor={(item, index) => index.toString()}
+      {loading ? <FlatList showsHorizontalScrollIndicator={false} data={[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}
+        renderItem={() => {
+          return (
+            <View style={{
+              height: moderateScale(70),
+              width: width,
+              alignItems: 'center',
+              backgroundColor: 'rgba(95,37,158,0.1)',
+              alignSelf: 'center',
+              marginTop: moderateScale(7),
+            }}>
+            </View>
+          )
+        }}
       />
+        :
+        <FlatList
+          data={categoryData}
+          renderItem={({ item, index }) => (
+            <CategoryListCard item={item} index={index} />
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      }
+
     </View>
   );
 };

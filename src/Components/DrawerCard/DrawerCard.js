@@ -13,8 +13,8 @@ import Toast from "react-native-simple-toast";
 
 const DrawerCard = ({ navigation }) => {
     const dispatch = useDispatch()
-    const {userData} = useSelector(state => state.User)
-    console.log('userData==============',userData);
+    const { userData } = useSelector(state => state.User)
+    console.log('userData==============', userData);
 
     const drawerScreen = [
         {
@@ -78,16 +78,21 @@ const DrawerCard = ({ navigation }) => {
         AuthService.setToken(null)
         AuthService.setAccount(null);
         dispatch(logout());
-    
-      };
+
+    };
 
     return (
         <View style={styles.container_sty}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Pressable style={{ ...styles.main_view }}>
+                <Pressable onPress={() => NavigationService.navigate('MyProfile')} style={{ ...styles.main_view }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.user_circle}>
-                            <Text style={{ fontSize: 20, color: '#fff' }}>{userData?.first_name?.charAt(0).toUpperCase()}</Text>
+                            <Text style={{
+                                fontSize: moderateScale(20),
+                                color: Colors.secondaryFont,
+                                fontFamily:FONTS.bold
+                            }}
+                            >{userData?.first_name?.charAt(0).toUpperCase()}</Text>
                         </View>
                         <Text style={styles.user_name}>{userData.full_name}</Text>
                     </View>
@@ -122,10 +127,10 @@ export default DrawerCard;
 const styles = StyleSheet.create({
     container_sty: {
         flex: 1,
-        backgroundColor:Colors.buttonColor
+        backgroundColor: Colors.buttonColor
     },
     user_name: {
-        fontFamily: FONTS.regular,
+        fontFamily: FONTS.semibold,
         fontSize: moderateScale(15),
         marginLeft: moderateScale(10)
     },

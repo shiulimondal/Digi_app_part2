@@ -12,12 +12,13 @@ import NavigationService from '../../Services/Navigation';
 // create a component
 const CategoryListCard = ({ item, index }) => {
     return (
-        <Pressable onPress={()=>NavigationService.navigate('SubCategoryScreen')}  index={index} style={styles.container}>
+        <Pressable  onPress={() => NavigationService.navigate('SubCategoryScreen', { cat_id: item.id,cat_name: item.name })} 
+         index={index} style={styles.container}>
             <View style={{flexDirection:'row',alignItems:'center'}}>
             <View style={styles.img_circle}>
-                <Image source={item.cat_logo} style={styles.img_sty} />
+                <Image source={{ uri: item.image_path }} style={styles.img_sty} />
             </View>
-            <Text  style={styles.title_txt}>{item.title}</Text>
+            <Text  style={styles.title_txt}>{item.name}</Text>
             </View>
             <Icon  name='right' type='AntDesign' size={22}/>
            

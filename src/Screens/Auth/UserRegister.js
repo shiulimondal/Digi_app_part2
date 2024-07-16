@@ -1,13 +1,13 @@
 
 //import liraries
 import React, { Component, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Colors } from '../../Constants/Colors';
 import Header from '../../Components/Header/Header';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { FONTS } from '../../Constants/Fonts';
 import { AppButton, AppTextInput, CheckBox, Icon } from 'react-native-basic-elements';
-import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { useRoute } from '@react-navigation/native';
 import AuthService from '../../Services/Auth';
 import { ActivityIndicator } from 'react-native';
@@ -16,6 +16,8 @@ import Toast from "react-native-simple-toast";
 import { setuser } from '../../Redux/reducer/User';
 import NavigationService from '../../Services/Navigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Modal from "react-native-modal";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 // create a component
@@ -23,7 +25,6 @@ const UserRegister = ({ navigation }) => {
     const dispatch = useDispatch()
     const route = useRoute();
     const MobileNumber = route.params.PhNumber;
-    console.log('regphone======', MobileNumber);
     const [passwordShow, setPasswordShow] = useState(true);
     const [reConfirmPasswordShow, setReConfirmPasswordShow] = useState(true);
     const [check, setCheck] = useState(false);
@@ -31,11 +32,15 @@ const UserRegister = ({ navigation }) => {
     const [password, setPassword] = useState('')
     const [cnfPassword, setCnfPassword] = useState('')
     const [btnLoader, setBtnLoader] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
 
 
-    const getRegister = async () => {
+    const getoprnmodalRegister = async () => {
         if (userName === '') {
-            Toast.show('Please enter name');
+            Toast.show('Please enter Full Name');
             return false;
         }
         if (password == '') {
@@ -53,83 +58,35 @@ const UserRegister = ({ navigation }) => {
             Toast.show('Please Click Check Box', Toast.SHORT);
             return
         }
-
         let data = {
             "name": userName,
             "phone": MobileNumber.phone,
             "password": password,
             "password_confirmation": cnfPassword
         };
-        console.log("Responsedataaaaaa:==========", data);
-        setBtnLoader(true);
+        setModalVisible(true)
+        getRegister(data)
+    };
+
+    const getRegister = async (data) => {
         AuthService.register(data)
             .then((res) => {
-                console.log("Response:==========000000000000", JSON.stringify(res));
-                setBtnLoader(false);
+                setModalVisible(true)
                 if (res.status === true) {
+                    setModalVisible(false)
                     AuthService.setAccount(res.data);
                     AuthService.setToken(res?.token);
                     dispatch(setuser(res.data))
-                    // NavigationService.navigate('Home')
                 } else {
-                    Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+                    Toast.show('Something Wrong ! Please Wait...', Toast.SHORT, Toast.BOTTOM);
+                    setModalVisible(false)
                 }
             })
             .catch((err) => {
                 console.error("Error:", err);
-                Toast.show("Error sending OTP", Toast.SHORT, Toast.BOTTOM);
-                setBtnLoader(false);
             });
-    };
+    }
 
-
-
-// const getRegister = async () => {
-//     if (userName === '') {
-//         Toast.show('Please enter name');
-//         return false;
-//     }
-//     if (password === '') {
-//         Toast.show('Please enter password');
-//     } else if (password.length < 6) {
-//         Toast.show('Password must be at least 6 characters');
-//     }
-
-//     if (cnfPassword === '') {
-//         Toast.show('Please enter Confirm password');
-//     } else if (cnfPassword !== password) {
-//         Toast.show('Passwords do not match');
-//     }
-//     if (!check) {
-//         Toast.show('Please Click Check Box', Toast.SHORT);
-//         return;
-//     }
-
-//     let data = {
-//         name: userName,
-//         phone: MobileNumber.phone,
-//         password: password,
-//         password_confirmation: cnfPassword
-//     };
-//     console.log("Responsedataaaaaa:==========", data);
-//     setBtnLoader(true);
-//     try {
-//         const res = await AuthService.register(data);
-//         console.log("Response:==========000000000000", JSON.stringify(res));
-//         setBtnLoader(false);
-//         if (res.status === true) {
-//             await AsyncStorage.setItem('userData', JSON.stringify(res.data));
-//             await AsyncStorage.setItem('token', res.token);
-//             NavigationService.navigate('BottomTab');
-//         } else {
-//             Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-//         }
-//     } catch (err) {
-//         console.error("Error:", err);
-//         Toast.show("Error sending OTP", Toast.SHORT, Toast.BOTTOM);
-//         setBtnLoader(false);
-//     }
-// };
 
 
     return (
@@ -138,7 +95,7 @@ const UserRegister = ({ navigation }) => {
             <View style={styles.top_view}>
                 <Text style={styles.top_text}>REGISTER & LOGIN TO YOUR ACCOUNT</Text>
             </View>
-            <ScrollView>
+            <KeyboardAwareScrollView>
                 <Text style={{ ...styles.top_text, color: Colors.black, textAlign: 'center', marginTop: moderateScale(18) }}>Create your account</Text>
                 <Text style={styles.input_title_txt}>Full Name</Text>
                 <AppTextInput
@@ -235,7 +192,7 @@ const UserRegister = ({ navigation }) => {
 
                 <View style={{ marginHorizontal: moderateScale(20), marginTop: moderateScale(20), alignItems: 'flex-start' }}>
                     <TouchableOpacity
-                        onPress={() => getRegister()}
+                        onPress={() => getoprnmodalRegister()}
                         style={styles.reg_button}>
                         {
                             btnLoader ?
@@ -246,9 +203,44 @@ const UserRegister = ({ navigation }) => {
 
                     </TouchableOpacity>
                 </View>
-            </ScrollView>
+            </KeyboardAwareScrollView>
 
+            <Modal
+                isVisible={isModalVisible}
+                // onBackButtonPress={() => setModalVisible(false)}
+                // onBackdropPress={() => setModalVisible(false)}
+            >
+                <View style={styles.modalView}>
+                    <Image source={require('../../assets/images/register.png')} style={{ height: 80, width: 80 }} />
+                    <Text style={{
+                        fontFamily: FONTS.bold,
+                        fontSize: moderateScale(20),
+                        textAlign: 'center',
+                        marginTop: moderateScale(7),
+                        color: Colors.black
+                    }}>Congratulations !</Text>
+                    <Text style={styles.modal_massege}>Register Successfully </Text>
+                    {/* <AppButton
+                        shadow={true}
+                        title='Ok'
+                        textStyle={styles.button_txt_sty}
+                        style={styles.button_sty}
+                        onPress={() => { getRegister()}}
 
+                    /> */}
+                     <TouchableOpacity
+                        onPress={() => { getRegister()}}
+                        style={styles.button_sty}>
+                        {
+                            btnLoader ?
+                                <ActivityIndicator size={'small'} color={'#fff'} />
+                                :
+                                <Text style={styles.button_txt_sty}>Ok</Text>
+                        }
+
+                    </TouchableOpacity>
+                </View>
+            </Modal>
 
         </View>
     );
@@ -282,7 +274,7 @@ const styles = StyleSheet.create({
     },
     policy_txt: {
         fontFamily: FONTS.medium,
-        fontSize: moderateScale(13),
+        fontSize: moderateScale(11),
         marginLeft: moderateScale(10),
         color: Colors.black
     },
@@ -302,11 +294,32 @@ const styles = StyleSheet.create({
     },
     modalView: {
         backgroundColor: "white",
-        borderRadius: (10),
-        padding: (20),
+        borderRadius: moderateScale(10),
+        padding: moderateScale(20),
         borderWidth: 2,
+        alignItems: 'center'
+    },
+    modal_massege: {
+        fontFamily: FONTS.regular,
+        fontSize: responsiveFontSize(2),
+        color: Colors.black,
+        marginTop: responsiveHeight(2)
+    },
+    button_sty: {
+        backgroundColor: Colors.buttonColor,
+        borderRadius: moderateScale(20),
+        height: moderateScale(30),
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignSelf: 'center',
+        width: responsiveWidth(20),
+        marginTop: responsiveHeight(4)
+    },
+    button_txt_sty: {
+        fontFamily: FONTS.bold,
+        fontSize: moderateScale(13),
+        alignSelf: 'center',
+        color: '#fff'
     },
 });
 
