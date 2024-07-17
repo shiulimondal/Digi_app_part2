@@ -14,8 +14,6 @@ import { ActivityIndicator } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Toast from "react-native-simple-toast";
 import { setuser } from '../../Redux/reducer/User';
-import NavigationService from '../../Services/Navigation';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Modal from "react-native-modal";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 

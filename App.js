@@ -11,9 +11,7 @@ import LoginOTP from './src/Screens/Auth/LoginOTP';
 import UserLogin from './src/Screens/Auth/UserLogin';
 import UserRegister from './src/Screens/Auth/UserRegister';
 import DrawerNavigation from './src/Navigations/DrawerNavigation';
-import BottomTab from './src/Navigations/BottomTab';
 import Home from './src/Screens/Home/Home';
-import Message from './src/Screens/Message';
 import MyAccount from './src/Screens/MyAccount/MyAccount';
 import Help from './src/Screens/Help/Help';
 import CategoryScreen from './src/Screens/Home/CategoryScreen/CategoryScreen';
@@ -34,6 +32,11 @@ import Splash from './src/Screens/Auth/Splash';
 import SubCatFrom from './src/Screens/Home/SubCategoryScreen.js/SubCatFrom';
 import MyDirectMember from './src/Screens/DrawerScreen/MyDirectMember';
 import MyDepthMember from './src/Screens/DrawerScreen/MyDepthMember';
+import Message from './src/Screens/Message/Message';
+import ViewSubcategory from './src/Screens/Home/SubCategoryScreen.js/ViewSubcategory';
+import SubCategoryProfile from './src/Screens/Home/SubCategoryScreen.js/SubCategoryProfile';
+import SubCategorySubscription from './src/Screens/Home/SubCategoryScreen.js/SubCategorySubscription';
+
 
 
 const { height, width } = Dimensions.get('screen');
@@ -95,6 +98,9 @@ const App = () => {
                 <Stack.Screen name="SubCatFrom" component={SubCatFrom} />
                 <Stack.Screen name="MyDirectMember" component={MyDirectMember} />
                 <Stack.Screen name="MyDepthMember" component={MyDepthMember} />
+                <Stack.Screen name="ViewSubcategory" component={ViewSubcategory} />
+                <Stack.Screen name="SubCategoryProfile" component={SubCategoryProfile} />
+                <Stack.Screen name="SubCategorySubscription" component={SubCategorySubscription} />
 
               </>
 

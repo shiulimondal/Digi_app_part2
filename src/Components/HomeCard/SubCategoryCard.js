@@ -10,7 +10,7 @@ import NavigationService from '../../Services/Navigation';
 // create a component
 const SubCategoryCard = ({ item, index }) => {
     return (
-        <TouchableOpacity onPress={() => NavigationService.navigate('SubCatFrom')}
+        <TouchableOpacity onPress={() => NavigationService.navigate('ViewSubcategory', { cat_name: item.name })}
             key={index} style={styles.container}>
             <Image source={{ uri: item.image_path }} style={styles.img_sty} />
             <Text style={styles.title_txt}>{item.name}</Text>

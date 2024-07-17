@@ -37,7 +37,7 @@ const MyProfile = () => {
     const [pickdistrict, setpickdistrict] = useState('');
     const [city, setcity] = useState('');
     const [pinCode, setpinCode] = useState('');
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true); 
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -59,7 +59,7 @@ const MyProfile = () => {
     }, []);
 
     const fatchuser_profile = async () => {
-        setLoading(true); // Start loading
+        setLoading(true); 
         HomeService.getUserProfile()
             .then((res) => {
                 if (res && res.status == true) {
@@ -73,10 +73,10 @@ const MyProfile = () => {
                     setpickdistrict(res.data.district_id);
                     getDist_list(res.data.state_id);
                 }
-                setLoading(false); // Stop loading
+                setLoading(false); 
             })
             .catch((err) => {
-                setLoading(false); // Stop loading
+                setLoading(false); 
             });
     };
 

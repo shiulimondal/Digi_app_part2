@@ -162,10 +162,8 @@ const styles = StyleSheet.create({
     },
     button: {
         height: responsiveWidth(11),
-        // borderColor: 'rgba(95,37,158,0.3)',
         marginTop: responsiveWidth(5),
         marginBottom: responsiveWidth(6),
-        // borderWidth: 2,
         marginHorizontal: moderateScale(40),
         alignItems: 'center',
         justifyContent: 'center',

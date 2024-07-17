@@ -36,13 +36,19 @@ const fatchState_list = async () => {
     return HttpClient.post('/states');
 }
 const fatchDist_list = async (data) => {
-    return HttpClient.post('/district-list',data);
+    return HttpClient.post('/district-list', data);
 }
 const updateProfile = async (data) => {
-    return HttpClient.post('/update-profile',data);
+    return HttpClient.post('/update-profile', data);
 }
 const setAboutUs = async (data) => {
-    return HttpClient.post('/help/create',data);
+    return HttpClient.post('/help/create', data);
+}
+const getMessage_list = async () => {
+    return HttpClient.post('/help-list');
+}
+const fatch_subscription_list = async () => {
+    return HttpClient.post('/subscription-list');
 }
 
 const HomeService = {
@@ -59,7 +65,9 @@ const HomeService = {
     fatchState_list,
     fatchDist_list,
     updateProfile,
-    setAboutUs
+    setAboutUs,
+    getMessage_list,
+    fatch_subscription_list
 }
 
 export default HomeService;
