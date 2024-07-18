@@ -14,7 +14,6 @@ import Toast from "react-native-simple-toast";
 const DrawerCard = ({ navigation }) => {
     const dispatch = useDispatch()
     const { userData } = useSelector(state => state.User)
-    console.log('userData==============', userData);
 
     const drawerScreen = [
         {

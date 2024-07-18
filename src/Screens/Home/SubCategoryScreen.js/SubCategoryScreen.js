@@ -98,7 +98,7 @@ const SubCategoryScreen = () => {
                                             </Pressable>
                                         </View>
                                         <View style={{ alignItems: 'center', flex: 1 }}>
-                                            <Text style={styles.header_txt}>{categoryName}Subcategory</Text>
+                                            <Text style={styles.header_txt}>{categoryName} Subcategory</Text>
                                         </View>
                                     </View>
                                 </View>

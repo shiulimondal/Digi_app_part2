@@ -1,6 +1,7 @@
-//import liraries
-import React, { Component, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Image, Dimensions } from 'react-native';
+// Import libraries
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, Image, Dimensions, TouchableOpacity, PermissionsAndroid } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import HomeHeader from '../../../Components/Header/HomeHeader';
 import ScreenHeader from '../../../Components/Header/ScreenHeader';
 import { Colors } from '../../../Constants/Colors';
@@ -9,16 +10,104 @@ import { moderateScale } from '../../../Constants/PixelRatio';
 import NavigationService from '../../../Services/Navigation';
 import { AppButton, AppTextInput, Icon, Picker } from 'react-native-basic-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { TouchableOpacity } from 'react-native';
 import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
+import HomeService from '../../../Services/HomeServises';
+import Modal from "react-native-modal";
+import * as ImagePicker from 'react-native-image-picker';
 
 const { height, width } = Dimensions.get('screen');
-// create a component
-const SubCatFrom = () => {
+
+// Create a component
+const SubCatForm = (props) => {
+    const route = useRoute();
+    const cat_Data_id = route.params.CatId;
+    const Sub_Data_id = route.params.SubID;
+    const [loading, setLoading] = useState(true);
+    const [formData, setFormData] = useState([]);
+    const [formValues, setFormValues] = useState({});
     const [dropdownValue, setDropdownValue] = useState('');
+    const [isModalVisible, setModalVisible] = useState(false);
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+
+    useEffect(() => {
+        getSubAllData();
+    }, []);
+
+    const getSubAllData = async () => {
+        const data = {
+            "category_id": cat_Data_id,
+            "sub_category_id": Sub_Data_id
+        };
+        HomeService.get_profilefrom(data)
+            .then((res) => {
+                console.log("Response:", JSON.stringify(res));
+                setLoading(false);
+                if (res.status === true) {
+                    // Filter to only include required fields
+                    const requiredFields = res.data.form_body.filter(field => field.is_required === "1");
+                    setFormData(requiredFields);
+                }
+            })
+            .catch((err) => {
+                console.error("Error:", err);
+                setLoading(false);
+            });
+    };
+
+    const handleInputChange = (name, value) => {
+        setFormValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = () => {
+        console.log('Form Submitted==================:', formValues);
+        // Send formValues to the API
+    };
+
+    const [selectedDocument, setSelectedDocument] = useState(null);
+    const openCamera = async (type, options) => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                    title: "App Camera Permission",
+                    message: "App needs access to your camera ",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK"
+                }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                onButtonPress(type, options)
+            } else {
+                console.log("Camera permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+
+    const onButtonPress = async (type, options) => {
+        if (type === 'capture') {
+            const result = await ImagePicker.launchCamera(options);
+            console.log(result?.assets)
+            setSelectedDocument(result?.assets)
+            setModalVisible(false)
+        } else {
+            const result = await ImagePicker.launchImageLibrary(options);
+            console.log(result?.assets)
+            setModalVisible(false)
+            setSelectedDocument(result?.assets)
+        }
+    };
+
     return (
         <View style={styles.container}>
-            <ScreenHeader />       
+            <ScreenHeader />
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ alignSelf: 'flex-end' }}>
@@ -37,389 +126,153 @@ const SubCatFrom = () => {
                     marginTop: moderateScale(10),
                     marginBottom: moderateScale(20)
                 }}>
-                    <View style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        marginBottom: moderateScale(15)
-                    }}>
-                        <View style={styles.img_view}>
-                            <Image source={require('../../../assets/images/blankimg.png')} style={styles.upload_img} />
-                        </View>
-                        <TouchableOpacity
-                            style={styles.reg_button}>
-                            <Text style={styles.button_reg_txt}>Upload Image</Text>
 
-                        </TouchableOpacity>
-                    </View>
-                    <Text style={styles.input_title_txt}>Full Name</Text>
-                    <AppTextInput
-                        placeholder='Full Name'
-                        inputContainerStyle={{
-                            borderRadius: moderateScale(5),
-                            paddingHorizontal: moderateScale(7)
-                        }}
-                        mainContainerStyle={{
-                            marginTop: moderateScale(5)
-                        }}
-                    // value={useName}
-                    // onChangeText={(val) => setuseName(val)}
-                    />
+                    {formData.map((field, index) => {
+                        switch (field.type) {
+                            case 'file':
+                                return (
+                                    <View key={index}>
+                               
 
-                    <Text style={styles.input_title_txt}>Contact Number</Text>
-                    <AppTextInput
-                        placeholder='Contact Number'
-                        inputContainerStyle={{
-                            borderRadius: moderateScale(5),
-                            paddingHorizontal: moderateScale(7)
-                        }}
-                        mainContainerStyle={{
-                            marginTop: moderateScale(5)
-                        }}
-                    // value={useName}
-                    // onChangeText={(val) => setuseName(val)}
-                    />
-                    <View style={styles.picker_view}>
-                        <View>
-                            <Text style={styles.input_title_txt}>Age</Text>
-                            <Picker
-                                placeholder="Select"
-                                options={[
-                                    {
-                                        label: 'Item 1',
-                                        value: 'item1'
-                                    },
-                                    {
-                                        label: 'Item 2',
-                                        value: 'item2'
-                                    },
-                                ]}
-                                textStyle={{
-                                    fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
-                                }}
-                                containerStyle={{
-                                    backgroundColor: Colors.secondaryFont,
-                                    height: moderateScale(48),
-                                    borderRadius: moderateScale(6),
-                                    width: moderateScale(150)
-                                }}
-                                selectedValue={dropdownValue}
-                                onValueChange={(val) => setDropdownValue(val)}
-                            />
-                        </View>
+                                        <View style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            marginBottom: moderateScale(15)
+                                        }}>
+                                            <View style={styles.img_view}>
+                                                {
+                                                    selectedDocument === null ?
+                                                        <Image source={require('../../../assets/images/blankimg.png')} style={styles.upload_img} />
+                                                        :
+                                                        <Image source={{ uri: selectedDocument[0].uri }} style={styles.upload_img} />
+                                                }
 
-                        <View>
-                            <Text style={styles.input_title_txt}>Religion</Text>
-                            <Picker
-                                placeholder="Select"
-                                options={[
-                                    {
-                                        label: 'Item 1',
-                                        value: 'item1'
-                                    },
-                                    {
-                                        label: 'Item 2',
-                                        value: 'item2'
-                                    },
-                                ]}
-                                textStyle={{
-                                    fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
-                                }}
-                                containerStyle={{
-                                    backgroundColor: Colors.secondaryFont,
-                                    height: moderateScale(48),
-                                    borderRadius: moderateScale(6),
-                                    width: moderateScale(150)
-                                }}
-                                selectedValue={dropdownValue}
-                                onValueChange={(val) => setDropdownValue(val)}
-                            />
-                        </View>
-                    </View>
-
-                    <View style={styles.picker_view}>
-                        <View>
-                            <Text style={styles.input_title_txt}>State</Text>
-                            <Picker
-                                placeholder="Select"
-                                options={[
-                                    {
-                                        label: 'Item 1',
-                                        value: 'item1'
-                                    },
-                                    {
-                                        label: 'Item 2',
-                                        value: 'item2'
-                                    },
-                                ]}
-                                textStyle={{
-                                    fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
-                                }}
-                                containerStyle={{
-                                    backgroundColor: Colors.secondaryFont,
-                                    height: moderateScale(48),
-                                    borderRadius: moderateScale(6),
-                                    width: moderateScale(150)
-                                }}
-                                selectedValue={dropdownValue}
-                                onValueChange={(val) => setDropdownValue(val)}
-                            />
-                        </View>
-
-                        <View>
-                            <Text style={styles.input_title_txt}>District</Text>
-                            <Picker
-                                placeholder="Select"
-                                options={[
-                                    {
-                                        label: 'Item 1',
-                                        value: 'item1'
-                                    },
-                                    {
-                                        label: 'Item 2',
-                                        value: 'item2'
-                                    },
-                                ]}
-                                textStyle={{
-                                    fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
-                                }}
-                                containerStyle={{
-                                    backgroundColor: Colors.secondaryFont,
-                                    height: moderateScale(48),
-                                    borderRadius: moderateScale(6),
-                                    width: moderateScale(150)
-                                }}
-                                selectedValue={dropdownValue}
-                                onValueChange={(val) => setDropdownValue(val)}
-                            />
-                        </View>
-                    </View>
-
-                    <View style={styles.picker_view}>
-                        <View>
-                            <Text style={styles.input_title_txt}>City/ Village </Text>
-                            <Picker
-                                placeholder="Select"
-                                options={[
-                                    {
-                                        label: 'Item 1',
-                                        value: 'item1'
-                                    },
-                                    {
-                                        label: 'Item 2',
-                                        value: 'item2'
-                                    },
-                                ]}
-                                textStyle={{
-                                    fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
-                                }}
-                                containerStyle={{
-                                    backgroundColor: Colors.secondaryFont,
-                                    height: moderateScale(48),
-                                    borderRadius: moderateScale(6),
-                                    width: moderateScale(150)
-                                }}
-                                selectedValue={dropdownValue}
-                                onValueChange={(val) => setDropdownValue(val)}
-                            />
-                        </View>
-
-                        <View>
-                            <Text style={styles.input_title_txt}>Annual Income</Text>
-                            <Picker
-                                placeholder="Select"
-                                options={[
-                                    {
-                                        label: 'Item 1',
-                                        value: 'item1'
-                                    },
-                                    {
-                                        label: 'Item 2',
-                                        value: 'item2'
-                                    },
-                                ]}
-                                textStyle={{
-                                    fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
-                                }}
-                                containerStyle={{
-                                    backgroundColor: Colors.secondaryFont,
-                                    height: moderateScale(48),
-                                    borderRadius: moderateScale(6),
-                                    width: moderateScale(150)
-                                }}
-                                selectedValue={dropdownValue}
-                                onValueChange={(val) => setDropdownValue(val)}
-                            />
-                        </View>
-                    </View>
-
-                    <View style={styles.picker_view}>
-                        <View>
-                            <Text style={styles.input_title_txt}>Height</Text>
-                            <Picker
-                                placeholder="Select"
-                                options={[
-                                    {
-                                        label: 'Item 1',
-                                        value: 'item1'
-                                    },
-                                    {
-                                        label: 'Item 2',
-                                        value: 'item2'
-                                    },
-                                ]}
-                                textStyle={{
-                                    fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
-                                }}
-                                containerStyle={{
-                                    backgroundColor: Colors.secondaryFont,
-                                    height: moderateScale(48),
-                                    borderRadius: moderateScale(6),
-                                    width: moderateScale(150)
-                                }}
-                                selectedValue={dropdownValue}
-                                onValueChange={(val) => setDropdownValue(val)}
-                            />
-                        </View>
-
-                        <View>
-                            <Text style={styles.input_title_txt}>Marital Status</Text>
-                            <Picker
-                                placeholder="Select"
-                                options={[
-                                    {
-                                        label: 'Item 1',
-                                        value: 'item1'
-                                    },
-                                    {
-                                        label: 'Item 2',
-                                        value: 'item2'
-                                    },
-                                ]}
-                                textStyle={{
-                                    fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
-                                }}
-                                containerStyle={{
-                                    backgroundColor: Colors.secondaryFont,
-                                    height: moderateScale(48),
-                                    borderRadius: moderateScale(6),
-                                    width: moderateScale(150)
-                                }}
-                                selectedValue={dropdownValue}
-                                onValueChange={(val) => setDropdownValue(val)}
-                            />
-                        </View>
-                    </View>
-
-                    <View style={styles.picker_view}>
-                        <View>
-                            <Text style={styles.input_title_txt}>Qualifications</Text>
-                            <Picker
-                                placeholder="Select"
-                                options={[
-                                    {
-                                        label: 'Item 1',
-                                        value: 'item1'
-                                    },
-                                    {
-                                        label: 'Item 2',
-                                        value: 'item2'
-                                    },
-                                ]}
-                                textStyle={{
-                                    fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
-                                }}
-                                containerStyle={{
-                                    backgroundColor: Colors.secondaryFont,
-                                    height: moderateScale(48),
-                                    borderRadius: moderateScale(6),
-                                    width: moderateScale(150)
-                                }}
-                                selectedValue={dropdownValue}
-                                onValueChange={(val) => setDropdownValue(val)}
-                            />
-                        </View>
-
-                        <View>
-                            <Text style={styles.input_title_txt}>Occupation</Text>
-                            <Picker
-                                placeholder="Select"
-                                options={[
-                                    {
-                                        label: 'Item 1',
-                                        value: 'item1'
-                                    },
-                                    {
-                                        label: 'Item 2',
-                                        value: 'item2'
-                                    },
-                                ]}
-                                textStyle={{
-                                    fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
-                                }}
-                                containerStyle={{
-                                    backgroundColor: Colors.secondaryFont,
-                                    height: moderateScale(48),
-                                    borderRadius: moderateScale(6),
-                                    width: moderateScale(150)
-                                }}
-                                selectedValue={dropdownValue}
-                                onValueChange={(val) => setDropdownValue(val)}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.picker_view}>
-                        <Text style={styles.input_title_txt}>Write something about yourself</Text>
-                        <Text style={styles.input_title_txt}>(Optional)</Text>
-                    </View>
-                    <AppTextInput
-                        placeholder='Maximum up to 40 word'
-                        inputContainerStyle={{
-                            borderRadius: moderateScale(5),
-                            paddingHorizontal: moderateScale(7)
-                        }}
-                        mainContainerStyle={{
-                            marginTop: moderateScale(5)
-                        }}
-                        numberOfLines={5}
-                        textAlignVertical='center'
-                        textAlign='center'
-                    // value={useName}
-                    // onChangeText={(val) => setuseName(val)}
-                    />
-
+                                            </View>
+                                            <TouchableOpacity style={styles.reg_button}>
+                                                <Text style={styles.button_reg_txt}>Upload Image</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                );
+                            case 'text':
+                                return (
+                                    <View key={index}>
+                                        <Text style={styles.input_title_txt}>{field.label}</Text>
+                                        <AppTextInput
+                                            placeholder={field.label}
+                                            inputContainerStyle={{
+                                                borderRadius: moderateScale(5),
+                                                paddingHorizontal: moderateScale(7)
+                                            }}
+                                            mainContainerStyle={{
+                                                marginTop: moderateScale(5)
+                                            }}
+                                            value={formValues[field.name]}
+                                            onChangeText={(val) => handleInputChange(field.name, val)}
+                                        />
+                                    </View>
+                                );
+                            case 'select':
+                                return (
+                                    <View key={index}>
+                                        <Text style={styles.input_title_txt}>{field.label}</Text>
+                                        <Picker
+                                            placeholder="Select"
+                                            options={[
+                                                { label: 'Item 1', value: 'item1' },
+                                                { label: 'Item 2', value: 'item2' },
+                                            ]}
+                                            textStyle={{
+                                                fontSize: moderateScale(14),
+                                                fontFamily: FONTS.regular
+                                            }}
+                                            containerStyle={{
+                                                backgroundColor: Colors.secondaryFont,
+                                                height: moderateScale(48),
+                                                borderRadius: moderateScale(6),
+                                                width: moderateScale(150)
+                                            }}
+                                            selectedValue={formValues[field.name]}
+                                            onValueChange={(val) => handleInputChange(field.name, val)}
+                                        />
+                                    </View>
+                                );
+                            case 'textarea':
+                                return (
+                                    <View key={index}>
+                                        <Text style={styles.input_title_txt}>{field.label}</Text>
+                                        <AppTextInput
+                                            placeholder={field.label}
+                                            inputContainerStyle={{
+                                                borderRadius: moderateScale(5),
+                                                paddingHorizontal: moderateScale(7)
+                                            }}
+                                            mainContainerStyle={{
+                                                marginTop: moderateScale(5),
+                                                height: moderateScale(100)
+                                            }}
+                                            multiline
+                                            value={formValues[field.name]}
+                                            onChangeText={(val) => handleInputChange(field.name, val)}
+                                            numberOfLines={5}
+                                            textAlignVertical="top"
+                                        />
+                                    </View>
+                                );
+                            default:
+                                return null;
+                        }
+                    })}
                     <AppButton
                         title="SUBMIT"
                         style={styles.button}
                         textStyle={styles.button_txt}
-                    // loader={
-                    //     btnLoader
-                    //         ? {
-                    //             position: "right",
-                    //             color: "#fff",
-                    //             size: "small",
-                    //         }
-                    //         : null
-                    // }
-                    // disabled={btnLoader}
+                        onPress={handleSubmit}
                     />
-
                 </View>
             </KeyboardAwareScrollView>
+
+
+            <Modal isVisible={isModalVisible} transparent={true}>
+                <View style={styles.container1}>
+                    <Text style={styles.title}>Add Photo!</Text>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => openCamera("capture", {
+                            saveToPhotos: true,
+                            mediaType: 'photo',
+                            includeBase64: false,
+                            maxWidth: 500,
+                            maxHeight: 500,
+                            quality: 0.5
+                        })}
+                    >
+                        <Text style={styles.buttonText}>
+                            <Icon name="camera" size={18} type='Entypo' color="#C6C6C6" />
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => openCamera("gallery", {
+                            saveToPhotos: true,
+                            mediaType: 'photo',
+                            includeBase64: false,
+                            maxWidth: 500,
+                            maxHeight: 500,
+                            quality: 0.5
+                        })}
+                    >
+                        <Text style={styles.buttonText}>
+                            <Icon name="file" size={18} type='Entypo' color="#C6C6C6" />
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
         </View>
     );
 };
 
-// define your styles
+// Define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -487,8 +340,32 @@ const styles = StyleSheet.create({
         color: Colors.secondaryFont,
         fontFamily: FONTS.semibold,
         fontSize: responsiveFontSize(2.5)
-    }
+    },
+    container1: {
+        backgroundColor: 'white',
+        padding: 20,
+        margin: 20,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    title: {
+        padding: 10,
+        borderBottomWidth: 1,
+        marginBottom: 15,
+        fontSize: 18,
+        color: 'black',
+        fontFamily: 'sans-serif',
+    },
+    button: {
+        marginBottom: 10,
+    },
+    buttonText: {
+        fontSize: 18,
+        padding: 10,
+        color: 'black',
+        fontFamily: 'sans-serif',
+    },
 });
 
-//make this component available to the app
-export default SubCatFrom;
+// Make this component available to the app
+export default SubCatForm;

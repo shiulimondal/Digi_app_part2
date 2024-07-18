@@ -52,6 +52,7 @@ const SubCategorySubscription = () => {
     const [merchantId, setmerchantId] = useState('PGTESTPAYUAT86');
     const [appId, setappId] = useState(null);
     const [enableLogging, setenableLogging] = useState(true);
+
     const genarateId = () => {
         const timestamp = Date.now();
         const ramdom = Math.floor(Math.random() * 1000000);
@@ -70,9 +71,20 @@ const SubCategorySubscription = () => {
                 "callbackUrl": "",
                 "paymentInstrument": {
                     "type": "PAY_PAGE",
-                  
                 },
-              
+
+                // "merchantId": merchantId,
+                // "merchantTransactionId": "MT7850590068188104",
+                // "merchantUserId": "MUID123",
+                // "amount": (price * 100),
+                // "redirectUrl": "https://webhook.site/redirect-url",
+                // "redirectMode": "REDIRECT",
+                // "callbackUrl": "https://webhook.site/callback-url",
+                // "mobileNumber": "9999999999",
+                // "paymentInstrument": {
+                //   "type": "PAY_PAGE"
+                // }
+
             }
             const salt_key = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399";
             const salt_Index = "1";
@@ -81,14 +93,16 @@ const SubCategorySubscription = () => {
             const string = payload_main + "/pg/v1/pay" + salt_key;
             const checksum = sha256(string) + "###" + salt_Index;
 
-            PhonePePaymentSDK.startTransaction().then(res => {
-                payload_main,
-                    checksum,
-                    null,
-                    null
+            PhonePePaymentSDK.startTransaction(
+                payload_main,  
+                checksum,     
+                null,          
+                null                  
+            ).then(response => {
+                console.log('Transaction started successfully:', response);
             }).catch(err => {
-                console.log(err);
-            })
+                console.log('Error starting transaction:', err);
+            });
 
         }).catch(err => {
             console.log(err);
@@ -129,7 +143,7 @@ const SubCategorySubscription = () => {
                 {
                     subscriptionList.map((item, index) => {
                         return (
-                            <View style={styles.plan_main_view}>
+                            <View key={index} style={styles.plan_main_view}>
                                 {
                                     item.name === "Annual plan" ?
                                         <View style={styles.plan_top_view}>

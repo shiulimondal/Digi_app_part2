@@ -56,5 +56,9 @@
     <string>paytmmp</string>
     <string>gpay</string>
     </array>
+	<key>UIAppFonts</key>
+    <array>
+	<string>MaterialIcons.ttf</string>
+    </array>
 </dict>
 </plist>

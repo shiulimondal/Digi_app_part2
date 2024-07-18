@@ -64,10 +64,7 @@ const Home = ({ navigation }) => {
       // handleClick: 'Home'
     }
   ]
-  const handleScreen = () => {
-    NavigationService.navigate(item.handleClick);
-    
-}
+
 
   return (
     <View style={styles.container}>
@@ -186,12 +183,12 @@ const Home = ({ navigation }) => {
             marginTop: moderateScale(10),
             paddingHorizontal: moderateScale(10)
           }}>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: moderateScale(15), justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
               {[...Array(4)].map((_, index) => (
                 <View
                   key={index}
                   style={{
-                    ...styles.categoryloder, width: moderateScale(140),
+                    ...styles.categoryloder, width: moderateScale(150),
                     height: moderateScale(100)
                   }}
                 ></View>

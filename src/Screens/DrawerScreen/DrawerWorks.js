@@ -1,50 +1,68 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
-import HomeHeader from '../../Components/Header/HomeHeader';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList, Pressable, ActivityIndicator, Dimensions } from 'react-native';
 import { Colors } from '../../Constants/Colors';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { FONTS } from '../../Constants/Fonts';
 import { Icon } from 'react-native-basic-elements';
 import WorkCard from '../../Components/DrawerCard/WorkCard';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
+import HomeService from '../../Services/HomeServises';
 
 
+const { height, width } = Dimensions.get('screen');
 const DrawerWorks = ({ navigation }) => {
+    const [WorkData, setWorkData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const WorkData = [
-        {
-            cat_logo: require('../../assets/images/work1.png'),
-        },
-        {
-            cat_logo: require('../../assets/images/work2.png'),
-        },
-        {
-            cat_logo: require('../../assets/images/work3.png'),
-        },
-    ];
+    useEffect(() => {
+        getWorkData();
+    }, []);
+
+    const getWorkData = async () => {
+        setLoading(true)
+        HomeService.fatch_work_list()
+            .then((res) => {
+                setLoading(false)
+                if (res && res.success == true) {
+                    console.log('ressssssssssssssshowwwwwwww', res.data);
+                    setWorkData(res.data)
+                }
+            })
+            .catch((err) => {
+                setLoading(false)
+                console.error('Error fetching About Us data:', err);
+            })
+    }
+
 
     return (
         <View style={styles.container}>
             <ScreenHeader />
-            <View style={styles.top_view}>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ alignSelf: 'flex-end' }}>
-                        <Pressable onPress={() => navigation.goBack()}>
-                        <Icon name='chevron-left' type='FontAwesome5' size={23} />
-                        </Pressable>
-                    </View>
-                    <View style={{ alignItems: 'center', flex: 1 }}>
-                        <Text style={styles.header_txt}>How it's Work</Text>
+            {loading ? (
+                <ActivityIndicator size="large" color={Colors.buttonColor} style={{ marginTop: height / 3 }} />
+            ) : <>
+                <View style={styles.top_view}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ alignSelf: 'flex-end' }}>
+                            <Pressable onPress={() => navigation.goBack()}>
+                                <Icon name='chevron-left' type='FontAwesome5' size={23} />
+                            </Pressable>
+                        </View>
+                        <View style={{ alignItems: 'center', flex: 1 }}>
+                            <Text style={styles.header_txt}>How it's Work</Text>
+                        </View>
                     </View>
                 </View>
-            </View>
-            <FlatList
-                data={WorkData}
-                renderItem={({ item, index }) => (
-                    <WorkCard item={item} index={index} />
-                )}
-                keyExtractor={(item, index) => index.toString()}
-            />
+                <FlatList
+                    data={WorkData}
+                    renderItem={({ item, index }) => (
+                        <WorkCard item={item} index={index} />
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            </>
+            }
+
         </View>
     );
 };

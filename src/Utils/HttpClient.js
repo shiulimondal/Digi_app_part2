@@ -44,7 +44,7 @@ async function request(endpoint, params = null, method = 'GET') {
         xmlRequest.onreadystatechange = function () {
             if (xmlRequest.readyState === XMLHttpRequest.DONE) {
                 const responseText = xmlRequest.responseText;
-                console.log('Response:', responseText);
+                // console.log('Response:', responseText);
                 
                 if (xmlRequest.status === 200) {
                     try {

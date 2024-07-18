@@ -47,9 +47,25 @@ const setAboutUs = async (data) => {
 const getMessage_list = async () => {
     return HttpClient.post('/help-list');
 }
+const fatchAboutUs = async () => {
+    return HttpClient.post('/about-us');
+}
 const fatch_subscription_list = async () => {
     return HttpClient.post('/subscription-list');
 }
+const fatch_work_list = async () => {
+    return HttpClient.post('/how-its-works');
+}
+const get_subcategory_list = async (data) => {
+    return HttpClient.post('/get-profiles',data);
+}
+const get_profilefrom = async (data) => {
+    return HttpClient.post('/get-profile-form',data);
+}
+const setOptionList = async (data) => {
+    return HttpClient.post('/get-options-list',data);
+}
+
 
 const HomeService = {
     getAccount,
@@ -67,7 +83,12 @@ const HomeService = {
     updateProfile,
     setAboutUs,
     getMessage_list,
-    fatch_subscription_list
+    fatch_subscription_list,
+    fatchAboutUs,
+    fatch_work_list,
+    get_subcategory_list,
+    get_profilefrom,
+    setOptionList
 }
 
 export default HomeService;

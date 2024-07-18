@@ -49,7 +49,6 @@ const Login = ({ navigation }) => {
     setBtnLoader(true);
     AuthService.getSendOtp(data)
       .then((res) => {
-        console.log("Response:", res);
         setBtnLoader(false);
         if (res.status === true) {
           NavigationService.navigate("LoginOTP",{PhNumberData:res});

@@ -1,6 +1,6 @@
 //import liraries
-import React, { Component, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Image, TouchableOpacity, FlatList } from 'react-native';
+import React, { Component, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import ScreenHeader from '../../../Components/Header/ScreenHeader';
 import NavigationService from '../../../Services/Navigation';
 import { CheckBox, Icon, Picker } from 'react-native-basic-elements';
@@ -10,76 +10,132 @@ import { FONTS } from '../../../Constants/Fonts';
 import { useRoute } from '@react-navigation/native';
 import SubCategoryListCard from '../../../Components/HomeCard/SubCategoryListCard';
 import Modal from "react-native-modal";
+import HomeService from '../../../Services/HomeServises';
 
 // create a component
 const ViewSubcategory = () => {
     const route = useRoute()
-    const categoryName = route.params.cat_name;
+    const SubDataName = route.params.sub_name;
+    const cat_idData = route.params.catId;
+    const Sub_idData = route.params.subId;
     const [dropdownValue, setDropdownValue] = useState('');
     const [check, setCheck] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [isModalVisible, setModalVisible] = useState(false);
+
+    const [subCatDataList, setsubCatDataList] = useState([])
+
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
+
+    useEffect(() => {
+        getSub_all_data()
+    }, [])
+
+    const getSub_all_data = async () => {
+        const data = {
+            "category_id": cat_idData,
+            "sub_category_id": Sub_idData
+        }
+        HomeService.get_subcategory_list(data)
+            .then((res) => {
+                console.log("Response:aiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", res);
+                setLoading(false);
+                if (res.status === true) {
+                    setsubCatDataList(res.data)
+                }
+            })
+            .catch((err) => {
+                console.error("Error:", err);
+                setLoading(false);
+            });
+    };
+
+ 
+
     return (
         <View style={styles.container}>
             <ScreenHeader />
-            <View style={styles.top_view}>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ alignSelf: 'flex-end' }}>
-                        <Pressable onPress={() => NavigationService.goBack()}>
-                            <Icon name='chevron-left' type='FontAwesome5' size={23} />
-                        </Pressable>
-                    </View>
-                    <View style={{ alignItems: 'center', flex: 1 }}>
-                        <Text style={styles.header_txt}>{categoryName}</Text>
-                    </View>
+            {loading ? (
+                <View style={styles.loader}>
+                    <ActivityIndicator size="large" color={Colors.buttonColor} />
                 </View>
-            </View>
-            <View style={styles.pickerTop_view}>
-                <Picker
-                    placeholder="Select"
-                    options={[
-                        {
-                            label: 'Item 1',
-                            value: 'item1'
-                        },
-                        {
-                            label: 'Item 2',
-                            value: 'item2'
-                        },
-                    ]}
-                    textStyle={{
-                        fontSize: moderateScale(14),
-                        fontFamily: FONTS.regular
-                    }}
-                    containerStyle={{
-                        backgroundColor: Colors.secondaryFont,
-                        height: moderateScale(48),
-                        width: moderateScale(270),
-                        borderRadius: moderateScale(25),
-                        borderWidth: 0
-                    }}
-                    selectedValue={dropdownValue}
-                    onValueChange={(val) => setDropdownValue(val)}
-                />
-                <View style={styles.filter_view}>
-                    <TouchableOpacity onPress={toggleModal}>
-                        <Image source={require('../../../assets/images/filter.png')} style={styles.filter_sty} />
-                    </TouchableOpacity>
+            ) :
+                <>
 
-                </View>
-            </View>
-            <FlatList
-                data={[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}
-                renderItem={({ item, index }) => (
-                    <SubCategoryListCard item={item} index={index} />
-                )}
-                keyExtractor={(item, index) => index.toString()}
-            />
-            <Pressable onPress={() => NavigationService.navigate('SubCatFrom')} style={styles.add_button}>
-                <Icon name='plus' type='AntDesign' size={32} />
-            </Pressable>
+
+                    {
+                        subCatDataList && subCatDataList.length === 0 ?
+                            <View style={styles.loader}>
+                                <Image source={require('../../../assets/images/nodata.png')} style={styles.nodata_sty} />
+                                <View style={styles.button}>
+                                    <Text style={styles.button_txt}>No Data Found</Text>
+                                </View>
+                            </View>
+                            :
+                            <>
+                                <View style={styles.top_view}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <View style={{ alignSelf: 'flex-end' }}>
+                                            <Pressable onPress={() => NavigationService.goBack()}>
+                                                <Icon name='chevron-left' type='FontAwesome5' size={23} />
+                                            </Pressable>
+                                        </View>
+                                        <View style={{ alignItems: 'center', flex: 1 }}>
+                                            <Text style={styles.header_txt}>{SubDataName}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={styles.pickerTop_view}>
+                                    <Picker
+                                        placeholder="Select"
+                                        options={[
+                                            {
+                                                label: 'Item 1',
+                                                value: 'item1'
+                                            },
+                                            {
+                                                label: 'Item 2',
+                                                value: 'item2'
+                                            },
+                                        ]}
+                                        textStyle={{
+                                            fontSize: moderateScale(14),
+                                            fontFamily: FONTS.regular
+                                        }}
+                                        containerStyle={{
+                                            backgroundColor: Colors.secondaryFont,
+                                            height: moderateScale(48),
+                                            width: moderateScale(270),
+                                            borderRadius: moderateScale(25),
+                                            borderWidth: 0
+                                        }}
+                                        selectedValue={dropdownValue}
+                                        onValueChange={(val) => setDropdownValue(val)}
+                                    />
+                                    <View style={styles.filter_view}>
+                                        <TouchableOpacity onPress={toggleModal}>
+                                            <Image source={require('../../../assets/images/filter.png')} style={styles.filter_sty} />
+                                        </TouchableOpacity>
+
+                                    </View>
+                                </View>
+                                <FlatList
+                                    data={subCatDataList}
+                                    renderItem={({ item, index }) => (
+                                        <SubCategoryListCard item={item} index={index} />
+                                    )}
+                                    keyExtractor={(item, index) => index.toString()}
+                                />
+                            </>
+                    }
+
+                    <Pressable onPress={() => NavigationService.navigate('SubCatFrom', { CatId: cat_idData, SubID: Sub_idData })} style={styles.add_button}>
+                        <Icon name='plus' type='AntDesign' size={32} />
+                    </Pressable>
+                </>
+            }
 
             <Modal
                 isVisible={isModalVisible}
@@ -315,6 +371,11 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(17),
         color: Colors.black,
     },
+    loader: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     pickerTop_view: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -359,8 +420,8 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
         position: 'absolute',
-        bottom: moderateScale(40),
-        right: moderateScale(15)
+        bottom: moderateScale(50),
+        right: moderateScale(20)
     },
     modalView: {
         backgroundColor: "white",
@@ -402,6 +463,18 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.semibold,
         fontSize: moderateScale(14),
         color: Colors.secondaryFont
+    },
+    nodata_sty: {
+        height: moderateScale(150),
+        width: moderateScale(150),
+        resizeMode: 'contain',
+        tintColor: 'rgba(95,37,158,0.3)',
+    },
+    button_txt: {
+        color: Colors.buttonColor,
+        fontFamily: FONTS.semibold,
+        fontSize: moderateScale(14),
+        textAlign: 'center'
     },
 });
 

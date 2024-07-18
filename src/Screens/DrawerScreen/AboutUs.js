@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Pressable, Image, ActivityIndicator, Dimensions } from 'react-native';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { FONTS } from '../../Constants/Fonts';
 import { Colors } from '../../Constants/Colors';
@@ -8,21 +8,25 @@ import ScreenHeader from '../../Components/Header/ScreenHeader';
 import AboutUsCard from '../../Components/DrawerCard/AboutUsCard';
 import HomeService from '../../Services/HomeServises';
 
+const { height, width } = Dimensions.get('screen');
 const AboutUs = ({ navigation }) => {
     const [aboutUsData, setAboutUsData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getAboutUsData();
     }, []);
 
     const getAboutUsData = async () => {
+        setLoading(true)
         try {
             const response = await HomeService.fatchAboutUs();
-            console.log('About Us Response:', response);
             if (response && response.success) {
-                setAboutUsData([response.data]); // Assuming response.data is a single object
+                setLoading(false)
+                setAboutUsData([response.data]);
             }
         } catch (error) {
+            setLoading(false)
             console.error('Error fetching About Us data:', error);
         }
     };
@@ -30,26 +34,32 @@ const AboutUs = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <ScreenHeader />
-            <View style={styles.top_view}>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ alignSelf: 'flex-end' }}>
-                        <Pressable onPress={() => navigation.goBack()}>
-                        <Icon name='chevron-left' type='FontAwesome5' size={23} />
-                        </Pressable>
-                    </View>
-                    <View style={{ alignItems: 'center', flex: 1 }}>
-                        <Text style={styles.header_txt}>How it Works</Text>
+            {loading ? (
+                <ActivityIndicator size="large" color={Colors.buttonColor} style={{ marginTop: height / 3 }} />
+            ) : <>
+
+                <View style={styles.top_view}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ alignSelf: 'flex-end' }}>
+                            <Pressable onPress={() => navigation.goBack()}>
+                                <Icon name='chevron-left' type='FontAwesome5' size={23} />
+                            </Pressable>
+                        </View>
+                        <View style={{ alignItems: 'center', flex: 1 }}>
+                            <Text style={styles.header_txt}>How it Works</Text>
+                        </View>
                     </View>
                 </View>
-            </View>
 
-            <FlatList
-                data={aboutUsData}
-                renderItem={({ item, index }) => (
-                    <AboutUsCard item={item} index={index} />
-                )}
-                keyExtractor={(item, index) => index.toString()}
-            />
+                <FlatList
+                    data={aboutUsData}
+                    renderItem={({ item, index }) => (
+                        <AboutUsCard item={item} index={index} />
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            </>
+            }
         </View>
     );
 };
