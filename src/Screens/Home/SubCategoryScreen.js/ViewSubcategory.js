@@ -52,7 +52,7 @@ const ViewSubcategory = () => {
             });
     };
 
- 
+
 
     return (
         <View style={styles.container}>
@@ -65,7 +65,7 @@ const ViewSubcategory = () => {
                 <>
 
 
-                    {
+                    {/* {
                         subCatDataList && subCatDataList.length === 0 ?
                             <View style={styles.loader}>
                                 <Image source={require('../../../assets/images/nodata.png')} style={styles.nodata_sty} />
@@ -74,7 +74,7 @@ const ViewSubcategory = () => {
                                 </View>
                             </View>
                             :
-                            <>
+                            <> */}
                                 <View style={styles.top_view}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ alignSelf: 'flex-end' }}>
@@ -122,14 +122,15 @@ const ViewSubcategory = () => {
                                     </View>
                                 </View>
                                 <FlatList
-                                    data={subCatDataList}
+                                    // data={subCatDataList}
+                                    data={[1,1,1,1,1,1,,1,1,1,1,1]}
                                     renderItem={({ item, index }) => (
                                         <SubCategoryListCard item={item} index={index} />
                                     )}
                                     keyExtractor={(item, index) => index.toString()}
                                 />
-                            </>
-                    }
+                            {/* </>
+                    } */}
 
                     <Pressable onPress={() => NavigationService.navigate('SubCatFrom', { CatId: cat_idData, SubID: Sub_idData })} style={styles.add_button}>
                         <Icon name='plus' type='AntDesign' size={32} />

@@ -103,7 +103,7 @@ const UserRegister = ({ navigation }) => {
                         borderRadius: moderateScale(5),
                         paddingHorizontal: moderateScale(7)
                     }}
-
+                    inputStyle={{fontFamily:FONTS.medium,fontSize:moderateScale(14)}}
                     mainContainerStyle={{
                         marginTop: moderateScale(5)
                     }}
@@ -120,6 +120,7 @@ const UserRegister = ({ navigation }) => {
                         borderRadius: moderateScale(5),
                         paddingHorizontal: moderateScale(7)
                     }}
+                    inputStyle={{fontFamily:FONTS.medium,fontSize:moderateScale(14)}}
                     rightAction={
                         passwordShow ?
                             <Icon
@@ -150,6 +151,7 @@ const UserRegister = ({ navigation }) => {
                         borderRadius: moderateScale(5),
                         paddingHorizontal: moderateScale(7)
                     }}
+                    inputStyle={{fontFamily:FONTS.medium,fontSize:moderateScale(14)}}
                     rightAction={
                         reConfirmPasswordShow ?
                             <Icon
@@ -205,8 +207,7 @@ const UserRegister = ({ navigation }) => {
 
             <Modal
                 isVisible={isModalVisible}
-                // onBackButtonPress={() => setModalVisible(false)}
-                // onBackdropPress={() => setModalVisible(false)}
+    
             >
                 <View style={styles.modalView}>
                     <Image source={require('../../assets/images/register.png')} style={{ height: 80, width: 80 }} />
@@ -218,14 +219,7 @@ const UserRegister = ({ navigation }) => {
                         color: Colors.black
                     }}>Congratulations !</Text>
                     <Text style={styles.modal_massege}>Register Successfully </Text>
-                    {/* <AppButton
-                        shadow={true}
-                        title='Ok'
-                        textStyle={styles.button_txt_sty}
-                        style={styles.button_sty}
-                        onPress={() => { getRegister()}}
-
-                    /> */}
+             
                      <TouchableOpacity
                         onPress={() => { getRegister()}}
                         style={styles.button_sty}>

@@ -65,6 +65,15 @@ const get_profilefrom = async (data) => {
 const setOptionList = async (data) => {
     return HttpClient.post('/get-options-list',data);
 }
+const setOption_DisttrictList = async (data) => {
+    return HttpClient.post('/get-options-child-list',data);
+}
+const submitFormData = async (data) => {
+    return HttpClient.post('/business-account/create',data);
+}
+const submitSubscriptionData = async (data) => {
+    return HttpClient.post('/subscription-purchase',data);
+}
 
 
 const HomeService = {
@@ -88,7 +97,10 @@ const HomeService = {
     fatch_work_list,
     get_subcategory_list,
     get_profilefrom,
-    setOptionList
+    setOptionList,
+    setOption_DisttrictList,
+    submitFormData,
+    submitSubscriptionData
 }
 
 export default HomeService;

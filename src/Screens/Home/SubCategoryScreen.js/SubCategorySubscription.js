@@ -13,6 +13,7 @@ import PhonePePaymentSDK from 'react-native-phonepe-pg'
 import { useSelector } from 'react-redux';
 import sha256 from 'sha256'
 import Base64 from 'react-native-base64'
+import Toast from "react-native-simple-toast";
 
 // create a component
 const { height, width } = Dimensions.get('screen');
@@ -24,6 +25,8 @@ const SubCategorySubscription = () => {
     const [planName, setplanName] = useState('');
     const [mrp, setmrp] = useState('');
     const [Day, setday] = useState('');
+    const [planId, setplanId] = useState('');
+    console.log('hhhhhhhhhhhhhhhhhhhhhhhh',selected);
 
     const handleSelection = (planName) => {
         setSelected(planName.name);
@@ -31,6 +34,7 @@ const SubCategorySubscription = () => {
         setplanName(planName.name)
         setmrp(planName.mrp)
         setday(planName.days)
+        setplanId(planName.id)
     };
 
     useEffect(() => {
@@ -61,50 +65,66 @@ const SubCategorySubscription = () => {
     }
 
     const submitPayment = () => {
-        PhonePePaymentSDK.init(environment, merchantId, appId, enableLogging).then(res => {
-            const requestBody = {
-                "merchantId": merchantId,
-                "merchantTransactionId": genarateId(),
-                "merchantUserId": "",
-                "amount": (price * 100),
-                "mobileNumber": userData.phone,
-                "callbackUrl": "",
-                "paymentInstrument": {
-                    "type": "PAY_PAGE",
-                },
+        // PhonePePaymentSDK.init(environment, merchantId, appId, enableLogging).then(res => {
+        //     const requestBody = {
+        //         "merchantId": merchantId,
+        //         "merchantTransactionId": genarateId(),
+        //         "merchantUserId": "",
+        //         "amount": (price * 100),
+        //         "mobileNumber": userData.phone,
+        //         "callbackUrl": "",
+        //         "paymentInstrument": {
+        //             "type": "PAY_PAGE",
+        //         },
 
-                // "merchantId": merchantId,
-                // "merchantTransactionId": "MT7850590068188104",
-                // "merchantUserId": "MUID123",
-                // "amount": (price * 100),
-                // "redirectUrl": "https://webhook.site/redirect-url",
-                // "redirectMode": "REDIRECT",
-                // "callbackUrl": "https://webhook.site/callback-url",
-                // "mobileNumber": "9999999999",
-                // "paymentInstrument": {
-                //   "type": "PAY_PAGE"
-                // }
+        //         // "merchantId": merchantId,
+        //         // "merchantTransactionId": "MT7850590068188104",
+        //         // "merchantUserId": "MUID123",
+        //         // "amount": (price * 100),
+        //         // "redirectUrl": "https://webhook.site/redirect-url",
+        //         // "redirectMode": "REDIRECT",
+        //         // "callbackUrl": "https://webhook.site/callback-url",
+        //         // "mobileNumber": "9999999999",
+        //         // "paymentInstrument": {
+        //         //   "type": "PAY_PAGE"
+        //         // }
 
+        //     }
+        //     const salt_key = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399";
+        //     const salt_Index = "1";
+        //     const payload = JSON.stringify(requestBody);
+        //     const payload_main = Base64.encode(payload);
+        //     const string = payload_main + "/pg/v1/pay" + salt_key;
+        //     const checksum = sha256(string) + "###" + salt_Index;
+
+        //     PhonePePaymentSDK.startTransaction(
+        //         payload_main,  
+        //         checksum,     
+        //         null,          
+        //         null                  
+        //     ).then(response => {
+        //         console.log('Transaction started successfully:', response);
+        //     }).catch(err => {
+        //         console.log('Error starting transaction:', err);
+        //     });
+
+        // }).catch(err => {
+        //     console.log(err);
+        // })
+        const data = {
+            "subscription_id": planId,
+            "order_id": "167776676767",
+            "payment_id": "pay_83939393"
+        }
+        console.log('gerrrrrrrrrrrrr',data);
+        HomeService.submitSubscriptionData(data)
+        .then((res)=>{
+            if (res && res.status === true) {
+                Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+                NavigationService.navigate('Home')
             }
-            const salt_key = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399";
-            const salt_Index = "1";
-            const payload = JSON.stringify(requestBody);
-            const payload_main = Base64.encode(payload);
-            const string = payload_main + "/pg/v1/pay" + salt_key;
-            const checksum = sha256(string) + "###" + salt_Index;
-
-            PhonePePaymentSDK.startTransaction(
-                payload_main,  
-                checksum,     
-                null,          
-                null                  
-            ).then(response => {
-                console.log('Transaction started successfully:', response);
-            }).catch(err => {
-                console.log('Error starting transaction:', err);
-            });
-
-        }).catch(err => {
+        })
+        .catch((err)=>{
             console.log(err);
         })
     }

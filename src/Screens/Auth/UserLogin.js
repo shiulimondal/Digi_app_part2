@@ -67,7 +67,7 @@ const UserLogin = ({ navigation }) => {
                     borderRadius: moderateScale(5),
                     paddingHorizontal: moderateScale(7),
                 }}
-
+                inputStyle={{fontFamily:FONTS.medium,fontSize:moderateScale(14)}}
                 mainContainerStyle={{
                     marginTop: moderateScale(5)
                 }}
@@ -84,7 +84,7 @@ const UserLogin = ({ navigation }) => {
                     borderRadius: moderateScale(5),
                     paddingHorizontal: moderateScale(7),
                 }}
-
+                inputStyle={{fontFamily:FONTS.medium,fontSize:moderateScale(14)}}
                 mainContainerStyle={{
                     marginTop: moderateScale(5)
                 }}

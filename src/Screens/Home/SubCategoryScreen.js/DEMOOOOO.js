@@ -1,6 +1,5 @@
-// Import libraries
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Image, Dimensions, TouchableOpacity, PermissionsAndroid } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image, Dimensions, TouchableOpacity, PermissionsAndroid, ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import ScreenHeader from '../../../Components/Header/ScreenHeader';
 import { Colors } from '../../../Constants/Colors';
@@ -13,6 +12,7 @@ import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dim
 import HomeService from '../../../Services/HomeServises';
 import Modal from 'react-native-modal';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import Toast from "react-native-simple-toast";
 
 const { height, width } = Dimensions.get('screen');
 
@@ -21,26 +21,42 @@ const SubCatForm = (props) => {
     const cat_Data_id = route.params.CatId;
     const Sub_Data_id = route.params.SubID;
     const [loading, setLoading] = useState(true);
+    const [btnLoader, setBtnLoader] = useState(false);
+    const [getFormData, setgetFormData] = useState([]);
     const [formData, setFormData] = useState([]);
     const [formValues, setFormValues] = useState({});
     const [dropdownValues, setDropdownValues] = useState({});
+    const [selectedState, setSelectedState] = useState(null);
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedDocument, setSelectedDocument] = useState(null);
+
+    const [selectedDocuments, setSelectedDocuments] = useState([]);
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+    // console.log('selectedStateselectedStateselectedState', selectedState);
+    console.log('formDataformDataformDataformData', formData);
+    // console.log('dropdownValuesdropdownValuesdropdownValuesdropdownValues', dropdownValues);
+    console.log('selectedDocumentselectedDocumentselectedDocumentselectedDocument', selectedDocuments);
+
 
     useEffect(() => {
         getSubAllData();
     }, []);
 
     const getSubAllData = async () => {
+        setLoading(true);
         const data = {
             category_id: cat_Data_id,
             sub_category_id: Sub_Data_id,
         };
         HomeService.get_profilefrom(data)
             .then((res) => {
-                console.log('Response:', JSON.stringify(res));
+                console.log('Response:===================================', JSON.stringify(res));
                 setLoading(false);
                 if (res.status === true) {
+                    setgetFormData(res.data.id)
                     const requiredFields = res.data.form_body.filter((field) => field.is_required === '1');
                     setFormData(requiredFields);
                     requiredFields.forEach(field => {
@@ -56,10 +72,49 @@ const SubCatForm = (props) => {
             });
     };
 
+
+
+
+    const openCamera = async (type, options) => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                    title: "App Camera Permission",
+                    message: "App needs access to your camera",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK"
+                }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                onButtonPress(type, options);
+            } else {
+                console.log("Camera permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    };
+
+    const onButtonPress = async (type, options) => {
+        const result = type === 'capture'
+            ? await launchCamera(options)
+            : await launchImageLibrary({ ...options, selectionLimit: 0 });
+        if (result?.assets) {
+            setSelectedDocuments([...selectedDocuments, ...result.assets]);
+            setModalVisible(false);
+        }
+    };
+
+
+
+
     const getOptionList = async (pickerId, fieldName) => {
         const data = { option: pickerId };
         HomeService.setOptionList(data)
             .then((res) => {
+                // console.log('ggggggggggggggg', res);
                 if (res.status === true) {
                     setDropdownValues((prev) => ({
                         ...prev,
@@ -72,55 +127,99 @@ const SubCatForm = (props) => {
             });
     };
 
+
     const handleInputChange = (name, value) => {
         setFormValues((prevValues) => ({
             ...prevValues,
             [name]: value,
         }));
+        if (name === 'state') {
+            setSelectedState(value);
+            if (value) {
+                getStateList(value)
+            }
+        }
+    };
+
+    const getStateList = (stateId) => {
+        // console.log('Fetching districts for stateId:', stateId);
+        const value = {
+            "option_list_id": stateId,
+            "option": 2
+        };
+        HomeService.setOption_DisttrictList(value)
+            .then((res) => {
+                // console.log('Fetched Districts:===================', res);
+                if (res.status === true) {
+                    const newDistricts = res.data || [];
+                    setDropdownValues(prev => ({
+                        ...prev,
+                        district: newDistricts
+                    }));
+                } else {
+                    setDropdownValues(prev => ({
+                        ...prev,
+                        district: []
+                    }));
+                }
+            })
+            .catch((err) => {
+                console.error('Error fetching districts:', err);
+            });
     };
 
     const handleSubmit = () => {
-        console.log('Form Submitted:', formValues);
-        // Send formValues to the API
-    };
-
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
-
-    const openCamera = async (type, options) => {
-        try {
-            const granted = await PermissionsAndroid.requestMultiple([
-                PermissionsAndroid.PERMISSIONS.CAMERA,
-                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-                PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-            ]);
-
-            if (
-                granted['android.permission.CAMERA'] === PermissionsAndroid.RESULTS.GRANTED &&
-                granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
-                granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED
-            ) {
-                onButtonPress(type, options);
-            } else {
-                console.log('Camera or storage permission denied');
+        const fileData = selectedDocuments.map(file => ({
+            fileName: file.fileName,
+            fileSize: file.fileSize,
+            height: file.height,
+            originalPath: file.originalPath,
+            type: "file",
+            uri: file.uri,
+            width: file.width,
+            file:true,
+            mimeType:file.type
+        }));
+    
+        const formattedData = formData.map(field => {
+            if (field.type === 'file') {
+                return {
+                    ...field,
+                    value: fileData 
+                };
             }
-        } catch (err) {
-            console.warn(err);
-        }
+            return {
+                ...field,
+                value: formValues[field.name] || '',  
+            };
+        });
+    
+        const finalData = {
+            "form_id": getFormData,
+            "form_data": formattedData
+        };
+    
+        console.log('Final Data:===========', JSON.stringify(finalData));
+        // setBtnLoader(true);
+        // HomeService.submitFormData(finalData)
+        //     .then((res) => {
+        //         console.log('Submission Response:=============', res);
+        //         if (res) {
+        //             setBtnLoader(false);
+        //             Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+        //         } else {
+        //             setBtnLoader(false);
+        //             Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+        //         }
+        //     })
+        //     .catch((err) => {
+        //         setBtnLoader(false);
+        //         console.error('Submit Error:', err);
+        //     });
     };
+    
 
-    const onButtonPress = async (type, options) => {
-        if (type === 'capture') {
-            const result = await launchCamera(options);
-            setSelectedDocument(result?.assets);
-            setModalVisible(false);
-        } else {
-            const result = await launchImageLibrary(options);
-            setSelectedDocument(result?.assets);
-            setModalVisible(false);
-        }
-    };
+
 
     return (
         <View style={styles.container}>
@@ -137,89 +236,106 @@ const SubCatForm = (props) => {
                     </View>
                 </View>
             </View>
-            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.formContainer}>
-                    {formData.map((field, index) => {
-                        switch (field.type) {
-                            case 'file':
-                                return (
-                                    <View key={index} style={styles.fieldContainer}>
-                                        <View style={styles.fileInputContainer}>
-                                            <View style={styles.img_view}>
-                                                <Image
-                                                    source={selectedDocument ? { uri: selectedDocument[0].uri } : require('../../../assets/images/blankimg.png')}
-                                                    style={styles.upload_img}
+            {loading ? (
+                <ActivityIndicator size="large" color={Colors.buttonColor} style={{ marginTop: height / 3 }} />
+            ) : (
+                <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+                    <View style={styles.formContainer}>
+                        {formData.map((field, index) => {
+                            switch (field.type) {
+                                case 'file':
+                                    return (
+                                        <View key={index} style={styles.fieldContainer}>
+                                            <View style={styles.fileInputContainer}>
+                                                <View style={styles.img_view}>
+                                                    <Image
+                                                        source={selectedDocuments.length > 0 ? { uri: selectedDocuments[0]?.uri } : require('../../../assets/images/blankimg.png')}
+                                                        style={styles.upload_img}
+                                                    />
+
+                                                </View>
+                                                <TouchableOpacity onPress={toggleModal} style={styles.reg_button}>
+                                                    <Text style={styles.button_reg_txt}>Upload Image</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    );
+                                case 'text':
+                                    return (
+                                        <View key={index} style={styles.fieldContainer}>
+                                            <Text style={styles.input_title_txt}>{field?.label?.charAt(0).toUpperCase() + field?.label?.slice(1)}</Text>
+                                            <AppTextInput
+                                                placeholder={field.label}
+                                                inputContainerStyle={styles.inputContainer}
+                                                mainContainerStyle={styles.inputMainContainer}
+                                                value={formValues[field.name]}
+                                                onChangeText={(val) => handleInputChange(field.name, val)}
+                                            />
+                                        </View>
+                                    );
+                                case 'select':
+                                    return (
+                                        <View key={index} style={styles.fieldContainerpicker}>
+                                            <View>
+                                                <Text style={styles.input_title_txt}>{field?.label?.charAt(0).toUpperCase() + field?.label?.slice(1)}</Text>
+                                                <Picker
+                                                    placeholder="Select"
+                                                    labelKey="option_name"
+                                                    valueKey="id"
+                                                    options={dropdownValues[field.name] || []}
+                                                    textStyle={styles.pickerText}
+                                                    containerStyle={styles.pickerContainer}
+                                                    selectedValue={formValues[field.name]}
+                                                    onValueChange={(val) => handleInputChange(field.name, val)}
                                                 />
                                             </View>
-                                            <TouchableOpacity onPress={toggleModal} style={styles.reg_button}>
-                                                <Text style={styles.button_reg_txt}>Upload Image</Text>
-                                            </TouchableOpacity>
                                         </View>
-                                    </View>
-                                );
-                            case 'text':
-                                return (
-                                    <View key={index} style={styles.fieldContainer}>
-                                        <Text style={styles.input_title_txt}>{field.label}</Text>
-                                        <AppTextInput
-                                            placeholder={field.label}
-                                            inputContainerStyle={styles.inputContainer}
-                                            mainContainerStyle={styles.inputMainContainer}
-                                            value={formValues[field.name]}
-                                            onChangeText={(val) => handleInputChange(field.name, val)}
-                                        />
-                                    </View>
-                                );
-                            case 'select':
-                                return (
-                                    <View key={index} style={styles.fieldContainerpicker}>
-                                        <Text style={styles.input_title_txt}>{field.label}</Text>
-                                        <Picker
-                                            placeholder="Select"
-                                            labelKey="option_name"
-                                            valueKey="id"
-                                            options={dropdownValues[field.name] || []}
-                                            textStyle={styles.pickerText}
-                                            containerStyle={styles.pickerContainer}
-                                            selectedValue={formValues[field.name]}
-                                            onValueChange={(val) => handleInputChange(field.name, val)}
-                                        />
-                                    </View>
-                                );
-                            case 'textarea':
-                                return (
-                                    <View key={index} style={styles.fieldContainer}>
-                                        <Text style={styles.input_title_txt}>{field.label}</Text>
-                                        <AppTextInput
-                                            placeholder={field.label}
-                                            inputContainerStyle={styles.textareaContainer}
-                                            mainContainerStyle={styles.textareaMainContainer}
-                                            multiline
-                                            value={formValues[field.name]}
-                                            onChangeText={(val) => handleInputChange(field.name, val)}
-                                            numberOfLines={5}
-                                            textAlignVertical="top"
-                                        />
-                                    </View>
-                                );
-                            default:
-                                return null;
-                        }
-                    })}
-                    <AppButton
-                        title="SUBMIT"
-                        style={styles.button}
-                        textStyle={styles.button_txt}
-                        onPress={handleSubmit}
-                    />
-                </View>
-            </KeyboardAwareScrollView>
+                                    );
+                                case 'textarea':
+                                    return (
+                                        <View key={index} style={styles.fieldContainer}>
+                                            <Text style={styles.input_title_txt}>{field?.label?.charAt(0).toUpperCase() + field?.label?.slice(1)}</Text>
+                                            <AppTextInput
+                                                placeholder={field.label}
+                                                inputContainerStyle={styles.textareaContainer}
+                                                mainContainerStyle={styles.textareaMainContainer}
+                                                multiline
+                                                value={formValues[field.name]}
+                                                onChangeText={(val) => handleInputChange(field.name, val)}
+                                                numberOfLines={5}
+                                                textAlignVertical="top"
+                                            />
+                                        </View>
+                                    );
+                                default:
+                                    return null;
+                            }
+                        })}
+                        <AppButton
+                            title="SUBMIT"
+                            style={styles.button}
+                            textStyle={styles.button_txt}
+                            onPress={handleSubmit}
+                            loader={
+                                btnLoader
+                                    ? {
+                                        position: "right",
+                                        color: "#fff",
+                                        size: "small",
+                                    }
+                                    : null
+                            }
+                            disabled={btnLoader}
+                        />
+                    </View>
+                </KeyboardAwareScrollView>
+            )}
             <Modal isVisible={isModalVisible}
                 onBackButtonPress={() => setModalVisible(false)}
                 onBackdropPress={() => setModalVisible(false)}
                 transparent={true}>
                 <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Add Photo!</Text>
+                    <Text style={styles.modalTitle}>Upload Photo!</Text>
                     <TouchableOpacity
                         style={styles.modalbutton}
                         onPress={() => openCamera('capture', {
@@ -232,13 +348,15 @@ const SubCatForm = (props) => {
                         })}
                     >
                         <Text style={styles.modalbuttonText}>
-                            <Icon name="camera" size={18} type='Entypo' color="#C6C6C6" /> Open Camera
+                            <Icon name="camera" size={18} type='Entypo' color={Colors.buttonColor} />
+                            {" "}Camera
                         </Text>
                     </TouchableOpacity>
+
                     <TouchableOpacity
                         style={styles.modalbutton}
-                        onPress={() => openCamera('gallery', {
-                            saveToPhotos: true,
+                        onPress={() => openCamera('library', {
+                            selectionLimit: 1,
                             mediaType: 'photo',
                             includeBase64: false,
                             maxWidth: 500,
@@ -247,14 +365,21 @@ const SubCatForm = (props) => {
                         })}
                     >
                         <Text style={styles.modalbuttonText}>
-                            <Icon name="folder" size={18} type='Entypo' color="#C6C6C6" /> Upload From gallery
+                            <Icon name="image" size={18} type='Entypo' color={Colors.buttonColor} />
+                            {" "}Library
                         </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.modalCancel}
+                        onPress={() => setModalVisible(false)}>
+                        <Text style={styles.modalCancelText}>Cancel</Text>
                     </TouchableOpacity>
                 </View>
             </Modal>
         </View>
     );
 };
+
 
 // Define your styles
 const styles = StyleSheet.create({
@@ -273,20 +398,39 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(17),
         color: Colors.black,
     },
-    fieldContainer:{
-
+    fieldContainer: {
     },
-    formContainer:{
+    formContainer: {
         backgroundColor: Colors.cardColor,
-        marginHorizontal:moderateScale(15),
+        marginHorizontal: moderateScale(15),
     },
-    fileInputContainer:{
-        flexDirection:'row',
-        alignItems:'center',
-        marginTop:moderateScale(10)
+    fileInputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: moderateScale(10)
     },
-    fieldContainerpicker:{
-      
+    fieldContainerpicker: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+
+    pickerContainer: {
+        backgroundColor: Colors.secondaryFont,
+        height: moderateScale(48),
+        borderRadius: moderateScale(6),
+        width: width - moderateScale(30)
+    },
+    pickerText: {
+        fontSize: moderateScale(14),
+        fontFamily: FONTS.regular
+    },
+    inputContainer: {
+        borderRadius: moderateScale(5),
+        paddingHorizontal: moderateScale(7),
+        backgroundColor: Colors.secondaryFont
+    },
+    inputMainContainer: {
+        marginTop: moderateScale(5)
     },
     img_view: {
         alignItems: 'center',
@@ -340,29 +484,29 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.semibold,
         fontSize: responsiveFontSize(2.5)
     },
-    container1: {
-        backgroundColor: 'white',
-        padding: 20,
-        margin: 20,
-        borderRadius: 10,
+    modalContainer: {
+        backgroundColor: Colors.secondaryFont,
+        padding: moderateScale(20),
+        margin: moderateScale(20),
+        borderRadius: moderateScale(10),
         alignItems: 'center',
     },
-    title: {
-        padding: 10,
+    modalTitle: {
+        padding: moderateScale(10),
         borderBottomWidth: 1,
-        marginBottom: 15,
-        fontSize: 18,
-        color: 'black',
+        marginBottom: moderateScale(15),
+        fontSize: moderateScale(18),
+        color: Colors.black,
         fontFamily: 'sans-serif',
     },
     modalbutton: {
-        marginBottom: 10,
+        marginBottom: moderateScale(10),
     },
     modalbuttonText: {
-        fontSize: 18,
-        padding: 10,
-        color: 'black',
-        fontFamily: 'sans-serif',
+        fontSize: moderateScale(18),
+        padding: moderateScale(10),
+        color: Colors.black,
+        fontFamily: FONTS.medium,
     },
 });
 

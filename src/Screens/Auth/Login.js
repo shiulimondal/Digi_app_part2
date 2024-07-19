@@ -145,9 +145,9 @@ const styles = StyleSheet.create({
       height: responsiveHeight(6.5),
       borderColor: "#ccc",
       width: "80%",
-      color: '#555',
-      fontFamily:FONTS.regular,
-      fontSize: responsiveFontSize(1.8)
+      color: Colors.black,
+      fontFamily:FONTS.medium,
+      fontSize: responsiveFontSize(2)
     },
     button: {
       height: responsiveWidth(13),
