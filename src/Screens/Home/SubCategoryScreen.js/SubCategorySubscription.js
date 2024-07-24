@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground, Dimensions, ScrollView, Pressable, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Dimensions, ScrollView, Pressable, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import ScreenHeader from '../../../Components/Header/ScreenHeader';
 import { Icon, RadioButton } from 'react-native-basic-elements';
 import NavigationService from '../../../Services/Navigation';
@@ -111,6 +111,7 @@ const SubCategorySubscription = () => {
         // }).catch(err => {
         //     console.log(err);
         // })
+
         const data = {
             "subscription_id": planId,
             "order_id": "167776676767",
@@ -121,7 +122,7 @@ const SubCategorySubscription = () => {
         .then((res)=>{
             if (res && res.status === true) {
                 Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-                NavigationService.navigate('Home')
+                NavigationService.navigate('BottomTab')
             }
         })
         .catch((err)=>{
@@ -161,13 +162,21 @@ const SubCategorySubscription = () => {
                     marginTop: moderateScale(15), fontSize: moderateScale(14)
                 }}>Payment plans chosen exclusively for you</Text>
                 {
+                    subscriptionList.length === 0 ?
+                    <ActivityIndicator size="large" color={Colors.buttonColor} style={{ marginTop: height / 3 }} />
+                    :
+                    <>
+                       {
                     subscriptionList.map((item, index) => {
                         return (
                             <View key={index} style={styles.plan_main_view}>
                                 {
                                     item.name === "Annual plan" ?
                                         <View style={styles.plan_top_view}>
-                                            <Text style={styles.plan_top_txt}>Super saver plan</Text>
+                                            <Image source={require('../../../assets/images/anplan.png')}
+                                              style={{height:moderateScale(45),width:moderateScale(240),resizeMode:'contain'}}
+                                            />
+                                          
                                         </View>
                                         :
                                         null
@@ -213,6 +222,9 @@ const SubCategorySubscription = () => {
                         )
                     })
                 }
+                    </>
+                }
+             
 
 
             </ScrollView>
@@ -256,7 +268,7 @@ const styles = StyleSheet.create({
     },
     back_img: {
         height: height / 2.3,
-        width: width
+        width: width,
     },
     top_view: {
         padding: moderateScale(7),
@@ -264,7 +276,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -287,7 +299,7 @@ const styles = StyleSheet.create({
         marginTop: moderateScale(10)
     },
     bannerbutton_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(14),
         color: Colors.secondaryFont
     },
@@ -301,7 +313,7 @@ const styles = StyleSheet.create({
         padding: moderateScale(10)
     },
     total_message_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(14),
         color: Colors.secondaryFont,
         textAlign: 'center',
@@ -309,19 +321,19 @@ const styles = StyleSheet.create({
     },
     plan_top_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(12),
         color: Colors.secondaryFont
     },
     plan_top_view: {
-        backgroundColor: Colors.buttonColor,
-        width: moderateScale(200),
+        // backgroundColor: Colors.buttonColor,
+        // width: moderateScale(200),
         alignSelf: 'center',
-        top: moderateScale(-10),
-        padding: moderateScale(3)
+        top: moderateScale(-23),
+        // padding: moderateScale(3)
     },
     plan_main_view: {
-        borderRadius: moderateScale(7),
+        borderRadius: moderateScale(15),
         borderWidth: 2,
         marginHorizontal: moderateScale(20),
         marginTop: moderateScale(20),
@@ -329,12 +341,12 @@ const styles = StyleSheet.create({
         marginBottom: moderateScale(20)
     },
     price_txt: {
-        fontFamily: FONTS.regular,
+        fontFamily: FONTS.Inter.regular,
         fontSize: moderateScale(13),
         color: Colors.black
     },
     dis_price_txt: {
-        fontFamily: FONTS.regular,
+        fontFamily: FONTS.Inter.regular,
         fontSize: moderateScale(13),
         color: Colors.red,
         textDecorationLine: 'line-through'
@@ -355,7 +367,7 @@ const styles = StyleSheet.create({
         width: moderateScale(50)
     },
     plan_bottom_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(12),
         marginLeft: moderateScale(15),
         maxWidth: '70%',
@@ -370,13 +382,13 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     annualplan_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(14),
         marginLeft: moderateScale(10),
         color: Colors.black
     },
     anunal_txt: {
-        fontFamily: FONTS.regular,
+        fontFamily: FONTS.Inter.regular,
         fontSize: moderateScale(12),
         color: Colors.secondaryFont
     },
@@ -390,7 +402,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     paynow_txt: {
-        fontFamily: FONTS.bold,
+        fontFamily: FONTS.Inter.bold,
         fontSize: moderateScale(13),
         color: Colors.secondaryFont
     }

@@ -30,7 +30,7 @@ const Help = ({ navigation }) => {
                 setBtnLoader(false);
                 if (res.status === true) {
                     console.log('ressssssssssssssssssss',res.data);
-                    Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+                    Toast.show('Your Quarry Submmit Successfully', Toast.SHORT, Toast.BOTTOM);
 
                 } else {
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
@@ -61,10 +61,7 @@ const Help = ({ navigation }) => {
             </View>
             <ScrollView>
                 <View style={styles.message_view}>
-                    <Text style={styles.total_message_txt}>If you have any problem or
-                        queries, you can sendus
-                        message for solution. Definitely
-                        you will get thereply.</Text>
+                    <Text style={styles.total_message_txt}>If you have any problem or queries, you can sendus message for solution. Definitely you will get the reply.</Text>
                 </View>
 
                 <Text style={styles.input_title_txt}>Your Name</Text>
@@ -149,7 +146,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -163,12 +160,13 @@ const styles = StyleSheet.create({
         padding: moderateScale(10)
     },
     total_message_txt: {
-        fontFamily: FONTS.semibold,
-        fontSize: moderateScale(20),
-        color: Colors.secondaryFont
+        fontFamily: FONTS.Inter.semibold,
+        fontSize: moderateScale(18),
+        color: Colors.secondaryFont,
+        textAlign:'left'
     },
     input_title_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(14),
         marginTop: moderateScale(15),
         marginHorizontal: moderateScale(15),
@@ -182,7 +180,7 @@ const styles = StyleSheet.create({
     },
     button_txt: {
         color: Colors.secondaryFont,
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: responsiveFontSize(2.5)
     }
 });

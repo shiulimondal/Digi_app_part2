@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         padding:moderateScale(15)
     },
     notification_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(16),
         color: Colors.black
     },

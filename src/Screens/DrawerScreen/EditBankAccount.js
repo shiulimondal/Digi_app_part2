@@ -175,12 +175,12 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
     input_title_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(13),
         marginTop: moderateScale(20),
         marginHorizontal: moderateScale(15),
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     },
     button_txt: {
         color: Colors.secondaryFont,
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: responsiveFontSize(2.5)
     }
 });

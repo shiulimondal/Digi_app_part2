@@ -24,14 +24,14 @@ const SubCategoryCard = ({ item, index }) => {
 // define your styles
 const styles = StyleSheet.create({
     container: {
-        marginTop: moderateScale(7),
         backgroundColor: Colors.cardColor,
-        elevation: moderateScale(0.3),
+        elevation: moderateScale(1),
         alignItems: 'center',
         paddingHorizontal: moderateScale(15),
         padding: moderateScale(10),
-        width: moderateScale(150),
+        width: moderateScale(155),
         borderRadius: moderateScale(12),
+        marginBottom:moderateScale(10)
     },
     img_sty: {
         height: moderateScale(92),
@@ -41,8 +41,9 @@ const styles = StyleSheet.create({
     title_txt: {
         color: Colors.black,
         fontSize: moderateScale(14),
-        fontFamily: FONTS.medium,
-        marginTop: moderateScale(10)
+        fontFamily: FONTS.Inter.medium,
+        marginTop: moderateScale(10),
+        textAlign:'center'
     }
 });
 

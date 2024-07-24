@@ -14,6 +14,7 @@ import Toast from "react-native-simple-toast";
 const DrawerCard = ({ navigation }) => {
     const dispatch = useDispatch()
     const { userData } = useSelector(state => state.User)
+    console.log('userData==========================', userData);
 
     const drawerScreen = [
         {
@@ -39,7 +40,7 @@ const DrawerCard = ({ navigation }) => {
         {
             img: require('../../assets/images/dwallate.png'),
             title: 'My Income',
-            handleClick: 'MyIncome'
+            // handleClick: 'MyIncome'
         },
         {
             img: require('../../assets/images/dwork.png'),
@@ -89,7 +90,7 @@ const DrawerCard = ({ navigation }) => {
                             <Text style={{
                                 fontSize: moderateScale(20),
                                 color: Colors.secondaryFont,
-                                fontFamily:FONTS.bold
+                                fontFamily: FONTS.Inter.bold
                             }}
                             >{userData?.first_name?.charAt(0).toUpperCase()}</Text>
                         </View>
@@ -117,6 +118,13 @@ const DrawerCard = ({ navigation }) => {
                     <Text style={styles.logout_txt}>Logout</Text>
                 </TouchableOpacity>
             </ScrollView>
+
+            <View style={{ flex: 1 }} />
+            <View style={styles.bottom_view}>
+                <Text style={styles.bottom_text}>Digi Help</Text>
+                <Text style={{ ...styles.bottom_text, marginHorizontal: moderateScale(5) }}>|</Text>
+                <Text style={styles.bottom_text}>V 0.1</Text>
+            </View>
         </View>
     );
 };
@@ -129,9 +137,10 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.buttonColor
     },
     user_name: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(15),
-        marginLeft: moderateScale(10)
+        marginLeft: moderateScale(10),
+        color: Colors.black
     },
     card_sty: {
         borderRadius: 0,
@@ -141,7 +150,7 @@ const styles = StyleSheet.create({
         padding: moderateScale(10),
     },
     notification_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(14),
         marginLeft: moderateScale(12),
     },
@@ -174,7 +183,7 @@ const styles = StyleSheet.create({
         marginBottom: moderateScale(20)
     },
     logout_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(14),
         marginLeft: moderateScale(12),
         color: Colors.secondaryFont
@@ -185,31 +194,16 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         tintColor: Colors.secondaryFont
     },
+    bottom_text: {
+        fontFamily: FONTS.Inter.semibold,
+        fontSize: moderateScale(12),
+        color: Colors.secondaryFont
+    },
+    bottom_view: {
+        alignItems: 'center',
+        marginBottom: moderateScale(25),
+        flexDirection: 'row',
+        justifyContent: 'center'
+    }
 });
-
-// //import liraries
-// import React, { Component } from 'react';
-// import { View, Text, StyleSheet } from 'react-native';
-
-// // create a component
-// const DrawerCard = () => {
-//     return (
-//         <View style={styles.container}>
-//             <Text>DrawerCard</Text>
-//         </View>
-//     );
-// };
-
-// // define your styles
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         backgroundColor: '#2c3e50',
-//     },
-// });
-
-// //make this component available to the app
-// export default DrawerCard;
 

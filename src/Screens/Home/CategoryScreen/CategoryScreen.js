@@ -7,6 +7,7 @@ import { Icon } from 'react-native-basic-elements';
 import { FONTS } from '../../../Constants/Fonts';
 import CategoryListCard from '../../../Components/HomeCard/CategoryListCard';
 import HomeService from '../../../Services/HomeServises';
+import ScreenHeader from '../../../Components/Header/ScreenHeader';
 
 
 const { height, width } = Dimensions.get('screen');
@@ -22,7 +23,7 @@ const CategoryScreen = ({ navigation }) => {
     HomeService.getCategoryData()
       .then((res) => {
         if (res && res.success == true) {
-          console.log('catttttttttttttttttttttttt',res.data);
+          console.log('catttttttttttttttttttttttt', res.data);
           setLoading(false)
           setcategoryData(res.data)
         }
@@ -34,7 +35,7 @@ const CategoryScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <HomeHeader navigation={navigation} />
+      <ScreenHeader />
       <View style={styles.top_view}>
         <View style={{ flexDirection: 'row' }}>
           <View style={{ alignSelf: 'flex-end' }}>
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
   },
   header_txt: {
     textAlign: 'center',
-    fontFamily: FONTS.semibold,
+    fontFamily: FONTS.Inter.semibold,
     fontSize: moderateScale(17),
     color: Colors.black,
   }

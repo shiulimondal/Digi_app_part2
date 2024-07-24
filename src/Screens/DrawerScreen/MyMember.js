@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         marginTop: moderateScale(15)
     },
     primary_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         color: Colors.secondaryFont,
         marginBottom: moderateScale(10),
         fontSize: moderateScale(13)
@@ -122,19 +122,19 @@ const styles = StyleSheet.create({
         padding: moderateScale(10),
     },
     amount_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         color: Colors.secondaryFont,
         marginBottom: moderateScale(10),
         fontSize: moderateScale(15)
     },
     member_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(14),
         color: Colors.black,
         left: moderateScale(10)
     },
     price_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(14),
         color: Colors.black,
         right: moderateScale(10)
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     button_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(12),
         color: Colors.buttonColor
     },
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         padding: moderateScale(10)
     },
     total_message_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(25),
         color: Colors.secondaryFont
     },

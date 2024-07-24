@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: "#5230DC",
     elevation: moderateScale(2),
-    borderRadius: moderateScale(15),
+    borderRadius: moderateScale(10),
     marginTop: moderateScale(10),
-    width: moderateScale(155),
+    width: moderateScale(160),
     height: moderateScale(100)
   },
   logo_sty: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     width: moderateScale(40)
   },
   title_txt: {
-    fontFamily: FONTS.semibold,
+    fontFamily: FONTS.Inter.semibold,
     fontSize: moderateScale(13),
     marginTop: moderateScale(7),
     color: Colors.secondaryFont

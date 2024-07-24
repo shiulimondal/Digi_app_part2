@@ -12,7 +12,7 @@ const DirectMemberCard = ({ item, index }) => {
             <View style={styles.list_view}>
                 <View style={{ width: moderateScale(60), alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{
-                        fontFamily: FONTS.semibold,
+                        fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
                         color: Colors.black
                     }}>{index + 1}</Text>
@@ -21,7 +21,7 @@ const DirectMemberCard = ({ item, index }) => {
 
                 <View style={{ width: moderateScale(130), alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{
-                        fontFamily: FONTS.semibold,
+                        fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
                         color: Colors.black
                     }}>{item.joiningDate}</Text>
@@ -30,12 +30,12 @@ const DirectMemberCard = ({ item, index }) => {
 
                 <View style={{ width: moderateScale(150), alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{
-                        fontFamily: FONTS.semibold,
+                        fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
                         color: Colors.black
                     }}>{item.name}</Text>
                     <Text style={{
-                        fontFamily: FONTS.semibold,
+                        fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
                         color: Colors.black
                     }}>{item.phoneNo}</Text>
@@ -46,7 +46,7 @@ const DirectMemberCard = ({ item, index }) => {
                 <View style={{ width: moderateScale(180), alignItems: 'center', justifyContent: 'center' }}>
                     <Text numberOfLines={2} style={{
                         maxWidth: '70%',
-                        fontFamily: FONTS.semibold,
+                        fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
                         color: Colors.black
                     }}>{item.address}</Text>
@@ -59,7 +59,7 @@ const DirectMemberCard = ({ item, index }) => {
                         backgroundColor: item.status === false ? '#FE0505' : '#00AB11'
                     }}>
                         <Text style={{
-                            fontFamily: FONTS.bold,
+                            fontFamily: FONTS.Inter.bold,
                             fontSize: moderateScale(13),
                             color: Colors.secondaryFont
                         }}>{item.status === false ? 'INACTIVE' : 'Active Member'}</Text>
@@ -67,13 +67,13 @@ const DirectMemberCard = ({ item, index }) => {
                     {
                         item.status === false ?
                             <Text style={{
-                                fontFamily: FONTS.semibold,
+                                fontFamily: FONTS.Inter.semibold,
                                 fontSize: moderateScale(12),
                                 color: Colors.black
                             }} >{item.status_message}</Text>
                             :
                             <Text style={{
-                                fontFamily: FONTS.semibold,
+                                fontFamily: FONTS.Inter.semibold,
                                 fontSize: moderateScale(12),
                                 color: Colors.black
                             }}>{item.status_message}</Text>

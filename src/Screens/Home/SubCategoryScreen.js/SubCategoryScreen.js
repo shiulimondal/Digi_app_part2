@@ -108,7 +108,7 @@ const SubCategoryScreen = () => {
                                         flexWrap: 'wrap',
                                         paddingHorizontal: moderateScale(15),
                                         justifyContent: 'space-between',
-                                        marginTop: moderateScale(15)
+                                        marginTop: moderateScale(7)
                                     }}>
                                         {
                                             subcategoryData.map((item, index) => {
@@ -139,13 +139,13 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.background
     },
     top_view: {
-        backgroundColor: Colors.cardColor,
+        backgroundColor: Colors.background,
         padding: moderateScale(7),
         paddingHorizontal: moderateScale(20),
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     },
     button_txt: {
         color: Colors.buttonColor,
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: responsiveFontSize(2.5)
     },
 });

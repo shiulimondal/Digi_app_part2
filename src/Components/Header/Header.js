@@ -26,7 +26,7 @@ const Header = () => {
 // define your styles
 const styles = StyleSheet.create({
     header_txt: {
-        fontFamily:FONTS.semibold,
+        fontFamily:FONTS.Inter.semibold,
         fontSize: responsiveHeight(2),
         color: Colors.secondaryFont,
     }

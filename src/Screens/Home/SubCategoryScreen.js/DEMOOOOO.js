@@ -107,6 +107,53 @@ const SubCatForm = (props) => {
         }
     };
 
+    
+    // const onButtonPress = async (type, options) => {
+    //     try {
+    //         const result = type === 'capture'
+    //             ? await launchCamera(options)
+    //             : await launchImageLibrary({ ...options, selectionLimit: 0 });
+    
+    //         if (result?.assets) {
+    //             const selectedImages = result.assets;  
+    //             HomeService.uploadimage(data)
+    //                 .then(response => {
+    //                     setSelectedDocuments(response.data)
+    //                 })
+    //                 .catch(error => {
+    //                 });
+    //         }
+    //     } catch (error) {
+    //         console.error('Error in image selection:', error);
+    //         Toast.show('An error occurred', Toast.SHORT, Toast.BOTTOM);
+    //     }
+    // };
+
+
+  
+    
+};
+
+{/* <LinearGradient style={styles.gradint_view} start={{ x: 0.3, y: 1 }} end={{ x: 1, y: 1 }} colors={['#00AB11', '#2AD200']} > */}
+
+
+{/* <Icon name='locked' type='Fontisto' size={16} /> */}
+
+{/* for---unlocl---------------------========================================== */}
+{/* <Icon name='unlocked' type='Fontisto' size={16}/> */}
+{/* <Text style={styles.call_txt}>Call/ WhatsApp</Text> */}
+
+{/* for---unlocl---------------------========================================== */}
+{/* <TouchableOpacity>
+    <Icon name='call' type='Ionicons' size={20} />
+</TouchableOpacity>
+<TouchableOpacity>
+    <Icon name='whatsapp' type='FontAwesome' size={22} />
+</TouchableOpacity> */}
+
+
+{/* </LinearGradient> */}
+
 
 
 
@@ -218,6 +265,53 @@ const SubCatForm = (props) => {
         //     });
     };
     
+    
+    // const handleSubmit = () => {
+    //     const finalFormData = new FormData();
+    //     // Append form fields
+    //     const formDataFields = formData.map(field => ({
+    //         type: field.type,
+    //         select_box_type: field.select_box_type,
+    //         label: field.label,
+    //         name: field.name,
+    //         is_required: "1",
+    //         option: field.option,
+    //         value: formValues[field.name] || null // Ensure this is correctly assigned
+    //     }));
+
+
+    //     finalFormData.append('form_data', JSON.stringify(formDataFields));
+
+    //     selectedDocuments.forEach((doc, index) => {
+    //         finalFormData.append(`file_${index}`, {
+    //             uri: doc.uri,
+    //             type: 'file',
+    //             name: doc.fileName,
+    //         });
+    //     });
+
+    //     console.log('Final FormData:==============================', JSON.stringify(finalFormData));
+
+    //     setBtnLoader(true);
+    //     HomeService.submitFormData(finalFormData)
+    //         .then((res) => {
+    //             console.log('Submission Response:=================', res);
+    //             if (res) {
+    //                 setBtnLoader(false);
+    //                 Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+    //                 console.log('Submission sucessssssssssss Response:', res);
+    //             } else {
+    //                 setBtnLoader(false);
+    //                 Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+    //                 console.log('Submission errrrrrrrrrrrrrrrr Response:', res);
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             setBtnLoader(false);
+    //             console.error('Submit Error:', err);
+    //         });
+    // };
+
 
 
 

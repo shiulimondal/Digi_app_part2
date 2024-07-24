@@ -37,17 +37,17 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     heading_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(15),
         color: Colors.buttonColor,
     },
     title_txt: {
-        fontFamily: FONTS.regular,
+        fontFamily: FONTS.Inter.regular,
         fontSize: moderateScale(12),
         color: Colors.black,
     },
     toggle_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily:FONTS.Inter.medium,
         fontSize: moderateScale(12),
         color: Colors.buttonColor,
         marginTop: moderateScale(5),

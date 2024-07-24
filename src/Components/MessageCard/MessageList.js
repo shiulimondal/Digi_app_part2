@@ -5,28 +5,35 @@ import { moderateScale } from '../../Constants/PixelRatio';
 import { Icon } from 'react-native-basic-elements';
 import { Colors } from '../../Constants/Colors';
 import { FONTS } from '../../Constants/Fonts';
+import moment from 'moment';
 
 // create a component
-const MessageList = ({item,index}) => {
+const MessageList = ({ item, index }) => {
     const [showReply, setShowReply] = useState(false);
     const toggleReply = () => {
         setShowReply(prevShowReply => !prevShowReply);
     };
-    console.log('messageeeeeeeeeeeeeeeeeee',item);
+    console.log('messageeeeeeeeeeeeeeeeeee============', item);
 
     return (
         <View index={index} style={styles.container}>
             <View style={styles.main_view}>
                 <View>
-                    <Text style={styles.message_txt}>Abcd</Text>
+                    <Text style={styles.message_txt}>{item.question}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: moderateScale(10) }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Icon name='clock' type='Feather' color={Colors.grey} />
-                            <Text style={styles.time_txt}>10-apr-2024</Text>
+                            <Text style={styles.time_txt}>{moment(item.date).format('DD-MMM-YYYY')}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: moderateScale(15) }}>
                             <Icon name='message-text-outline' type='MaterialCommunityIcon' color={Colors.grey} />
-                            <Text style={styles.time_txt}>0</Text>
+                            {
+                                item.status == 0?
+                                <Text style={styles.time_txt}>0</Text>
+                                :
+                                <Text style={styles.time_txt}>{item.status}</Text>
+                            }
+                           
                         </View>
                     </View>
 
@@ -43,7 +50,7 @@ const MessageList = ({item,index}) => {
                 marginTop: moderateScale(10)
             }}>
                 {showReply && (
-                    <Text style={styles.reply_txt}>iksajehoirhyoihyiutgugtuyfrdyfhjvhjfyQEHKJHEKHIOEWH4UYYQUyeiuhiuhiugufytfytfuyfyuyfuyfyft</Text>
+                    <Text style={styles.reply_txt}>{item.answer}</Text>
                 )}
             </View>
 
@@ -55,7 +62,7 @@ const MessageList = ({item,index}) => {
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: moderateScale(17),
-        marginTop: moderateScale(20),
+        marginTop: moderateScale(7),
         padding: moderateScale(10),
         borderRadius: moderateScale(5),
         // borderWidth: moderateScale(0.3),
@@ -64,25 +71,26 @@ const styles = StyleSheet.create({
     main_view: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems:'center'
+        alignItems: 'center'
     },
     message_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(14),
-        color: Colors.black
+        color: Colors.black,
+        maxWidth:'95%'
     },
     time_txt: {
-        fontFamily: FONTS.regular,
+        fontFamily: FONTS.Inter.regular,
         fontSize: moderateScale(13),
         marginLeft: moderateScale(7),
         color: Colors.black,
         textAlign: 'center'
     },
-    reply_txt:{
-        fontFamily:FONTS.medium,
-        fontSize:moderateScale(13),
-        color:Colors.black,
-        marginTop:moderateScale(7)
+    reply_txt: {
+        fontFamily: FONTS.Inter.medium,
+        fontSize: moderateScale(13),
+        color: Colors.black,
+        marginTop: moderateScale(7)
     }
 });
 

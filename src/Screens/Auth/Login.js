@@ -20,8 +20,6 @@ import Toast from "react-native-simple-toast";
 import { FONTS } from "../../Constants/Fonts";
 import AuthService from "../../Services/Auth";
 import NavigationService from "../../Services/Navigation";
-import HttpClient from "../../Utils/HttpClient";
-
 
 const Login = ({ navigation }) => {
   const [phone, setPhone] = useState("");
@@ -46,9 +44,11 @@ const Login = ({ navigation }) => {
     let data = {
       "phone": phone
     };
+    console.log('getdddddddddddddddd',data);
     setBtnLoader(true);
     AuthService.getSendOtp(data)
       .then((res) => {
+        console.log('getdddddddddddd0066666666644444444444444444dddd',res);
         setBtnLoader(false);
         if (res.status === true) {
           NavigationService.navigate("LoginOTP",{PhNumberData:res});
@@ -73,7 +73,7 @@ const Login = ({ navigation }) => {
           source={require("../../assets/images/login.png")}
           style={styles.log_img}
         />
-        <Text style={styles.title_txt}>Please Enter your Mobile Number</Text>
+        <Text style={styles.title_txt}>Please enter your mobile number</Text>
         <View style={styles.inputContainer}>
           <TextInput
             maxLength={10}
@@ -81,7 +81,7 @@ const Login = ({ navigation }) => {
             cursorColor={Colors.primary}
             onChangeText={(txt) => setPhone(txt)}
             selectionColor={"#ccc"}
-            placeholder="Enter Phone Number"
+            placeholder="Enter mobile number"
             placeholderTextColor={Colors.grey}
             style={styles.inputfild}
             keyboardType="numeric"
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
       color: Colors.black,
       marginHorizontal: 15,
       fontSize:responsiveFontSize(4.2),
-      fontFamily:FONTS.medium
+      fontFamily:FONTS.Inter.medium
     },
     inputContainer: {
       backgroundColor: "white",
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
       borderColor: "#ccc",
       width: "80%",
       color: Colors.black,
-      fontFamily:FONTS.medium,
+      fontFamily:FONTS.Inter.medium,
       fontSize: responsiveFontSize(2)
     },
     button: {
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     },
     button_txt:{
       color:Colors.secondaryFont,
-      fontFamily:FONTS.semibold,
+      fontFamily:FONTS.Inter.semibold,
       fontSize:responsiveFontSize(2.5)
     }
   });

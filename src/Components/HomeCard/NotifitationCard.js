@@ -50,17 +50,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     user_logo_txt: {
-        fontFamily: FONTS.bold,
+        fontFamily: FONTS.Inter.bold,
         fontSize: moderateScale(18),
         color: Colors.secondaryFont
     },
     title_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(15),
         color: Colors.black,
     },
     body_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(13),
         color: Colors.grey,
     }

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         width: moderateScale(32),
     },
     title_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(15),
         textAlign: 'center',
         color: Colors.black,

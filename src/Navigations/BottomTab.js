@@ -26,7 +26,7 @@ const BottomTab = () => {
                 tabBarActiveTintColor: Colors.buttonColor,
                 tabBarInactiveTintColor: '#777',
                 tabBarLabelStyle: {
-                    fontSize: moderateScale(10),
+                    fontSize: moderateScale(9),
                     fontFamily: FONTS.semibold,
                     marginBottom: moderateScale(10),
                 },
@@ -42,7 +42,7 @@ const BottomTab = () => {
                 component={Home}
                 options={{
                     unmountOnBlur: true,
-                    tabBarLabel: 'Home',
+                    tabBarLabel: 'HOME',
                     tabBarIcon: ({ focused, color, size }) => (
                         <Image
                             source={require('../assets/images/home.png')}
@@ -61,7 +61,7 @@ const BottomTab = () => {
                 component={Message}
                 options={{
                     unmountOnBlur: true,
-                    tabBarLabel: 'Message',
+                    tabBarLabel: 'MESSAGE',
                     tabBarIcon: ({ focused, color, size }) => (
                         <Image
                             source={require('../assets/images/message.png')}
@@ -81,7 +81,7 @@ const BottomTab = () => {
                 component={MyAccount}
                 options={{
                     unmountOnBlur: true,
-                    tabBarLabel: 'My Account',
+                    tabBarLabel: 'MY ACCOUNT',
                     tabBarIcon: ({ focused, color, size }) => (
                         <Image
                             source={require('../assets/images/account.png')}
@@ -100,7 +100,7 @@ const BottomTab = () => {
                 component={Help}
                 options={{
                     unmountOnBlur: true,
-                    tabBarLabel: 'Help',
+                    tabBarLabel: 'HELP',
                     tabBarIcon: ({ focused, color, size }) => (
                         <Image
                             source={require('../assets/images/help.png')}

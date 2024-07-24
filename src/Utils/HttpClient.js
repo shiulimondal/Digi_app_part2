@@ -3,6 +3,7 @@ import MainStorage from '../Utils/MainStorage';
 import { MAIN_BASE_URL } from './EnvVariables';
 
 const BASE_URL = `https://acuitysoftware.co/digi-help-app/api`;
+const MAINIMAGEURL = "https://acuitysoftware.co/digi-help-app/api";
 
 function get(endpoint, params) {
     return request(endpoint, params);
@@ -22,18 +23,18 @@ function Delete(endpoint, params) {
 
 async function request(endpoint, params = null, method = 'GET') {
     let token = await AuthService.getToken();
-
-    var xmlRequest = new XMLHttpRequest();
     let url = BASE_URL + endpoint;
-    console.log('Usertoken===================================:', token);
+
+    console.log('Usertoken:', token);
     console.log('URL:', url);
-    
+
     return new Promise((resolve, reject) => {
+        var xmlRequest = new XMLHttpRequest();
         xmlRequest.open(method, url, true);
 
         xmlRequest.setRequestHeader('Accept', '*/*');
         xmlRequest.setRequestHeader('Content-Type', 'application/json');
-        xmlRequest.setRequestHeader('Authorization',`Bearer ${token}`);
+        xmlRequest.setRequestHeader('Authorization', `Bearer ${token}`);
 
         if (method === 'GET') {
             xmlRequest.send();
@@ -44,8 +45,6 @@ async function request(endpoint, params = null, method = 'GET') {
         xmlRequest.onreadystatechange = function () {
             if (xmlRequest.readyState === XMLHttpRequest.DONE) {
                 const responseText = xmlRequest.responseText;
-                // console.log('Response:', responseText);
-                
                 if (xmlRequest.status === 200) {
                     try {
                         resolve(JSON.parse(responseText));
@@ -66,11 +65,55 @@ async function request(endpoint, params = null, method = 'GET') {
     });
 }
 
+async function upload(endpoint, file, additionalData = {}, tokenCustom = null) {
+    if (!file || !file.uri || !file.type || !file.name) {
+        console.error('Invalid file object properties:', file);
+        throw new Error('Invalid file object provided for upload.');
+    }
+
+    let token = tokenCustom || await AuthService.getToken();
+    let apiUrl = MAINIMAGEURL + endpoint;
+
+    console.log('File object:', file);
+    console.log('File path:', file.uri);
+    console.log('apiUrl', apiUrl);
+
+    const data = new FormData();
+    data.append('image_file', {
+        uri: file.uri,
+        type: file.type,
+        name: file.name,
+    });
+
+    Object.keys(additionalData).forEach(key => {
+        data.append(key, additionalData[key]);
+    });
+
+    return fetch(apiUrl, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+        },
+        method: 'POST',
+        body: data,
+    })
+    .then(response => response.json())
+    .then(response => {
+        return response;
+    })
+    .catch(error => {
+        console.error('Upload Error:', error);
+        throw error;
+    });
+}
+
+
 const HttpClient = {
     get,
     post,
     put,
     Delete,
+    upload,
 };
 
 export default HttpClient;

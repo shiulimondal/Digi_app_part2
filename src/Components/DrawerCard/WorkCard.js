@@ -45,7 +45,7 @@ const WorkCard = ({ item, index }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.heading_txt}>1.<Text>{' '}{item.title}</Text></Text>
+            <Text style={styles.heading_txt}>{index+1}<Text>{' '}{item.title}</Text></Text>
             <View style={styles.videoContainer}>
                 <Video
                     source={background}
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     heading_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(15),
         color: Colors.black,
     },

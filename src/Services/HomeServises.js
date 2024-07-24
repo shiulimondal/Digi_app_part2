@@ -11,6 +11,10 @@ const setAccount = async (data) => {
 async function setToken(data) {
     return await MainStorage.set('token', data);
 }
+async function uploadimage(data) {
+    let endpoint = '/business-account/upload-image';
+    return HttpClient.upload(endpoint, 'POST', data, {});
+};
 const getBankAccList = async () => {
     return HttpClient.post('/bank-accounts-list');
 }
@@ -74,12 +78,16 @@ const submitFormData = async (data) => {
 const submitSubscriptionData = async (data) => {
     return HttpClient.post('/subscription-purchase',data);
 }
+const setChangePassword = async (data) => {
+    return HttpClient.post('/change-password',data);
+}
 
 
 const HomeService = {
     getAccount,
     setAccount,
     setToken,
+    uploadimage,
     getBankAccList,
     addBankAcc,
     deleteBankAcc,
@@ -100,7 +108,8 @@ const HomeService = {
     setOptionList,
     setOption_DisttrictList,
     submitFormData,
-    submitSubscriptionData
+    submitSubscriptionData,
+    setChangePassword
 }
 
 export default HomeService;

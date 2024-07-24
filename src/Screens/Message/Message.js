@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Pressable, FlatList, ScrollView } from 'react-native';
 import HomeHeader from '../../Components/Header/HomeHeader';
 import NavigationService from '../../Services/Navigation';
 import { Icon } from 'react-native-basic-elements';
@@ -14,7 +14,7 @@ import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dim
 
 // create a component
 const Message = () => {
-    const [messageList, setMessageList] = useState([])
+    const [messageList, setMessageList] = useState({})
     useEffect(() => {
         getMessage_list();
     }, [])
@@ -23,10 +23,11 @@ const Message = () => {
         // setLoading(true)
         HomeService.getMessage_list()
             .then((res) => {
+                console.log('messageeeeeeeeeeeeeeee', res);
                 // setLoading(false)
-                if (res && res.success == true) {
-                    console.log('listttttttttttttttttttt', res.data);
-                    setMessageList(res)
+                if (res && res.status == true) {
+                    console.log('listttttttttttttttttttt================', res.data);
+                    setMessageList(res.data)
                 }
             })
             .catch((err) => {
@@ -57,13 +58,14 @@ const Message = () => {
                         </View>
                     </View>
                     :
-                    <FlatList
-                        data={messageList}
-                        renderItem={({ item, index }) => (
-                            <MessageList item={item} index={index} />
-                        )}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
+
+                <FlatList
+                    data={messageList}
+                    renderItem={({ item, index }) => (
+                        <MessageList item={item} index={index} />
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                />
             }
 
 
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
     },
     button_txt: {
         color: Colors.buttonColor,
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: responsiveFontSize(2.5)
     },
 });

@@ -68,7 +68,7 @@ const LoginOTP = ({ navigation }) => {
       <Header />
       <ScrollView showsVerticalScrollIndicator={false}>
         <Image source={require('../../assets/images/otp_img.png')} style={styles.log_img} />
-        <Text style={styles.title_txt}>Enter An OTP We </Text>
+        <Text style={styles.title_txt}>OTP We </Text>
         <Text style={styles.title_txt}>
           Are Sending To You
           <Text style={{ color: Colors.primaryFont }}> {MobileNumber?.phone}</Text>
@@ -91,12 +91,13 @@ const LoginOTP = ({ navigation }) => {
             offTintColor={Colors.buttonColor}
           />
         </View>
-
-        <AppButton
+{
+  phoneOtp.length === 4 ? 
+  <AppButton
           title="Submit"
           style={{
             ...styles.button,
-            backgroundColor: phoneOtp.length === 4 ? Colors.buttonColor : Colors.grey
+            backgroundColor:Colors.buttonColor
           }}
           textStyle={styles.button_txt}
           onPress={() => setOtpVerify()}
@@ -111,6 +112,19 @@ const LoginOTP = ({ navigation }) => {
           }
           disabled={btnLoader}
         />
+        :
+        <AppButton
+          title="Submit"
+          style={{
+            ...styles.button,
+            backgroundColor:Colors.grey
+          }}
+          textStyle={styles.button_txt}
+          // onPress={() => setOtpVerify()}
+          
+        />
+}
+        
       </ScrollView>
     </View>
   );
@@ -134,7 +148,7 @@ const styles = StyleSheet.create({
       color: Colors.black,
       marginHorizontal: moderateScale(20),
       fontSize: responsiveFontSize(2.6),
-      fontFamily: FONTS.medium
+      fontFamily: FONTS.Inter.medium
     },
     inputContainer: {
       backgroundColor: "white",
@@ -142,7 +156,7 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       alignItems: "center",
       justifyContent: 'center',
-      fontFamily: FONTS.regular,
+      fontFamily: FONTS.Inter.regular,
       marginTop: responsiveHeight(2),
       borderColor: Colors.buttonColor
     },
@@ -153,7 +167,7 @@ const styles = StyleSheet.create({
     },
     button_txt: {
       color: Colors.secondaryFont,
-      fontFamily: FONTS.semibold,
+      fontFamily: FONTS.Inter.semibold,
       fontSize: responsiveFontSize(2.5)
     },
     modalView: {
@@ -164,7 +178,7 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     modal_massege: {
-      fontFamily: FONTS.regular,
+      fontFamily: FONTS.Inter.regular,
       fontSize: responsiveFontSize(2),
       color: Colors.black,
       marginTop: responsiveHeight(2)
@@ -180,7 +194,7 @@ const styles = StyleSheet.create({
       marginTop: responsiveHeight(4)
     },
     button_txt_sty: {
-      fontFamily: FONTS.bold,
+      fontFamily: FONTS.Inter.bold,
       fontSize: (13),
       alignSelf: 'center',
       color: '#fff'

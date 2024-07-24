@@ -8,11 +8,20 @@ import NavigationService from '../../Services/Navigation';
 
 // create a component
 const CategoryCard = ({ item, index }) => {
+    console.log('jgjgkgggggggggggggggggggggggg',item);
     return (
         <Pressable onPress={() => NavigationService.navigate('SubCategoryScreen', { cat_id: item.id, cat_name: item.name })}
             style={{ alignItems: 'center' }}>
-            <View key={index} style={styles.container}>
-                <Image source={{ uri: item.image_path }} style={styles.img_sty} />
+            <View key={index} style={{...styles.container,
+                backgroundColor:item.boxBg
+            }}>
+                {
+                    item.icon_path === null?
+                    <Image source={require('../../assets/images/blankimg.png')} style={styles.img_sty} />
+                    :
+                    <Image source={{ uri: item.icon_path }} style={styles.img_sty} />
+                }
+                
             </View>
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Text numberOfLines={1} style={styles.title_txt}>{item.name}</Text>
@@ -30,7 +39,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "#efe9f5",
         elevation: moderateScale(2),
-        marginRight: moderateScale(10),
+        marginRight: moderateScale(13),
         borderTopLeftRadius: moderateScale(15),
         borderBottomLeftRadius: moderateScale(15),
         borderBottomRightRadius: moderateScale(15),
@@ -39,10 +48,9 @@ const styles = StyleSheet.create({
         height: moderateScale(45),
         width: moderateScale(45),
         resizeMode: 'contain',
-        // tintColor:'red'
     },
     title_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(12),
         width: moderateScale(70),
         textAlign: 'center',

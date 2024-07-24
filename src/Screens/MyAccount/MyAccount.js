@@ -1,7 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
-import Header from '../../Components/Header/Header';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { Colors } from '../../Constants/Colors';
 import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
@@ -9,13 +8,14 @@ import { FONTS } from '../../Constants/Fonts';
 import { AppButton } from 'react-native-basic-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NavigationService from '../../Services/Navigation';
+import HomeHeader from '../../Components/Header/HomeHeader';
 
 // create a component
 const { height, width } = Dimensions.get('screen')
 const MyAccount = () => {
     return (
         <View style={styles.container}>
-            <Header />
+            <HomeHeader />
             <KeyboardAwareScrollView>
             <Text style={styles.title_txt}>Add Your Business Profile</Text>
             <Image source={require('../../assets/images/myacc.png')} style={styles.img_sty} />
@@ -75,12 +75,12 @@ const styles = StyleSheet.create({
     },
     button_txt: {
         color: Colors.secondaryFont,
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: responsiveFontSize(2.1)
     },
     bottom_txt: {
         marginHorizontal: moderateScale(20),
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(17),
         color: '#B25EF3',
         marginBottom: moderateScale(15)

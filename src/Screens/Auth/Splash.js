@@ -11,7 +11,7 @@ const { height, width } = Dimensions.get('screen')
 // create a component
 const Splash = () => {
     const { login_status } = useSelector(state => state.User);
-      
+
     useEffect(() => {
         if (login_status=== true) {
             setTimeout(() => {
@@ -22,15 +22,21 @@ const Splash = () => {
                 NavigationService.navigate('Login')
             }, 3000);
         }
-       
+
     }, []);
     return (
         <View style={styles.container}>
-             <StatusBar
+            <StatusBar
                 backgroundColor={Colors.buttonColor}
                 barStyle='light-content'
             />
-            <Image source={require('../../assets/images/digilogo.png')} style={styles.splash_img}/>
+            <View>
+                <Image source={require('../../assets/images/digilogo.png')} style={styles.splash_img} />
+            </View>
+            <View style={{position:'absolute',bottom:moderateScale(-14)}}>
+                <Image source={require('../../assets/images/bottomlogo.png')} style={styles.bottomsplash_img} />
+            </View>
+
         </View>
     );
 };
@@ -43,9 +49,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Colors.buttonColor
     },
-    splash_img:{
-        height:moderateScale(100),
-        width:moderateScale(180)
+    splash_img: {
+        height: moderateScale(100),
+        width: moderateScale(180),
+    },
+    bottomsplash_img:{
+        height:moderateScale(180),
+        width:width,
+        resizeMode:'contain'
     }
 });
 

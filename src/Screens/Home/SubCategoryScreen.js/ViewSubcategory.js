@@ -22,7 +22,6 @@ const ViewSubcategory = () => {
     const [check, setCheck] = useState(false);
     const [loading, setLoading] = useState(true);
     const [isModalVisible, setModalVisible] = useState(false);
-
     const [subCatDataList, setsubCatDataList] = useState([])
 
     const toggleModal = () => {
@@ -83,7 +82,7 @@ const ViewSubcategory = () => {
                                             </Pressable>
                                         </View>
                                         <View style={{ alignItems: 'center', flex: 1 }}>
-                                            <Text style={styles.header_txt}>{SubDataName}</Text>
+                                            <Text style={styles.header_txt}>{ SubDataName?.charAt(0)?.toUpperCase() + SubDataName?.slice(1)?.toLowerCase()}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -102,7 +101,7 @@ const ViewSubcategory = () => {
                                         ]}
                                         textStyle={{
                                             fontSize: moderateScale(14),
-                                            fontFamily: FONTS.regular
+                                            fontFamily: FONTS.Inter.regular
                                         }}
                                         containerStyle={{
                                             backgroundColor: Colors.secondaryFont,
@@ -122,8 +121,8 @@ const ViewSubcategory = () => {
                                     </View>
                                 </View>
                                 <FlatList
-                                    // data={subCatDataList}
-                                    data={[1,1,1,1,1,1,,1,1,1,1,1]}
+                                    data={subCatDataList}
+                                    // data={[1,1,1,1,1,1,,1,1,1,1,1]}
                                     renderItem={({ item, index }) => (
                                         <SubCategoryListCard item={item} index={index} />
                                     )}
@@ -170,7 +169,7 @@ const ViewSubcategory = () => {
                         ]}
                         textStyle={{
                             fontSize: moderateScale(14),
-                            fontFamily: FONTS.regular
+                            fontFamily: FONTS.Inter.regular
                         }}
                         containerStyle={{
                             backgroundColor: Colors.secondaryFont,
@@ -197,7 +196,7 @@ const ViewSubcategory = () => {
                         ]}
                         textStyle={{
                             fontSize: moderateScale(14),
-                            fontFamily: FONTS.regular
+                            fontFamily: FONTS.Inter.regular
                         }}
                         containerStyle={{
                             backgroundColor: Colors.secondaryFont,
@@ -226,7 +225,7 @@ const ViewSubcategory = () => {
                         ]}
                         textStyle={{
                             fontSize: moderateScale(14),
-                            fontFamily: FONTS.regular
+                            fontFamily: FONTS.Inter.regular
                         }}
                         containerStyle={{
                             backgroundColor: Colors.secondaryFont,
@@ -254,7 +253,7 @@ const ViewSubcategory = () => {
                                 ]}
                                 textStyle={{
                                     fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
+                                    fontFamily: FONTS.Inter.regular
                                 }}
                                 containerStyle={{
                                     backgroundColor: Colors.secondaryFont,
@@ -282,7 +281,7 @@ const ViewSubcategory = () => {
                                 ]}
                                 textStyle={{
                                     fontSize: moderateScale(14),
-                                    fontFamily: FONTS.regular
+                                    fontFamily: FONTS.Inter.regular
                                 }}
                                 containerStyle={{
                                     backgroundColor: Colors.secondaryFont,
@@ -368,7 +367,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -431,19 +430,19 @@ const styles = StyleSheet.create({
         borderWidth: 2,
     },
     input_title_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(14),
         color: Colors.black,
         marginTop: moderateScale(7)
     },
     address_wish_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(15),
         textAlign: 'center',
         color: Colors.black,
     },
     distans_txt: {
-        fontFamily: FONTS.regular,
+        fontFamily: FONTS.Inter.regular,
         fontSize: moderateScale(13),
         marginLeft: moderateScale(10),
         color: Colors.black
@@ -461,7 +460,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     modalbutton_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(14),
         color: Colors.secondaryFont
     },
@@ -473,7 +472,7 @@ const styles = StyleSheet.create({
     },
     button_txt: {
         color: Colors.buttonColor,
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(14),
         textAlign: 'center'
     },

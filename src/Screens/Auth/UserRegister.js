@@ -75,9 +75,6 @@ const UserRegister = ({ navigation }) => {
                     AuthService.setAccount(res.data);
                     AuthService.setToken(res?.token);
                     dispatch(setuser(res.data))
-                } else {
-                    Toast.show('Something Wrong ! Please Wait...', Toast.SHORT, Toast.BOTTOM);
-                    setModalVisible(false)
                 }
             })
             .catch((err) => {
@@ -94,16 +91,16 @@ const UserRegister = ({ navigation }) => {
                 <Text style={styles.top_text}>REGISTER & LOGIN TO YOUR ACCOUNT</Text>
             </View>
             <KeyboardAwareScrollView>
-                <Text style={{ ...styles.top_text, color: Colors.black, textAlign: 'center', marginTop: moderateScale(18) }}>Create your account</Text>
+            <Text style={styles.logtxt}>Create your account</Text>
                 <Text style={styles.input_title_txt}>Full Name</Text>
                 <AppTextInput
-                    placeholder='Full Name'
+                    // placeholder='Full Name'
                     inputContainerStyle={{
                         marginHorizontal: moderateScale(15),
                         borderRadius: moderateScale(5),
                         paddingHorizontal: moderateScale(7)
                     }}
-                    inputStyle={{fontFamily:FONTS.medium,fontSize:moderateScale(14)}}
+                    inputStyle={{ fontFamily: FONTS.medium, fontSize: moderateScale(14) }}
                     mainContainerStyle={{
                         marginTop: moderateScale(5)
                     }}
@@ -112,15 +109,15 @@ const UserRegister = ({ navigation }) => {
 
                 />
 
-                <Text style={styles.input_title_txt}>Create Passward</Text>
+                <Text style={styles.input_title_txt}>Create Password</Text>
                 <AppTextInput
-                    placeholder='Create Passward'
+                    // placeholder='Create Passward'
                     inputContainerStyle={{
                         marginHorizontal: moderateScale(15),
                         borderRadius: moderateScale(5),
                         paddingHorizontal: moderateScale(7)
                     }}
-                    inputStyle={{fontFamily:FONTS.medium,fontSize:moderateScale(14)}}
+                    inputStyle={{ fontFamily: FONTS.medium, fontSize: moderateScale(14) }}
                     rightAction={
                         passwordShow ?
                             <Icon
@@ -143,15 +140,15 @@ const UserRegister = ({ navigation }) => {
 
                 />
 
-                <Text style={styles.input_title_txt}>Re-enter passward</Text>
+                <Text style={styles.input_title_txt}>Re-enter password</Text>
                 <AppTextInput
-                    placeholder='Re-enter passward'
+                    // placeholder='Re-enter passward'
                     inputContainerStyle={{
                         marginHorizontal: moderateScale(15),
                         borderRadius: moderateScale(5),
                         paddingHorizontal: moderateScale(7)
                     }}
-                    inputStyle={{fontFamily:FONTS.medium,fontSize:moderateScale(14)}}
+                    inputStyle={{ fontFamily: FONTS.medium, fontSize: moderateScale(14) }}
                     rightAction={
                         reConfirmPasswordShow ?
                             <Icon
@@ -207,7 +204,7 @@ const UserRegister = ({ navigation }) => {
 
             <Modal
                 isVisible={isModalVisible}
-    
+
             >
                 <View style={styles.modalView}>
                     <Image source={require('../../assets/images/register.png')} style={{ height: 80, width: 80 }} />
@@ -219,9 +216,9 @@ const UserRegister = ({ navigation }) => {
                         color: Colors.black
                     }}>Congratulations !</Text>
                     <Text style={styles.modal_massege}>Register Successfully </Text>
-             
-                     <TouchableOpacity
-                        onPress={() => { getRegister()}}
+
+                    <TouchableOpacity
+                        onPress={() => { getRegister() }}
                         style={styles.button_sty}>
                         {
                             btnLoader ?
@@ -257,15 +254,22 @@ const styles = StyleSheet.create({
         color: Colors.secondaryFont,
         fontFamily: 'jomhuria'
     },
+    logtxt: {
+        color: Colors.black,
+        fontSize: moderateScale(22),
+        textAlign: 'center',
+        marginTop: moderateScale(18),
+        fontFamily:FONTS.Inter.bold
+    },
     input_title_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(14),
         marginTop: moderateScale(25),
         marginHorizontal: moderateScale(15),
         color: Colors.black,
     },
     policy_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(11),
         marginLeft: moderateScale(10),
         color: Colors.black
@@ -280,7 +284,7 @@ const styles = StyleSheet.create({
         marginBottom: moderateScale(20)
     },
     button_reg_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(15),
         color: Colors.secondaryFont
     },
@@ -292,7 +296,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     modal_massege: {
-        fontFamily: FONTS.regular,
+        fontFamily: FONTS.Inter.regular,
         fontSize: responsiveFontSize(2),
         color: Colors.black,
         marginTop: responsiveHeight(2)
@@ -308,7 +312,7 @@ const styles = StyleSheet.create({
         marginTop: responsiveHeight(4)
     },
     button_txt_sty: {
-        fontFamily: FONTS.bold,
+        fontFamily: FONTS.Inter.bold,
         fontSize: moderateScale(13),
         alignSelf: 'center',
         color: '#fff'

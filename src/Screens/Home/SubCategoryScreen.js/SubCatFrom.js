@@ -13,10 +13,13 @@ import HomeService from '../../../Services/HomeServises';
 import Modal from 'react-native-modal';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Toast from "react-native-simple-toast";
+import Home from '../Home';
+import HttpClient from '../../../Utils/HttpClient';
 
 const { height, width } = Dimensions.get('screen');
 
 const SubCatForm = (props) => {
+    const ImgUri = "https://acuitysoftware.co/digi-help-app/storage/app/public"
     const route = useRoute();
     const cat_Data_id = route.params.CatId;
     const Sub_Data_id = route.params.SubID;
@@ -28,16 +31,14 @@ const SubCatForm = (props) => {
     const [dropdownValues, setDropdownValues] = useState({});
     const [selectedState, setSelectedState] = useState(null);
     const [isModalVisible, setModalVisible] = useState(false);
-    const [selectedDocument, setSelectedDocument] = useState(null);
-
+    const [ImageData, setImageData] = useState([]);
     const [selectedDocuments, setSelectedDocuments] = useState([]);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    // console.log('selectedStateselectedStateselectedState', selectedState);
     console.log('formDataformDataformDataformData', formData);
-    console.log('dropdownValuesdropdownValuesdropdownValuesdropdownValues', dropdownValues);
+    console.log('frommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmimageeeeeeeeeeeeeeeeeeeeeeee',ImageData);
 
     useEffect(() => {
         getSubAllData();
@@ -95,16 +96,58 @@ const SubCatForm = (props) => {
         }
     };
 
+    // const onButtonPress = async (type, options) => {
+    //     const result = type === 'capture'
+    //         ? await launchCamera(options)
+    //         : await launchImageLibrary({ ...options, selectionLimit: 0 });
+    //     if (result?.assets) {
+    //         setSelectedDocuments([...selectedDocuments, ...result.assets]);
+    //         setModalVisible(false);
+    //     }
+    // };
+
+
     const onButtonPress = async (type, options) => {
-        const result = type === 'capture'
-            ? await launchCamera(options)
-            : await launchImageLibrary({ ...options, selectionLimit: 0 });
-        if (result?.assets) {
-            setSelectedDocuments([...selectedDocuments, ...result.assets]);
-            setModalVisible(false);
+        try {
+            const result = type === 'capture'
+                ? await launchCamera(options)
+                : await launchImageLibrary({ ...options, selectionLimit: 0 });
+    
+            console.log('Result:===================', result);
+    
+            if (result?.assets) {
+                const selectedAssets = result.assets;
+                setSelectedDocuments([...selectedDocuments, ...selectedAssets]);
+    
+                selectedAssets.forEach(async (asset) => {
+                    const file = {
+                        uri: asset.uri,
+                        type: asset.type,
+                        name: asset.fileName,
+                    };
+    
+                    if (file.uri && file.type && file.name) {
+                        try {
+                            const response = await HttpClient.upload('/business-account/upload-image', file, {});
+                            if (Array.isArray(response)) {
+                                setImageData((prevImageData) => [...prevImageData, ...response]);
+                                setModalVisible(false);
+                            } else {
+                                setImageData((prevImageData) => [...prevImageData, response]);
+                                setModalVisible(false);
+                            }
+                        } catch (error) {
+                            console.error('Image Upload Error:', error);
+                        }
+                    } else {
+                        console.error('Invalid file object properties:', file);
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error in onButtonPress:', error);
         }
     };
-
 
 
 
@@ -112,7 +155,7 @@ const SubCatForm = (props) => {
         const data = { option: pickerId };
         HomeService.setOptionList(data)
             .then((res) => {
-                console.log('ggggggggggggggg', res);
+                // console.log('ggggggggggggggg', res);
                 if (res.status === true) {
                     setDropdownValues((prev) => ({
                         ...prev,
@@ -133,29 +176,30 @@ const SubCatForm = (props) => {
         if (name === 'state') {
             setSelectedState(value);
             if (value) {
-                console.log('State selected:===============', value); // Debugging log
+                console.log('State selected:===============', value); 
                 getStateList(value);
             }
         }
     };
 
     const getStateList = (stateId) => {
-        console.log('Fetching districts for stateId:', stateId); // Debugging log
+        console.log('Fetching districts for stateId:', stateId); 
         const value = {
             "option_list_id": stateId,
             "option": 2
         };
         HomeService.setOption_DisttrictList(value)
             .then((res) => {
+                // console.log('Districts fetched=======================', res);
                 if (res.status === true) {
-                    console.log('Districts fetched successfully:=======================', res.data); // Debugging log
+                    // console.log('Districts fetched successfully:=======================', res.data);
                     const newDistricts = res.data || [];
                     setDropdownValues(prev => ({
                         ...prev,
                         district: newDistricts
                     }));
                 } else {
-                    console.error('Failed to fetch districts:', res.message); // Debugging log
+                    // console.error('Failed to fetch districts:==========', res.message);
                     setDropdownValues(prev => ({
                         ...prev,
                         district: []
@@ -163,7 +207,7 @@ const SubCatForm = (props) => {
                 }
             })
             .catch((err) => {
-                console.error('Error fetching districts:', err);
+                // console.error('Error fetching districts:', err);
                 setDropdownValues(prev => ({
                     ...prev,
                     district: []
@@ -171,21 +215,90 @@ const SubCatForm = (props) => {
             });
     };
 
+
+
+
+    //         const finalFormData = new FormData();
+    //         const formDataFields = formData.map(field => ({
+    //             type: field.type,
+    //             select_box_type: field.select_box_type,
+    //             label: field.label,
+    //             name: field.name,
+    //             is_required: "1",
+    //             option: field.option,
+    //             value: formValues[field.name] || null 
+    //         }));
+
+
+    //         finalFormData.append('form_data', JSON.stringify(formDataFields));
+
+    //         selectedDocuments.forEach((doc, index) => {
+    //             finalFormData.append(`file_${index}`, {
+    //                 uri: doc.uri,
+    //                 type: 'file',
+    //                 name: doc.fileName,
+    //             });
+    //         });
+
+    //         console.log('Final FormData:==============================', JSON.stringify(finalFormData));
+
+    //         setBtnLoader(true);
+    //         HomeService.submitFormData(finalFormData)
+    //             .then((res) => {
+    //                 console.log('Submission Response:=================', res);
+    //                 if (res) {
+    //                     setBtnLoader(false);
+    //                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+    //                     console.log('Submission sucessssssssssss Response:', res);
+    //                 } else {
+    //                     setBtnLoader(false);
+    //                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+    //                     console.log('Submission errrrrrrrrrrrrrrrr Response:', res);
+    //                 }
+    //             })
+    //             .catch((err) => {
+    //                 setBtnLoader(false);
+    //                 console.error('Submit Error:', err);
+    //             });
+    //     };
+
+
+
     const handleSubmit = () => {
-        
+        const finalFormData = formData.map(field => {
+            if (field.type === 'file') {
+                return {
+                    ...field,
+                    value: "file",
+                    imageFileName: ImageData.map(doc => ({
+                        uri: doc.uri,
+                        type: doc.type,
+                        fileName: doc.fileName,
+                        fileSize: doc.fileSize,
+                        height: doc.height,
+                        width: doc.width,
+                    }))
+                };
+            } else {
+                return {
+                    ...field,
+                    value: formValues[field.name] || null
+                };
+            }
+        });
         const finalData = {
             "form_id": getFormData,
-            "form_data": formData
+            "form_data": finalFormData
         };
-    
-        console.log('Final Data:===========', JSON.stringify(finalData));
+        console.log('Final Data:=========================', JSON.stringify(finalData));
         setBtnLoader(true);
         HomeService.submitFormData(finalData)
             .then((res) => {
-                console.log('Submission Response:=============', res);
+                console.log('Submission Response:===========================', res);
                 if (res) {
                     setBtnLoader(false);
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+                    NavigationService.navigate('SubCategorySubscription')
                 } else {
                     setBtnLoader(false);
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
@@ -196,131 +309,162 @@ const SubCatForm = (props) => {
                 console.error('Submit Error:', err);
             });
     };
-    
+
+
+    // const handleSubmit = () => {
+
+    //      const finalData = {
+    //         "form_id": getFormData,
+    //         "form_data": formData
+    //     };
+
+    //     // console.log('Final Data:=========================', JSON.stringify(finalData));
+    //     // setBtnLoader(true);
+    //     // HomeService.submitFormData(finalData)
+    //     //     .then((res) => {
+    //     //         console.log('Submission Response:=============', res);
+    //     //         if (res) {
+    //     //             setBtnLoader(false);
+    //     //             Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+    //     //         } else {
+    //     //             setBtnLoader(false);
+    //     //             Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+    //     //         }
+    //     //     })
+    //     //     .catch((err) => {
+    //     //         setBtnLoader(false);
+    //     //         console.error('Submit Error:', err);
+    //     //     });
+    // };
+
 
 
 
     return (
         <View style={styles.container}>
-            {formData && formData.length === 0 ?
-           <View style={styles.loader}>
-           <Image source={require('../../../assets/images/nodata.png')} style={styles.nodata_sty} />
-           <View style={styles.endbutton}>
-               <Text style={styles.endbutton_txt}>No Data Found</Text>
-           </View>
-       </View>
-       :
-       <>
-        <ScreenHeader />
-            <View style={styles.top_view}>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ alignSelf: 'flex-end' }}>
-                        <Pressable onPress={() => NavigationService.goBack()}>
-                            <Icon name='chevron-left' type='FontAwesome5' size={23} />
-                        </Pressable>
-                    </View>
-                    <View style={{ alignItems: 'center', flex: 1 }}>
-                        <Text style={styles.header_txt}>My Business Account</Text>
-                    </View>
-                </View>
-            </View>
             {loading ? (
                 <ActivityIndicator size="large" color={Colors.buttonColor} style={{ marginTop: height / 3 }} />
-            ) : (
-                <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-                    <View style={styles.formContainer}>
-                        {formData.map((field, index) => {
-                            switch (field.type) {
-                                case 'file':
-                                    return (
-                                        <View key={index} style={styles.fieldContainer}>
-                                            <View style={styles.fileInputContainer}>
-                                                <View style={styles.img_view}>
-                                                    <Image
-                                                        source={selectedDocuments.length > 0 ? { uri: selectedDocuments[0]?.uri } : require('../../../assets/images/blankimg.png')}
-                                                        style={styles.upload_img}
-                                                    />
+            ) : <>
 
-                                                </View>
-                                                <TouchableOpacity onPress={toggleModal} style={styles.reg_button}>
-                                                    <Text style={styles.button_reg_txt}>Upload Image</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    );
-                                case 'text':
-                                    return (
-                                        <View key={index} style={styles.fieldContainer}>
-                                            <Text style={styles.input_title_txt}>{field?.label?.charAt(0).toUpperCase() + field?.label?.slice(1)}</Text>
-                                            <AppTextInput
-                                                placeholder={field.label}
-                                                inputContainerStyle={styles.inputContainer}
-                                                mainContainerStyle={styles.inputMainContainer}
-                                                value={formValues[field.name]}
-                                                onChangeText={(val) => handleInputChange(field.name, val)}
-                                            />
-                                        </View>
-                                    );
-                                case 'select':
-                                    return (
-                                        <View key={index} style={styles.fieldContainerpicker}>
-                                            <View>
-                                                <Text style={styles.input_title_txt}>{field?.label?.charAt(0).toUpperCase() + field?.label?.slice(1)}</Text>
-                                                <Picker
-                                                    placeholder="Select"
-                                                    labelKey="option_name"
-                                                    valueKey="id"
-                                                    options={dropdownValues[field.name] || []}
-                                                    textStyle={styles.pickerText}
-                                                    containerStyle={styles.pickerContainer}
-                                                    selectedValue={formValues[field.name]}
-                                                    onValueChange={(val) => handleInputChange(field.name, val)}
-                                                />
-                                            </View>
-                                        </View>
-                                    );
-                                case 'textarea':
-                                    return (
-                                        <View key={index} style={styles.fieldContainer}>
-                                            <Text style={styles.input_title_txt}>{field?.label?.charAt(0).toUpperCase() + field?.label?.slice(1)}</Text>
-                                            <AppTextInput
-                                                placeholder={field.label}
-                                                inputContainerStyle={styles.textareaContainer}
-                                                mainContainerStyle={styles.textareaMainContainer}
-                                                multiline
-                                                value={formValues[field.name]}
-                                                onChangeText={(val) => handleInputChange(field.name, val)}
-                                                numberOfLines={5}
-                                                textAlignVertical="top"
-                                            />
-                                        </View>
-                                    );
-                                default:
-                                    return null;
-                            }
-                        })}
-                        <AppButton
-                            title="SUBMIT"
-                            style={styles.button}
-                            textStyle={styles.button_txt}
-                            onPress={handleSubmit}
-                            loader={
-                                btnLoader
-                                    ? {
-                                        position: "right",
-                                        color: "#fff",
-                                        size: "small",
-                                    }
-                                    : null
-                            }
-                            disabled={btnLoader}
-                        />
+                {formData && formData.length === 0 ?
+                    <View style={styles.loader}>
+                        <Image source={require('../../../assets/images/nodata.png')} style={styles.nodata_sty} />
+                        <View style={styles.endbutton}>
+                            <Text style={styles.endbutton_txt}>No Data Found</Text>
+                        </View>
                     </View>
-                </KeyboardAwareScrollView>
-            )}
-       </>    
-        }
-           
+                    :
+                    <>
+                        <ScreenHeader />
+                        <View style={styles.top_view}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ alignSelf: 'flex-end' }}>
+                                    <Pressable onPress={() => NavigationService.goBack()}>
+                                        <Icon name='chevron-left' type='FontAwesome5' size={23} />
+                                    </Pressable>
+                                </View>
+                                <View style={{ alignItems: 'center', flex: 1 }}>
+                                    <Text style={styles.header_txt}>My Business Account</Text>
+                                </View>
+                            </View>
+                        </View>
+
+                        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+                            <View style={styles.formContainer}>
+                                {formData.map((field, index) => {
+                                    switch (field.type) {
+                                        case 'file':
+                                            return (
+                                                <View key={index} style={styles.fieldContainer}>
+                                                    <View style={styles.fileInputContainer}>
+                                                        <View style={styles.img_view}>
+                                                            <Image
+                                                                source={selectedDocuments.length > 0 ? { uri: selectedDocuments[0]?.uri } : require('../../../assets/images/blankimg.png')}
+                                                                style={styles.upload_img}
+                                                            />
+
+                                                        </View>
+                                                        <TouchableOpacity onPress={toggleModal} style={styles.reg_button}>
+                                                            <Text style={styles.button_reg_txt}>Upload Image</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            );
+                                        case 'text':
+                                            return (
+                                                <View key={index} style={styles.fieldContainer}>
+                                                    <Text style={styles.input_title_txt}>{field?.label?.charAt(0).toUpperCase() + field?.label?.slice(1)}</Text>
+                                                    <AppTextInput
+                                                        placeholder={field.label}
+                                                        inputContainerStyle={styles.inputContainer}
+                                                        mainContainerStyle={styles.inputMainContainer}
+                                                        value={formValues[field.name]}
+                                                        onChangeText={(val) => handleInputChange(field.name, val)}
+                                                    />
+                                                </View>
+                                            );
+                                        case 'select':
+                                            return (
+                                                <View key={index} style={styles.fieldContainerpicker}>
+                                                    <View>
+                                                        <Text style={styles.input_title_txt}>{field?.label?.charAt(0).toUpperCase() + field?.label?.slice(1)}</Text>
+                                                        <Picker
+                                                            placeholder="Select"
+                                                            labelKey="option_name"
+                                                            valueKey="id"
+                                                            options={dropdownValues[field.name] || []}
+                                                            textStyle={styles.pickerText}
+                                                            containerStyle={styles.pickerContainer}
+                                                            selectedValue={formValues[field.name]}
+                                                            onValueChange={(val) => handleInputChange(field.name, val)}
+                                                        />
+                                                    </View>
+                                                </View>
+                                            );
+                                        case 'textarea':
+                                            return (
+                                                <View key={index} style={styles.fieldContainer}>
+                                                    <Text style={styles.input_title_txt}>{field?.label?.charAt(0).toUpperCase() + field?.label?.slice(1)}</Text>
+                                                    <AppTextInput
+                                                        placeholder={field.label}
+                                                        inputContainerStyle={styles.textareaContainer}
+                                                        mainContainerStyle={styles.textareaMainContainer}
+                                                        multiline
+                                                        value={formValues[field.name]}
+                                                        onChangeText={(val) => handleInputChange(field.name, val)}
+                                                        numberOfLines={5}
+                                                        textAlignVertical="top"
+                                                    />
+                                                </View>
+                                            );
+                                        default:
+                                            return null;
+                                    }
+                                })}
+                                <AppButton
+                                    title="SUBMIT"
+                                    style={styles.button}
+                                    textStyle={styles.button_txt}
+                                    onPress={handleSubmit}
+                                    loader={
+                                        btnLoader
+                                            ? {
+                                                position: "right",
+                                                color: "#fff",
+                                                size: "small",
+                                            }
+                                            : null
+                                    }
+                                    disabled={btnLoader}
+                                />
+                            </View>
+                        </KeyboardAwareScrollView>
+
+                    </>
+                }
+            </>
+            }
+
             <Modal isVisible={isModalVisible}
                 onBackButtonPress={() => setModalVisible(false)}
                 onBackdropPress={() => setModalVisible(false)}
@@ -385,7 +529,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -404,7 +548,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-
+    textareaMainContainer: {
+        textAlignVertical: 'top',
+    },
+    textareaContainer: {
+        backgroundColor: Colors.secondaryFont,
+        borderRadius: moderateScale(5),
+        paddingHorizontal: moderateScale(10)
+    },
     pickerContainer: {
         backgroundColor: Colors.secondaryFont,
         height: moderateScale(48),
@@ -413,7 +564,7 @@ const styles = StyleSheet.create({
     },
     pickerText: {
         fontSize: moderateScale(14),
-        fontFamily: FONTS.regular
+        fontFamily: FONTS.Inter.regular
     },
     inputContainer: {
         borderRadius: moderateScale(5),
@@ -447,12 +598,12 @@ const styles = StyleSheet.create({
         marginLeft: moderateScale(20)
     },
     button_reg_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(12),
         color: Colors.secondaryFont
     },
     input_title_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(14),
         marginTop: moderateScale(15),
         color: Colors.black
@@ -472,7 +623,7 @@ const styles = StyleSheet.create({
     },
     button_txt: {
         color: Colors.secondaryFont,
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: responsiveFontSize(2.5)
     },
     modalContainer: {
@@ -497,7 +648,7 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(18),
         padding: moderateScale(10),
         color: Colors.black,
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
     },
     loader: {
         flex: 1,
@@ -521,7 +672,7 @@ const styles = StyleSheet.create({
     },
     endbutton_txt: {
         color: Colors.buttonColor,
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: responsiveFontSize(2.5)
     },
 });

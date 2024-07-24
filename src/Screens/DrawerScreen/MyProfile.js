@@ -248,7 +248,7 @@ const MyProfile = () => {
                             options={Satate}
                             textStyle={{
                                 fontSize: moderateScale(14),
-                                fontFamily: FONTS.regular
+                                fontFamily: FONTS.Inter.regular
                             }}
                             containerStyle={{
                                 backgroundColor: Colors.secondaryFont,
@@ -267,7 +267,7 @@ const MyProfile = () => {
                             options={district}
                             textStyle={{
                                 fontSize: moderateScale(14),
-                                fontFamily: FONTS.regular
+                                fontFamily: FONTS.Inter.regular
                             }}
                             containerStyle={{
                                 backgroundColor: Colors.secondaryFont,
@@ -348,12 +348,12 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
     besic_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(15),
         color: Colors.black,
     },
@@ -363,17 +363,17 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     ref_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(15),
         color: Colors.secondaryFont,
     },
     ref_code_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(15),
         color: Colors.black,
     },
     Joining_txt: {
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(13),
         color: Colors.black,
         marginTop: moderateScale(15)
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
         marginTop: moderateScale(7)
     },
     input_title_txt: {
-        fontFamily: FONTS.medium,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(13),
         marginTop: moderateScale(15),
         color: Colors.black
@@ -411,7 +411,7 @@ const styles = StyleSheet.create({
     },
     button_txt: {
         color: Colors.secondaryFont,
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: responsiveFontSize(2.5)
     }
 });

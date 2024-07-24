@@ -58,7 +58,7 @@ const MyBankAccount = () => {
                 console.log("Responsedataaaaaa:===============", res);
                 if (res.status === true) {
                     Toast.show('Your Bank Account Deleted Successfully');
-                    fatchBank_list(); // Refresh list after delete
+                    fatchBank_list(); 
                 } else {
                     Toast.show('Something went wrong, please try again later!');
                 }
@@ -134,7 +134,7 @@ const MyBankAccount = () => {
                                                 marginTop: moderateScale(7)
                                             }}>
                                                 <Text style={{
-                                                    fontFamily: FONTS.semibold,
+                                                    fontFamily: FONTS.Inter.semibold,
                                                     color: Colors.black,
                                                     fontSize: moderateScale(14),
                                                 }}>{item.account_holder_name}</Text>
@@ -146,13 +146,13 @@ const MyBankAccount = () => {
 
                                             </View>
                                             <Text style={{
-                                                fontFamily: FONTS.medium,
+                                                fontFamily: FONTS.Inter.medium,
                                                 color: Colors.black,
                                                 fontSize: moderateScale(14),
                                                 marginTop: moderateScale(5)
                                             }}>{item.account_no}</Text>
                                             <Text style={{
-                                                fontFamily: FONTS.medium,
+                                                fontFamily: FONTS.Inter.medium,
                                                 color: Colors.black,
                                                 fontSize: moderateScale(14),
                                                 marginTop: moderateScale(5)
@@ -165,7 +165,7 @@ const MyBankAccount = () => {
                                                 marginTop: moderateScale(7)
                                             }}>
                                                 <Text style={{
-                                                    fontFamily: FONTS.semibold,
+                                                    fontFamily: FONTS.Inter.semibold,
                                                     color: Colors.black,
                                                     fontSize: moderateScale(14),
                                                 }}>{item.ifsc_code}</Text>
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     },
     button_txt: {
         color: Colors.buttonColor,
-        fontFamily: FONTS.semibold,
+        fontFamily: FONTS.Inter.semibold,
         fontSize: responsiveFontSize(2.5)
     },
     add_button: {
