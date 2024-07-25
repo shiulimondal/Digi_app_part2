@@ -74,9 +74,10 @@ const DrawerCard = ({ navigation }) => {
 
 
     const logoutUser = () => {
-        Toast.show('Logged Out Successfully ', Toast.LONG);
+        Toast.show('Logged Out Successfully ', Toast.SHORT);
         AuthService.setToken(null)
         AuthService.setAccount(null);
+        NavigationService.navigate('OldLogin')
         dispatch(logout());
 
     };

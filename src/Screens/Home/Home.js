@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Pressable, Image, ActivityIndicator } from 'react-native';
 import HomeHeader from '../../Components/Header/HomeHeader';
 import { Colors } from '../../Constants/Colors';
@@ -12,16 +12,20 @@ import UserDataCard from '../../Components/HomeCard/UserDataCard';
 import { useSelector } from 'react-redux';
 import NavigationService from '../../Services/Navigation';
 import HomeService from '../../Services/HomeServises';
+import { SwiperFlatList } from 'react-native-swiper-flatlist';
 
 const { height, width } = Dimensions.get('screen');
 const Home = ({ navigation }) => {
   const { userData } = useSelector(state => state.User)
-  console.log('userData==========================', userData);
+  // console.log('userData==========================', userData);
   const [isModalVisible, setModalVisible] = useState(false);
   const [categoryData, setcategoryData] = useState('')
   const [loading, setLoading] = useState(true);
+  const scrollViewRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const screenWidth = moderateScale(110)
+  // console.log('screenWidthscreenWidthscreenWidth',screenWidth);
 
-  console.log('userData========SJEL:JRLEKJLKJ==================', categoryData);
   const [bgColor, setBgColor] = useState([
 
     {
@@ -49,7 +53,7 @@ const Home = ({ navigation }) => {
     fatchCategory();
   }, [])
 
-const fatchCategory = async () => {
+  const fatchCategory = async () => {
     setLoading(true);
     try {
       const res = await HomeService.getCategoryData();
@@ -57,7 +61,7 @@ const fatchCategory = async () => {
       if (res && res.success === true) {
         const updatedCategoryData = res.data.map((category, index) => ({
           ...category,
-          boxBg: bgColor[index % bgColor.length].boxBg 
+          boxBg: bgColor[index % bgColor.length].boxBg
         }));
         setcategoryData(updatedCategoryData);
       }
@@ -66,6 +70,24 @@ const fatchCategory = async () => {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    let interval;
+    if (categoryData && categoryData.length > 0) {
+      interval = setInterval(() => {
+        let nextIndex = currentIndex + 1;
+        if (nextIndex >= categoryData.length) {
+          nextIndex = 0;
+        }
+        if (scrollViewRef.current) {
+          scrollViewRef.current.scrollTo({ x: nextIndex * screenWidth, animated: true });
+        }
+        setCurrentIndex(nextIndex);
+      }, 700); // set a suitable interval time
+
+      return () => clearInterval(interval);
+    }
+  }, [currentIndex, categoryData]);
 
   const UserData = [
     {
@@ -145,15 +167,26 @@ const fatchCategory = async () => {
               </ScrollView>
             </View>
           ) :
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <View style={styles.category_view}>
-                {categoryData &&
-                  categoryData?.map((item, index) => (
-                    <CategoryCard item={item} key={index} />
-                  ))
-                }
+          <ScrollView
+          ref={scrollViewRef}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            marginTop:moderateScale(7),
+            marginBottom:moderateScale(7),
+            marginLeft:moderateScale(10),
+            flexDirection:'row'
+          }}
+        >
+        
+          {categoryData &&
+            categoryData.map((item, index) => (
+              <View key={index} style={{ width: screenWidth ,}}>
+                <CategoryCard item={item} key={index} />
               </View>
-            </ScrollView>
+            ))}
+        </ScrollView>
           }
         </View>
         {
@@ -343,7 +376,7 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(15),
     paddingHorizontal: moderateScale(0),
     paddingBottom: moderateScale(0),
-    marginTop:moderateScale(10)
+    marginTop: moderateScale(10)
   },
   primary_txt: {
     fontFamily: FONTS.Inter.semibold,

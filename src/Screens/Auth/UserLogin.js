@@ -13,6 +13,7 @@ import { setuser } from '../../Redux/reducer/User';
 import { useDispatch } from 'react-redux';
 import Toast from "react-native-simple-toast";
 import NavigationService from '../../Services/Navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 
@@ -21,12 +22,13 @@ const UserLogin = ({ navigation }) => {
     const route = useRoute();
     const dispatch = useDispatch()
     const RegisterData = route.params.PhNumber;
-    console.log('getNumber=============', RegisterData);
+    console.log('getNumber===========================', RegisterData);
     const [mobile, setMobile] = useState(RegisterData?.phone)
     const [password, setPassword] = useState('')
     const [passwordShow, setPasswordShow] = useState(true);
     const [btnLoader, setBtnLoader] = useState(false);
     const [check, setCheck] = useState(false);
+
 
     const getUseLogin = async () => {
         if (password == '') {
@@ -47,6 +49,7 @@ const UserLogin = ({ navigation }) => {
         setBtnLoader(true);
         AuthService.getLogin(data)
             .then((res) => {
+                console.log('logressssssssssssssssssssss', res);
                 setBtnLoader(false);
                 if (res.status === true) {
                     AuthService.setAccount(res.data);
@@ -72,107 +75,113 @@ const UserLogin = ({ navigation }) => {
             <View style={styles.top_view}>
                 <Text style={styles.top_text}>REGISTER & LOGIN TO YOUR ACCOUNT</Text>
             </View>
-            <Text style={styles.logtxt}>Login to your account</Text>
-            <Text style={styles.input_title_txt}>Mobile Number</Text>
-            <AppTextInput
-                placeholder='Enter Mobile Number'
-                maxLength={10}
-                inputContainerStyle={{
-                    marginHorizontal: moderateScale(15),
-                    borderRadius: moderateScale(5),
-                    paddingHorizontal: moderateScale(7),
-                }}
-                inputStyle={{ fontFamily: FONTS.medium, fontSize: moderateScale(14) }}
-                mainContainerStyle={{
-                    marginTop: moderateScale(5)
-                }}
-                value={mobile}
-                onChangeText={() => setMobile(RegisterData.phone)}
-                rightAction={
-                    <TouchableOpacity
-
-                    >
-                        {mobile > 10 ? (
-                            <Image source={require('../../assets/images/check.png')}
-                                style={{ height: moderateScale(15), width: moderateScale(15) }} />
-                        ) : (
-                            null
-                        )}
-                    </TouchableOpacity>
-                }
-
-            />
-
-            <Text style={styles.input_title_txt}>Password</Text>
-            <AppTextInput
-                // placeholder='Old Password'
-                inputContainerStyle={{
-                    marginHorizontal: moderateScale(15),
-                    borderRadius: moderateScale(5),
-                    paddingHorizontal: moderateScale(7)
-                }}
-                rightAction={
-                    passwordShow ?
-                        <Icon
-                            name='eye'
-                            type='Ionicon'
-                        />
-                        :
-                        <Icon
-                            name='eye-off'
-                            type='Ionicon'
-                        />
-                }
-                mainContainerStyle={{
-                    marginTop: moderateScale(5)
-                }}
-                onRightIconPress={() => setPasswordShow(!passwordShow)}
-                secureTextEntry={passwordShow}
-                value={password}
-                onChangeText={(val) => setPassword(val)}
-            />
-
-            <View style={{ flexDirection: 'row', marginTop: moderateScale(20), marginHorizontal: moderateScale(20) }}>
-                <CheckBox
-                    checked={check}
-                    onChange={(val) => setCheck(val)}
-                    size={18}
-                    containerStyle={{
-                        borderWidth: 1
+            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+                <Text style={styles.logtxt}>Login to your account</Text>
+                <Text style={styles.input_title_txt}>Mobile Number</Text>
+                <AppTextInput
+                    placeholder='Enter Mobile Number'
+                    maxLength={10}
+                    inputContainerStyle={{
+                        marginHorizontal: moderateScale(15),
+                        borderRadius: moderateScale(5),
+                        paddingHorizontal: moderateScale(7),
                     }}
-                    activeColor={Colors.buttonColor}
-                />
-                <View>
-                    <Text style={styles.policy_txt}>I have read & agree to the <Text style={{ color: '#146CEA' }}>Terms and Conditions</Text></Text>
-                    <Text style={styles.policy_txt}>and <Text style={{ color: '#146CEA' }}>Privacy Policy.</Text></Text>
-                </View>
+                    inputStyle={{ fontFamily: FONTS.medium, fontSize: moderateScale(14) }}
+                    mainContainerStyle={{
+                        marginTop: moderateScale(5)
+                    }}
+                    value={mobile}
+                    onChangeText={() => setMobile(RegisterData.phone)}
+                    rightAction={
+                        <TouchableOpacity
 
-            </View>
-
-            <View style={{ alignItems:'center', flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: moderateScale(20), marginTop: moderateScale(20) }}>
-                <TouchableOpacity
-                    onPress={() => getUseLogin()}
-                    style={styles.log_button}>
-                    {
-                        btnLoader ?
-                            <ActivityIndicator size={'small'} color={'#fff'} />
-                            :
-                            <Text style={styles.button_log_txt}>LOGIN</Text>
+                        >
+                            {mobile > 10 ? (
+                                <Image source={require('../../assets/images/check.png')}
+                                    style={{ height: moderateScale(15), width: moderateScale(15) }} />
+                            ) : (
+                                null
+                            )}
+                        </TouchableOpacity>
                     }
 
-                </TouchableOpacity>
-                <Text style={styles.forget_pass_txt}>Forgot Password?</Text>
-            </View>
+                />
 
-            <Text style={{ ...styles.top_text, color: Colors.black, textAlign: 'center', marginTop: moderateScale(30) }}>New User</Text>
+                <Text style={styles.input_title_txt}>Password</Text>
+                <AppTextInput
+                    // placeholder='Old Password'
+                    inputContainerStyle={{
+                        marginHorizontal: moderateScale(15),
+                        borderRadius: moderateScale(5),
+                        paddingHorizontal: moderateScale(7)
+                    }}
+                    rightAction={
+                        passwordShow ?
+                            <Icon
+                                name='eye'
+                                type='Ionicon'
+                            />
+                            :
+                            <Icon
+                                name='eye-off'
+                                type='Ionicon'
+                            />
+                    }
+                    mainContainerStyle={{
+                        marginTop: moderateScale(5)
+                    }}
+                    onRightIconPress={() => setPasswordShow(!passwordShow)}
+                    secureTextEntry={passwordShow}
+                    value={password}
+                    onChangeText={(val) => setPassword(val)}
+                />
 
-            <AppButton
-                title="NEW USER REGISTER NOW"
-                style={styles.button}
-                textStyle={styles.button_txt}
-                // onPress={() => { NavigationService.navigate('UserRegister', { SendNumber: RegisterData?.phone }) }}
-            />
+                <View style={{ flexDirection: 'row', marginTop: moderateScale(20), marginHorizontal: moderateScale(20) }}>
+                    <CheckBox
+                        checked={check}
+                        onChange={(val) => setCheck(val)}
+                        size={18}
+                        containerStyle={{
+                            borderWidth: 1
+                        }}
+                        activeColor={Colors.buttonColor}
+                    />
+                    <View>
+                        <Text style={styles.policy_txt}>I have read & agree to the <Text style={{ color: '#146CEA' }}>Terms and Conditions</Text></Text>
+                        <Text style={styles.policy_txt}>and <Text style={{ color: '#146CEA' }}>Privacy Policy.</Text></Text>
+                    </View>
 
+                </View>
+
+                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: moderateScale(20), marginTop: moderateScale(20) }}>
+                    <TouchableOpacity
+                        onPress={() => getUseLogin()}
+                        style={styles.log_button}>
+                        {
+                            btnLoader ?
+                                <ActivityIndicator size={'small'} color={'#fff'} />
+                                :
+                                <Text style={styles.button_log_txt}>LOGIN</Text>
+                        }
+
+                    </TouchableOpacity>
+                    
+                    <TouchableOpacity 
+                    onPress={()=>NavigationService.navigate('FPlogin')}
+                    >
+                    <Text style={styles.forget_pass_txt}>Forgot Password?</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <Text style={{ ...styles.top_text, color: Colors.black, textAlign: 'center', marginTop: moderateScale(30) }}>New User</Text>
+
+                <AppButton
+                    title="NEW USER REGISTER NOW"
+                    style={styles.button}
+                    textStyle={styles.button_txt}
+                    onPress={() => { NavigationService.navigate('Login') }}
+                />
+            </KeyboardAwareScrollView>
         </View>
     );
 };

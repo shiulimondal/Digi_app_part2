@@ -1,29 +1,48 @@
-//import liraries
-import React, { Component, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
-import { Colors } from '../../Constants/Colors';
-import NavigationService from '../../Services/Navigation';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { View, Image, StyleSheet, Dimensions } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { StatusBar } from 'react-native-basic-elements';
+import NavigationService from '../../Services/Navigation';
 import AuthService from '../../Services/Auth';
-const { height, width } = Dimensions.get('screen')
-// create a component
+import { setuser } from '../../Redux/reducer/User';
+import { Colors } from '../../Constants/Colors';
+
+const { width } = Dimensions.get('screen');
+
 const Splash = () => {
-    const { login_status } = useSelector(state => state.User);
+    const { login_status, userData } = useSelector(state => state.User);
+    const dispatch = useDispatch();
+    const [activeUser, setActiveUser] = useState('');
 
     useEffect(() => {
-        if (login_status=== true) {
+        checkUser();
+    }, []);
+
+    useEffect(() => {
+        if (login_status !== undefined) {
             setTimeout(() => {
-                NavigationService.navigate('DrawerNavigation')
-            }, 3000); 
-        } else {
-            setTimeout(() => {
-                NavigationService.navigate('Login')
+                if (userData && login_status) {
+                    NavigationService.navigate('DrawerNavigation');
+                } else {
+                    NavigationService.navigate('OldLogin');
+                }
             }, 3000);
         }
+    }, [login_status, userData]);
 
-    }, []);
+    const checkUser = async () => {
+        try {
+            const result = await AuthService.getAccount();
+            setActiveUser(result);
+            if (result) {
+                dispatch(setuser(result));
+            }
+        } catch (error) {
+            console.error('Error checking user:', error);
+        }
+    };
+
     return (
         <View style={styles.container}>
             <StatusBar
@@ -33,15 +52,13 @@ const Splash = () => {
             <View>
                 <Image source={require('../../assets/images/digilogo.png')} style={styles.splash_img} />
             </View>
-            <View style={{position:'absolute',bottom:moderateScale(-14)}}>
+            <View style={styles.bottomContainer}>
                 <Image source={require('../../assets/images/bottomlogo.png')} style={styles.bottomsplash_img} />
             </View>
-
         </View>
     );
 };
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -53,12 +70,15 @@ const styles = StyleSheet.create({
         height: moderateScale(100),
         width: moderateScale(180),
     },
-    bottomsplash_img:{
-        height:moderateScale(180),
-        width:width,
-        resizeMode:'contain'
+    bottomsplash_img: {
+        height: moderateScale(180),
+        width: width,
+        resizeMode: 'contain'
+    },
+    bottomContainer: {
+        position: 'absolute',
+        bottom: moderateScale(-14),
     }
 });
 
-//make this component available to the app
 export default Splash;

@@ -17,7 +17,7 @@ const FillBankDitails = () => {
     const [accountList, setAccountList] = useState();
     const [accountHolderName, setAccountHolderName] = useState()
     const [bankName, setbankName] = useState()
-    const [branchName, setbranchName] = useState()
+    // const [branchName, setbranchName] = useState()
     const [accountNumber, setaccountNumber] = useState()
     const [ifsc, setifsc] = useState()
     const [btnLoader, setBtnLoader] = useState(false);
@@ -26,7 +26,7 @@ const FillBankDitails = () => {
         let data = {
             "account_holder_name": accountHolderName,
             "bank_name": bankName,
-            "branch_name": branchName,
+            // "branch_name": branchName,
             "account_no": accountNumber,
             "ifsc_code": ifsc
         };
@@ -100,7 +100,7 @@ const FillBankDitails = () => {
                     onChangeText={(val) => setbankName(val)}
                 />
 
-                <Text style={styles.input_title_txt}>Branch Name</Text>
+                {/* <Text style={styles.input_title_txt}>Branch Name</Text>
                 <AppTextInput
                     placeholder='Branch Name'
                     inputContainerStyle={{
@@ -114,7 +114,7 @@ const FillBankDitails = () => {
                     }}
                     value={branchName}
                     onChangeText={(val) => setbranchName(val)}
-                />
+                /> */}
 
                 <Text style={styles.input_title_txt}>Account Number</Text>
                 <AppTextInput

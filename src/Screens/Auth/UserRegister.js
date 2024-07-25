@@ -16,6 +16,7 @@ import Toast from "react-native-simple-toast";
 import { setuser } from '../../Redux/reducer/User';
 import Modal from "react-native-modal";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import NavigationService from '../../Services/Navigation';
 
 
 // create a component
@@ -31,6 +32,7 @@ const UserRegister = ({ navigation }) => {
     const [cnfPassword, setCnfPassword] = useState('')
     const [btnLoader, setBtnLoader] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
+    const [allData, setAllData] = useState('')
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -63,22 +65,22 @@ const UserRegister = ({ navigation }) => {
             "password_confirmation": cnfPassword
         };
         setModalVisible(true)
-        getRegister(data)
+        setAllData(data)
     };
 
-    const getRegister = async (data) => {
-        AuthService.register(data)
+    const getRegister = async () => {
+        setBtnLoader(true)
+        AuthService.register(allData)
             .then((res) => {
-                setModalVisible(true)
                 if (res.status === true) {
+                    setBtnLoader(false)
                     setModalVisible(false)
-                    AuthService.setAccount(res.data);
-                    AuthService.setToken(res?.token);
-                    dispatch(setuser(res.data))
+                    NavigationService.navigate('UserLogin', { PhNumber: res.data })
                 }
             })
             .catch((err) => {
                 console.error("Error:", err);
+                setBtnLoader(false)
             });
     }
 
@@ -91,7 +93,7 @@ const UserRegister = ({ navigation }) => {
                 <Text style={styles.top_text}>REGISTER & LOGIN TO YOUR ACCOUNT</Text>
             </View>
             <KeyboardAwareScrollView>
-            <Text style={styles.logtxt}>Create your account</Text>
+                <Text style={styles.logtxt}>Create your account</Text>
                 <Text style={styles.input_title_txt}>Full Name</Text>
                 <AppTextInput
                     // placeholder='Full Name'
@@ -191,21 +193,12 @@ const UserRegister = ({ navigation }) => {
                     <TouchableOpacity
                         onPress={() => getoprnmodalRegister()}
                         style={styles.reg_button}>
-                        {
-                            btnLoader ?
-                                <ActivityIndicator size={'small'} color={'#fff'} />
-                                :
-                                <Text style={styles.button_reg_txt}>REGISTER</Text>
-                        }
-
+                        <Text style={styles.button_reg_txt}>REGISTER</Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAwareScrollView>
 
-            <Modal
-                isVisible={isModalVisible}
-
-            >
+            <Modal isVisible={isModalVisible}>
                 <View style={styles.modalView}>
                     <Image source={require('../../assets/images/register.png')} style={{ height: 80, width: 80 }} />
                     <Text style={{
@@ -259,7 +252,7 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(22),
         textAlign: 'center',
         marginTop: moderateScale(18),
-        fontFamily:FONTS.Inter.bold
+        fontFamily: FONTS.Inter.bold
     },
     input_title_txt: {
         fontFamily: FONTS.Inter.medium,

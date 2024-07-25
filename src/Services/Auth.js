@@ -27,9 +27,18 @@ const register = async (data) => {
 const getLogin = async (data) => {
     return HttpClient.post('/login', data);
 }
-
-
-
+const getLogout = async () => {
+    return HttpClient.post('/logout');
+}
+const getforgotMobile = async (data) => {
+    return HttpClient.post('/forgot-password',data);
+}
+const getforgotOtp = async (data) => {
+    return HttpClient.post('/forgot-password-check-otp',data);
+}
+const getforgotpassword = async (data) => {
+    return HttpClient.post('/reset-password',data);
+}
 
 
 const AuthService = {
@@ -40,7 +49,11 @@ const AuthService = {
     register,
     getLogin,
     setToken,
-    getToken
+    getToken,
+    getLogout,
+    getforgotMobile,
+    getforgotOtp,
+    getforgotpassword
 }
 
 export default AuthService;

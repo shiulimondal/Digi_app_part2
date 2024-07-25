@@ -1,19 +1,23 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React, { Component, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, TouchableOpacity, Dimensions, Image, ScrollView } from 'react-native';
 import { moderateScale } from '../../../Constants/PixelRatio';
 import { Colors } from '../../../Constants/Colors';
 import NavigationService from '../../../Services/Navigation';
 import { FONTS } from '../../../Constants/Fonts';
-import { Icon } from 'react-native-basic-elements';
+import { Card, Icon } from 'react-native-basic-elements';
 import ScreenHeader from '../../../Components/Header/ScreenHeader';
 import SwiperFlatList from 'react-native-swiper-flatlist';
-import { Image } from 'react-native';
-import { Dimensions } from 'react-native';
+import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 const { height, width } = Dimensions.get('screen')
 // create a component
 const SubCategoryProfile = () => {
+    const [showReply, setShowReply] = useState(false);
+    const toggleReply = () => {
+        setShowReply(prevShowReply => !prevShowReply);
+    };
+    const [rating, setRating] = useState(3.5);
     const profileData = [
         {
             profile: require('../../../assets/images/demo1.jpg')
@@ -30,61 +34,60 @@ const SubCategoryProfile = () => {
     ]
     return (
         <View style={styles.container}>
-            <ScreenHeader />
-            <View style={styles.top_view}>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ alignSelf: 'flex-end' }}>
-                        <Pressable onPress={() => NavigationService.goBack()}>
-                            <Icon name='chevron-left' type='FontAwesome5' size={23} />
-                        </Pressable>
-                    </View>
-                    <View style={{ alignItems: 'center', flex: 1 }}>
-                        <Text style={styles.header_txt}>Profile Details</Text>
+                <ScreenHeader />
+                <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.top_view}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ alignSelf: 'flex-end' }}>
+                            <Pressable onPress={() => NavigationService.goBack()}>
+                                <Icon name='chevron-left' type='FontAwesome5' size={23} />
+                            </Pressable>
+                        </View>
+                        <View style={{ alignItems: 'center', flex: 1 }}>
+                            <Text style={styles.header_txt}>Profile Details</Text>
+                        </View>
                     </View>
                 </View>
-            </View>
 
-            <View style={{
-                height: height / 2.5
-            }}>
-                <SwiperFlatList
-                    autoplay
-                    autoplayDelay={2}
-                    autoplayLoop
-                    // index={2}
-                    showPagination
-                    paginationStyleItemActive={{
-                        height: moderateScale(9),
-                        width: moderateScale(9),
-                        borderRadius: moderateScale(7),
-                        backgroundColor: Colors.buttonColor
-                    }}
-                    paginationStyleItemInactive={{
-                        height: moderateScale(9),
-                        width: moderateScale(9),
-                        borderRadius: moderateScale(7),
-                        backgroundColor: Colors.white
-                    }}
-                    data={profileData}
-                    renderItem={({ item }) => (
-                        <View style={{ height: height / 2.5 }}>
-                            <Image source={item?.profile}
-                                style={{
-                                    height: height / 2.5,
-                                    width: width,
-                                    resizeMode: 'cover'
-                                }}
-                            />
-                        </View>
-                    )}
-                />
-            </View>
-            <View style={{ backgroundColor: Colors.cardColor }}>
-                <View style={{
-                    backgroundColor: Colors.secondaryFont,
-                    borderTopRightRadius: moderateScale(17),
-                    borderTopLeftRadius: moderateScale(17)
-                }}>
+                <View style={{ height: height / 2.5 }}>
+                    <SwiperFlatList
+                        autoplay
+                        autoplayDelay={3}
+                        autoplayLoop
+                        // index={2}
+                        showPagination
+                        paginationStyle={{
+                            bottom: moderateScale(14),
+                        }}
+                        paginationStyleItemActive={{
+                            height: moderateScale(9),
+                            width: moderateScale(9),
+                            borderRadius: moderateScale(7),
+                            backgroundColor: Colors.buttonColor,
+                            marginHorizontal: moderateScale(3),
+                        }}
+                        paginationStyleItemInactive={{
+                            height: moderateScale(9),
+                            width: moderateScale(9),
+                            borderRadius: moderateScale(7),
+                            backgroundColor: Colors.white,
+                            marginHorizontal: moderateScale(3),
+                        }}
+                        data={profileData}
+                        renderItem={({ item }) => (
+                            <View style={{ height: height / 2.7, backgroundColor: 'blue' }}>
+                                <Image source={item?.profile}
+                                    style={{
+                                        height: height / 2.5,
+                                        width: width,
+                                        resizeMode: 'cover'
+                                    }}
+                                />
+                            </View>
+                        )}
+                    />
+                </View>
+                <View style={styles.main_view}>
                     <View style={styles.userdetails_view}>
                         <View>
                             <Text style={styles.userName}>Sumana Mandal</Text>
@@ -96,18 +99,110 @@ const SubCategoryProfile = () => {
                                 <Text style={styles.rating_txt_number}>(10025 Rating)</Text>
                             </View>
                         </View>
-                        <View>
-                            <View style={styles.icon_view}>
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <TouchableOpacity style={styles.icon_view}>
                                 <Icon name='phone-alt' type='FontAwesome5' size={15} />
-                            </View>
-                            
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Image source={require('../../../assets/images/whatsapp.png')} style={styles.whatsapp_img} />
+                            </TouchableOpacity>
+
                         </View>
                     </View>
+                    <View style={styles.details_view}>
+                        <Text style={styles.details_txt_sty}>Details</Text>
+                        <Pressable onPress={toggleReply}>
+                            {showReply ? (
+                                <Icon name='down' type='AntDesign' />
+                            ) : (
+                                <Icon name='right' type='AntDesign' />
+                            )}
+                        </Pressable>
+                    </View>
+                    <View>
+                        {showReply && (
+                            <View>
+                                <View style={styles.lineview} />
+                                <View>
+                                    <Text style={styles.age_txt}>Age : <Text style={styles.age_data}>11/12/2000 (24 year old)</Text></Text>
+                                    <View style={styles.lineview} />
+                                    <Text style={styles.age_txt}>Religion : <Text style={styles.age_data}>Muslim</Text></Text>
+                                    <View style={styles.lineview} />
+                                    <Text style={styles.age_txt}>State : <Text style={styles.age_data}>West Bengal</Text></Text>
+                                    <View style={styles.lineview} />
+                                    <Text style={styles.age_txt}>District : <Text style={styles.age_data}>Birbhum</Text></Text>
+                                    <View style={styles.lineview} />
+                                </View>
+                            </View>
+
+                        )}
+                    </View>
+                    <Text style={styles.About_txt}>About</Text>
+                    <Card style={styles.about_view}>
+                        <Text style={styles.about_details}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here,</Text>
+                    </Card>
+
+                    <Text style={styles.About_txt}>Review</Text>
+                    <Card style={styles.about_view}>
+                        <View style={styles.review_txt}>
+                            <StarRatingDisplay
+                                rating={rating}
+                                onChange={setRating}
+                                enableHalfStar
+                                starSize={15}
+                                starStyle={{marginHorizontal:0.5 }}
+                            />
+                            <Text style={styles.rating_number_txt}>3.5</Text>
+                        </View>
+                        <Text style={styles.about_details}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here,</Text>
+                    </Card>
+
+                    <Card style={styles.about_view}>
+                        <View style={styles.review_txt}>
+                            <StarRatingDisplay
+                                rating={rating}
+                                onChange={setRating}
+                                enableHalfStar
+                                starSize={15}
+                                starStyle={{marginHorizontal:0.5 }}
+                            />
+                            <Text style={styles.rating_number_txt}>3.5</Text>
+                        </View>
+                        <Text style={styles.about_details}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here,</Text>
+                    </Card>
+
+                    <Card style={styles.about_view}>
+                        <View style={styles.review_txt}>
+                            <StarRatingDisplay
+                                rating={rating}
+                                onChange={setRating}
+                                enableHalfStar
+                                starSize={15}
+                                starStyle={{marginHorizontal:0.5 }}
+                            />
+                            <Text style={styles.rating_number_txt}>3.5</Text>
+                        </View>
+                        <Text style={styles.about_details}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here,</Text>
+                    </Card>
+
+                    <Card style={styles.about_view}>
+                        <View style={styles.review_txt}>
+                            <StarRatingDisplay
+                                rating={rating}
+                                onChange={setRating}
+                                enableHalfStar
+                                starSize={15}
+                                starStyle={{marginHorizontal:0.5 }}
+                            />
+                            <Text style={styles.rating_number_txt}>3.5</Text>
+                        </View>
+                        <Text style={styles.about_details}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here,</Text>
+                    </Card>
+
                 </View>
-
-            </View>
-
-        </View >
+            </ScrollView>
+        </View>
     );
 };
 
@@ -132,7 +227,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: moderateScale(15),
-        marginHorizontal: moderateScale(15)
+        marginHorizontal: moderateScale(15),
+    },
+    main_view: {
+        backgroundColor: Colors.secondaryFont,
+        borderTopRightRadius: moderateScale(17),
+        borderTopLeftRadius: moderateScale(17),
+        marginTop: moderateScale(-10),
+        paddingBottom: moderateScale(20)
     },
     userName: {
         fontFamily: FONTS.Inter.semibold,
@@ -157,7 +259,8 @@ const styles = StyleSheet.create({
         right: moderateScale(4)
     },
     totalrating_view: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop: moderateScale(10)
     },
     rating_txt_number: {
         fontFamily: FONTS.Inter.medium,
@@ -171,7 +274,72 @@ const styles = StyleSheet.create({
         borderRadius: moderateScale(15),
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#2AD200'
+        backgroundColor: '#2AD200',
+        marginRight: moderateScale(12)
+    },
+    whatsapp_img: {
+        height: moderateScale(31),
+        width: moderateScale(31),
+        resizeMode: 'contain'
+    },
+    details_view: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginHorizontal: moderateScale(15),
+        marginTop: moderateScale(15)
+    },
+    details_txt_sty: {
+        fontFamily: FONTS.Inter.semibold,
+        fontSize: moderateScale(16),
+        color: Colors.black
+    },
+    lineview: {
+        borderWidth: 0.5,
+        marginHorizontal: moderateScale(15),
+        marginVertical: moderateScale(7),
+        borderColor: '#D9D9D9'
+    },
+    age_txt: {
+        fontFamily: FONTS.Inter.semibold,
+        fontSize: moderateScale(14),
+        color: Colors.black,
+        padding: moderateScale(7),
+        paddingHorizontal: moderateScale(15)
+    },
+    age_data: {
+        fontFamily: FONTS.Inter.medium,
+        fontSize: moderateScale(13),
+        color: '#333333'
+    },
+    About_txt: {
+        fontFamily: FONTS.Inter.semibold,
+        fontSize: moderateScale(16),
+        color: Colors.black,
+        marginHorizontal: moderateScale(15),
+        marginTop: moderateScale(10)
+    },
+    about_view: {
+        borderWidth: moderateScale(1),
+        borderColor: '#D9D9D9',
+        padding: moderateScale(10),
+        marginHorizontal: moderateScale(15),
+        marginTop: moderateScale(7),
+        borderRadius: moderateScale(10),
+    },
+    review_txt: {
+        flexDirection: 'row',
+        alignItems:'center'
+    },
+    rating_number_txt:{
+        fontFamily:FONTS.Inter.semibold,
+        fontSize:moderateScale(12),
+        color:Colors.black,
+        marginLeft:moderateScale(5)
+    },
+    about_details:{
+        fontFamily:FONTS.Inter.regular,
+        fontSize:moderateScale(12),
+        color:'#333333'
     }
 });
 

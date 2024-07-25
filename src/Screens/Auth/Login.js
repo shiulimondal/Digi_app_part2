@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,6 +6,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  PermissionsAndroid,
 } from "react-native";
 import {
   responsiveHeight,
@@ -20,11 +21,29 @@ import Toast from "react-native-simple-toast";
 import { FONTS } from "../../Constants/Fonts";
 import AuthService from "../../Services/Auth";
 import NavigationService from "../../Services/Navigation";
+// import DeviceNumber from 'react-native-device-number';
+
 
 const Login = ({ navigation }) => {
   const [phone, setPhone] = useState("");
   const [btnLoader, setBtnLoader] = useState(false);
 
+  // useEffect(() => {
+  //   const fetchDeviceNumber = async () => {
+  //     try {
+  //       const res = await DeviceNumber.get();
+  //       console.log('Device number:', res);
+  //     } catch (error) {
+  //       console.error('Error fetching device number:', error);
+  //     }
+  //   };
+  
+  //   fetchDeviceNumber();
+  // }, []);
+
+
+
+;
   const setSendOtp = async () => {
     const mobilevalidate = (text) => {
       const reg = /^[0]?[6789]\d{9}$/;
@@ -44,14 +63,14 @@ const Login = ({ navigation }) => {
     let data = {
       "phone": phone
     };
-    console.log('getdddddddddddddddd',data);
+    console.log('getdddddddddddddddd', data);
     setBtnLoader(true);
     AuthService.getSendOtp(data)
       .then((res) => {
-        console.log('getdddddddddddd0066666666644444444444444444dddd',res);
+        console.log('getdddddddddddd0066666666644444444444444444dddd', res);
         setBtnLoader(false);
         if (res.status === true) {
-          NavigationService.navigate("LoginOTP",{PhNumberData:res});
+          NavigationService.navigate("LoginOTP", { PhNumberData: res });
         } else {
           Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
         }
@@ -62,8 +81,6 @@ const Login = ({ navigation }) => {
         setBtnLoader(false);
       });
   };
-
- 
 
   return (
     <View style={styles.container}>
@@ -111,54 +128,52 @@ const Login = ({ navigation }) => {
 export default Login;
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: Colors.backgroundColor
-    },
-    log_img: {
-      height: responsiveScreenHeight(30),
-      width: responsiveWidth(62),
-      resizeMode: 'contain',
-      alignSelf: 'center',
-      marginTop: responsiveHeight(5)
-    },
-    title_txt: {
-      color: Colors.black,
-      marginHorizontal: 15,
-      fontSize:responsiveFontSize(4.2),
-      fontFamily:FONTS.Inter.medium
-    },
-    inputContainer: {
-      backgroundColor: "white",
-      borderRadius: 5,
-      borderWidth: 1,
-      height: responsiveWidth(12.8),
-      borderColor: '#ccc',
-      flexDirection: "row",
-      alignItems: "center",
-      marginHorizontal: 15,
-      marginTop:responsiveHeight(2)
-  
-    },
-    inputfild: {
-      paddingLeft: 16,
-      height: responsiveHeight(6.5),
-      borderColor: "#ccc",
-      width: "80%",
-      color: Colors.black,
-      fontFamily:FONTS.Inter.medium,
-      fontSize: responsiveFontSize(2)
-    },
-    button: {
-      height: responsiveWidth(13),
-      backgroundColor: Colors.buttonColor,
-      marginTop: responsiveWidth(10),
-      marginBottom: responsiveWidth(6),
-    
-    },
-    button_txt:{
-      color:Colors.secondaryFont,
-      fontFamily:FONTS.Inter.semibold,
-      fontSize:responsiveFontSize(2.5)
-    }
-  });
+  container: {
+    flex: 1,
+    backgroundColor: Colors.backgroundColor
+  },
+  log_img: {
+    height: responsiveScreenHeight(30),
+    width: responsiveWidth(62),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginTop: responsiveHeight(5)
+  },
+  title_txt: {
+    color: Colors.black,
+    marginHorizontal: 15,
+    fontSize: responsiveFontSize(4.2),
+    fontFamily: FONTS.Inter.medium
+  },
+  inputContainer: {
+    backgroundColor: "white",
+    borderRadius: 5,
+    borderWidth: 1,
+    height: responsiveWidth(12.8),
+    borderColor: '#ccc',
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 15,
+    marginTop: responsiveHeight(2)
+  },
+  inputfild: {
+    paddingLeft: 16,
+    height: responsiveHeight(6.5),
+    borderColor: "#ccc",
+    width: "80%",
+    color: Colors.black,
+    fontFamily: FONTS.Inter.medium,
+    fontSize: responsiveFontSize(2)
+  },
+  button: {
+    height: responsiveWidth(13),
+    backgroundColor: Colors.buttonColor,
+    marginTop: responsiveWidth(10),
+    marginBottom: responsiveWidth(6),
+  },
+  button_txt: {
+    color: Colors.secondaryFont,
+    fontFamily: FONTS.Inter.semibold,
+    fontSize: responsiveFontSize(2.5)
+  }
+});

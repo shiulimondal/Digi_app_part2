@@ -36,6 +36,10 @@ import Message from './src/Screens/Message/Message';
 import ViewSubcategory from './src/Screens/Home/SubCategoryScreen.js/ViewSubcategory';
 import SubCategoryProfile from './src/Screens/Home/SubCategoryScreen.js/SubCategoryProfile';
 import SubCategorySubscription from './src/Screens/Home/SubCategoryScreen.js/SubCategorySubscription';
+import OldLogin from './src/Screens/Auth/OldLogin';
+import FPlogin from './src/Screens/Auth/ForgotPassward/FPlogin';
+import FPOtp from './src/Screens/Auth/ForgotPassward/FPOtp';
+import ForgetPassword from './src/Screens/Auth/ForgotPassward/ForgetPassword';
 
 
 
@@ -110,7 +114,11 @@ const App = () => {
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="LoginOTP" component={LoginOTP} />
                 <Stack.Screen name="UserLogin" component={UserLogin} />
+                <Stack.Screen name="OldLogin" component={OldLogin} />
                 <Stack.Screen name="UserRegister" component={UserRegister} />
+                <Stack.Screen name="FPlogin" component={FPlogin} />
+                <Stack.Screen name="FPOtp" component={FPOtp} />
+                <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
               </>
           }
         </Stack.Navigator>

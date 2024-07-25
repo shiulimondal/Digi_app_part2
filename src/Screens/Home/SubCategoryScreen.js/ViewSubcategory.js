@@ -307,7 +307,7 @@ const ViewSubcategory = () => {
                             activeColor={Colors.buttonColor}
 
                         />
-                        <Text style={styles.distans_txt}>OKM to 50KM</Text>
+                        <Text style={styles.distans_txt}>0KM to 50KM</Text>
                     </View>
 
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: moderateScale(15) }}>
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
     pickerTop_view: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: moderateScale(7),
+        marginTop: moderateScale(2),
         alignItems: 'center',
         marginBottom: moderateScale(10),
         marginHorizontal: moderateScale(15)
@@ -425,9 +425,9 @@ const styles = StyleSheet.create({
     },
     modalView: {
         backgroundColor: "white",
-        borderRadius: moderateScale(10),
+        borderRadius: moderateScale(18),
         padding: moderateScale(20),
-        borderWidth: 2,
+        // borderWidth: 2,
     },
     input_title_txt: {
         fontFamily: FONTS.Inter.medium,

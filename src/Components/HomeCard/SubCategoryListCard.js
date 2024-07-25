@@ -6,6 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { FONTS } from '../../Constants/Fonts';
 import { Colors } from '../../Constants/Colors';
 import NavigationService from '../../Services/Navigation';
+import SwiperFlatList from 'react-native-swiper-flatlist';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -32,11 +33,11 @@ const SubCategoryListCard = ({ item, index }) => {
                 <Text style={styles.address_txt}>{item.name}</Text>
             </View>
             <View style={styles.buttom_view}>
-                <Image source={require('../../assets/images/religions.png')} style={styles.location_sty} />
+                <Image source={require('../../assets/images/calendar1.png')} style={styles.location_sty} />
                 <Text style={styles.address_txt}>Gender - {item.gender}</Text>
             </View>
             <Pressable 
-                // onPress={() => NavigationService.navigate('SubCategoryProfile')} 
+                onPress={() => NavigationService.navigate('SubCategoryProfile')} 
                 style={styles.button_sty}>
                 <Text style={styles.button_txt}>View Full Profile</Text>
                 <Icon name='rightcircleo' type='AntDesign' color={Colors.secondaryFont} style={{ marginLeft: moderateScale(15) }} size={22} />

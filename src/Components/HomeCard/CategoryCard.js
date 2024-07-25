@@ -8,7 +8,7 @@ import NavigationService from '../../Services/Navigation';
 
 // create a component
 const CategoryCard = ({ item, index }) => {
-    console.log('jgjgkgggggggggggggggggggggggg',item);
+    // console.log('jgjgkgggggggggggggggggggggggg',item);
     return (
         <Pressable onPress={() => NavigationService.navigate('SubCategoryScreen', { cat_id: item.id, cat_name: item.name })}
             style={{ alignItems: 'center' }}>
@@ -43,10 +43,11 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: moderateScale(15),
         borderBottomLeftRadius: moderateScale(15),
         borderBottomRightRadius: moderateScale(15),
+        width:moderateScale(100)
     },
     img_sty: {
-        height: moderateScale(45),
-        width: moderateScale(45),
+        height: moderateScale(50),
+        width: moderateScale(50),
         resizeMode: 'contain',
     },
     title_txt: {
