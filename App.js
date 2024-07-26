@@ -40,6 +40,8 @@ import OldLogin from './src/Screens/Auth/OldLogin';
 import FPlogin from './src/Screens/Auth/ForgotPassward/FPlogin';
 import FPOtp from './src/Screens/Auth/ForgotPassward/FPOtp';
 import ForgetPassword from './src/Screens/Auth/ForgotPassward/ForgetPassword';
+import PrivacyPolicy from './src/Screens/Auth/PrivacyPolicy';
+import TermsAndConditions from './src/Screens/Auth/TermsAndConditions';
 
 
 
@@ -119,6 +121,8 @@ const App = () => {
                 <Stack.Screen name="FPlogin" component={FPlogin} />
                 <Stack.Screen name="FPOtp" component={FPOtp} />
                 <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+                <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+                <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
               </>
           }
         </Stack.Navigator>

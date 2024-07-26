@@ -145,8 +145,8 @@ const UserLogin = ({ navigation }) => {
                         activeColor={Colors.buttonColor}
                     />
                     <View>
-                        <Text style={styles.policy_txt}>I have read & agree to the <Text style={{ color: '#146CEA' }}>Terms and Conditions</Text></Text>
-                        <Text style={styles.policy_txt}>and <Text style={{ color: '#146CEA' }}>Privacy Policy.</Text></Text>
+                        <Text style={styles.policy_txt}>I have read & agree to the <Text onPress={()=>NavigationService.navigate('TermsAndConditions')} style={{ color: '#146CEA' }}>Terms and Conditions</Text></Text>
+                        <Text style={styles.policy_txt}>and <Text  onPress={()=>NavigationService.navigate('PrivacyPolicy')} style={{ color: '#146CEA' }}>Privacy Policy.</Text></Text>
                     </View>
 
                 </View>
@@ -171,7 +171,7 @@ const UserLogin = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                <Text style={{ ...styles.top_text, color: Colors.black, textAlign: 'center', marginTop: moderateScale(30) }}>New User</Text>
+                <Text style={{ fontFamily:FONTS.Inter.semibold, color: Colors.black, textAlign: 'center', marginTop: moderateScale(30) }}>New User</Text>
 
                 <AppButton
                     title="NEW USER REGISTER NOW"
@@ -192,16 +192,14 @@ const styles = StyleSheet.create({
     },
     top_view: {
         backgroundColor: Colors.blue,
-        padding: moderateScale(7),
+        padding: moderateScale(5),
         alignItems: 'center',
         justifyContent: 'center'
     },
     top_text: {
-        fontSize: moderateScale(18),
-        fontWeight: 'bold',
-        fontStyle: 'italic',
+        fontSize: moderateScale(22),
         color: Colors.secondaryFont,
-        fontFamily: 'jomhuria'
+        fontFamily:FONTS.JimNightshade.regular
     },
     logtxt: {
         color: Colors.black,

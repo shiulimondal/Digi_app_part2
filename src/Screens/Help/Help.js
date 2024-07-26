@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
 import HomeHeader from '../../Components/Header/HomeHeader';
 import { Icon, AppTextInput, AppButton } from 'react-native-basic-elements';
 import { Colors } from '../../Constants/Colors';
@@ -10,6 +10,9 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from "react-nat
 import HomeService from '../../Services/HomeServises';
 import { useSelector } from 'react-redux';
 import Toast from 'react-native-simple-toast';
+import Modal from "react-native-modal";
+import NavigationService from '../../Services/Navigation';
+
 
 // create a component
 const Help = ({ navigation }) => {
@@ -18,6 +21,10 @@ const Help = ({ navigation }) => {
     const [useName, setuseName] = useState(userData.full_name);
     const [mobileno, setmobileno] = useState(userData.phone);
     const [btnLoader, setBtnLoader] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
     const getHelp = async () => {
         let data = {
             "question": details,
@@ -29,8 +36,9 @@ const Help = ({ navigation }) => {
             .then((res) => {
                 setBtnLoader(false);
                 if (res.status === true) {
-                    console.log('ressssssssssssssssssss',res.data);
-                    Toast.show('Your Quarry Submmit Successfully', Toast.SHORT, Toast.BOTTOM);
+                    console.log('ressssssssssssssssssss', res.data);
+                    setModalVisible(true)
+                    // Toast.show('Your Quarry Submmit Successfully', Toast.SHORT, Toast.BOTTOM);
 
                 } else {
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
@@ -46,12 +54,12 @@ const Help = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <HomeHeader navigation={navigation} />
+            <HomeHeader  />
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ alignSelf: 'flex-end' }}>
-                        <Pressable onPress={() => navigation.goBack()}>
-                            <Icon name='left' type='AntDesign' size={22} />
+                        <Pressable onPress={() => NavigationService.goBack()}>
+                        <Icon name='chevron-left' type='FontAwesome5' size={23} />
                         </Pressable>
                     </View>
                     <View style={{ alignItems: 'center', flex: 1 }}>
@@ -61,7 +69,7 @@ const Help = ({ navigation }) => {
             </View>
             <ScrollView>
                 <View style={styles.message_view}>
-                    <Text style={styles.total_message_txt}>If you have any problem or queries, you can sendus message for solution. Definitely you will get the reply.</Text>
+                    <Text style={styles.total_message_txt}>If you have any problems or queries, you can send us a message for a solution. You will definitely receive a reply in your message box as soon as possible</Text>
                 </View>
 
                 <Text style={styles.input_title_txt}>Your Name</Text>
@@ -129,6 +137,25 @@ const Help = ({ navigation }) => {
                     disabled={btnLoader}
                 />
             </ScrollView>
+            <Modal isVisible={isModalVisible}>
+                <View style={styles.modalView}>
+                    <Image source={require('../../assets/images/register.png')} style={{ height: 70, width: 70 }} />
+                    <Text style={{
+                        fontFamily: FONTS.bold,
+                        fontSize: moderateScale(16),
+                        textAlign: 'center',
+                        marginTop: moderateScale(7),
+                        color: Colors.buttonColor
+                    }}>Your message has been sent successfully</Text>
+                    <Text style={styles.modal_massege}> The admin will reply to you as soon as possible, the reply will come in the your message box</Text>
+
+                    <TouchableOpacity
+                        onPress={() => { setModalVisible(false)}}
+                        style={styles.modalbutton_sty}>
+                        <Text style={styles.modalbutton_txt_sty}>Ok</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -146,14 +173,14 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.Inter.semibold,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
     message_view: {
-        backgroundColor: '#2E99E7',
+        backgroundColor: '#266FFD',
         marginHorizontal: moderateScale(15),
-        marginTop: moderateScale(25),
+        marginTop: moderateScale(20),
         borderRadius: moderateScale(10),
         alignItems: 'center',
         justifyContent: 'center',
@@ -161,9 +188,9 @@ const styles = StyleSheet.create({
     },
     total_message_txt: {
         fontFamily: FONTS.Inter.semibold,
-        fontSize: moderateScale(18),
+        fontSize: moderateScale(17),
         color: Colors.secondaryFont,
-        textAlign:'left'
+        textAlign: 'left'
     },
     input_title_txt: {
         fontFamily: FONTS.Inter.medium,
@@ -182,7 +209,36 @@ const styles = StyleSheet.create({
         color: Colors.secondaryFont,
         fontFamily: FONTS.Inter.semibold,
         fontSize: responsiveFontSize(2.5)
-    }
+    },
+    modalView: {
+        backgroundColor: "white",
+        borderRadius: moderateScale(10),
+        padding: moderateScale(20),
+        alignItems: 'center'
+    },
+    modal_massege: {
+        fontFamily: FONTS.Inter.medium,
+        fontSize:moderateScale(12),
+        color:Colors.black,
+        marginTop:moderateScale(10),
+        textAlign:'center'
+    },
+    modalbutton_sty: {
+        backgroundColor: Colors.buttonColor,
+        borderRadius: moderateScale(20),
+        height: moderateScale(30),
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        width: responsiveWidth(20),
+        marginTop: responsiveHeight(4)
+    },
+    modalbutton_txt_sty: {
+        fontFamily: FONTS.Inter.bold,
+        fontSize: moderateScale(13),
+        alignSelf: 'center',
+        color: '#fff'
+    },
 });
 
 //make this component available to the app

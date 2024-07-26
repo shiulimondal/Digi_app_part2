@@ -9,8 +9,15 @@ const FONTS = {
   JimNightshade: {
     regular: 'JimNightshade-Regular',
   },
-  VINERITC: {
-    regular: 'VINERITC'
+  Condiment: {
+    regular: 'Condiment-Regular',
+  },
+  Almendra: {
+    bold: 'Almendra-Bold',
+    semibold: 'Almendra-BoldItalic',
+    regular: 'Almendra-Regular',
+    light: 'Almendra-Italic',
+    medium: 'Almendra-Medium'
   }
 };
 

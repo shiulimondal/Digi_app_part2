@@ -17,28 +17,30 @@ const MyAccount = () => {
         <View style={styles.container}>
             <HomeHeader />
             <KeyboardAwareScrollView>
-            <Text style={styles.title_txt}>Add Your Business Profile</Text>
-            <Image source={require('../../assets/images/myacc.png')} style={styles.img_sty} />
-            <AppButton
-                title="Please add your business profile"
-                style={styles.button}
-                textStyle={styles.button_txt}
-            />
-            <Text style={styles.bottom_txt}>Add your profile sub category wise.</Text>
-            <Text style={styles.bottom_txt}>There are different categories in our
-                service.</Text>
-            <Text style={styles.bottom_txt}>Search for our subcategories and see
-                wich category you belong to</Text>
-            <Text style={styles.bottom_txt}>You will get the option to add your
-                profile there</Text>
+                <Text style={styles.title_txt}>Add Your Business Profile</Text>
+                <Image source={require('../../assets/images/profilebanner.jpg')} style={styles.img_sty} />
+                <AppButton
+                    title="Please add your business profile"
+                    style={styles.button}
+                    textStyle={styles.button_txt}
+                />
+                <Text style={styles.bottom_txt}>Add your profile sub category wise.</Text>
+                <Text style={styles.bottom_txt}>There are different categories in our
+                    service.</Text>
+                <Text style={styles.bottom_txt}>Search for our subcategories and see
+                    wich category you belong to</Text>
+                <Text style={styles.bottom_txt}>You will get the option to add your
+                    profile there</Text>
 
                 <AppButton
-                onPress={()=>NavigationService.navigate('Home')}
-                title="Go Back"
-                style={{...styles.button,backgroundColor:Colors.buttonColor,
-                    width:width- moderateScale(30),marginTop:moderateScale(15)}}
-                textStyle={styles.button_txt}
-            />
+                    onPress={() => NavigationService.navigate('Home')}
+                    title="Go Back"
+                    style={{
+                        ...styles.button, backgroundColor: Colors.buttonColor,
+                        width: width - moderateScale(30), marginTop: moderateScale(15)
+                    }}
+                    textStyle={styles.button_txt}
+                />
             </KeyboardAwareScrollView>
 
         </View>
@@ -49,16 +51,15 @@ const MyAccount = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#fff'
     },
     title_txt: {
         textAlign: 'center',
         marginTop: moderateScale(15),
         color: Colors.buttonColor,
-        fontSize: moderateScale(20),
-        fontWeight: 'bold',
-        fontStyle: 'italic',
+        fontSize: moderateScale(30),
         color: Colors.buttonColor,
-        fontFamily: 'jomhuria'
+        fontFamily: FONTS.Almendra.regular
     },
     img_sty: {
         height: moderateScale(220),
@@ -75,8 +76,8 @@ const styles = StyleSheet.create({
     },
     button_txt: {
         color: Colors.secondaryFont,
-        fontFamily: FONTS.Inter.medium,
-        fontSize: responsiveFontSize(2.1)
+        fontFamily: FONTS.Almendra.regular,
+        fontSize: moderateScale(18)
     },
     bottom_txt: {
         marginHorizontal: moderateScale(20),

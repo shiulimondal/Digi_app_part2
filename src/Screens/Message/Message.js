@@ -1,6 +1,6 @@
 //import liraries
-import React, { Component, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, FlatList, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, FlatList, ActivityIndicator } from 'react-native';
 import HomeHeader from '../../Components/Header/HomeHeader';
 import NavigationService from '../../Services/Navigation';
 import { Icon } from 'react-native-basic-elements';
@@ -14,26 +14,30 @@ import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dim
 
 // create a component
 const Message = () => {
-    const [messageList, setMessageList] = useState({})
+    const [messageList, setMessageList] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         getMessage_list();
-    }, [])
+    }, []);
 
     const getMessage_list = async () => {
-        // setLoading(true)
+        setLoading(true);
         HomeService.getMessage_list()
             .then((res) => {
                 console.log('messageeeeeeeeeeeeeeee', res);
-                // setLoading(false)
-                if (res && res.status == true) {
+                setLoading(false);
+                if (res && res.status === true) {
                     console.log('listttttttttttttttttttt================', res.data);
-                    setMessageList(res.data)
+                    setMessageList(res.data);
                 }
             })
             .catch((err) => {
-                // setLoading(false)
-            })
-    }
+                console.error(err);
+                setLoading(false);
+            });
+    };
+
     return (
         <View style={styles.container}>
             <HomeHeader />
@@ -41,7 +45,7 @@ const Message = () => {
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ alignSelf: 'flex-end' }}>
                         <Pressable onPress={() => NavigationService.goBack()}>
-                            <Icon name='left' type='AntDesign' size={22} />
+                        <Icon name='chevron-left' type='FontAwesome5' size={23} />
                         </Pressable>
                     </View>
                     <View style={{ alignItems: 'center', flex: 1 }}>
@@ -49,16 +53,18 @@ const Message = () => {
                     </View>
                 </View>
             </View>
-            {
-                messageList && messageList.length === 0 ?
-                    <View style={styles.loader}>
-                        <Image source={require('../../assets/images/nodata.png')} style={styles.nodata_sty} />
-                        <View style={styles.button}>
-                            <Text style={styles.button_txt}>No Message Found</Text>
-                        </View>
+            {loading ? (
+                <View style={styles.loader}>
+                    <ActivityIndicator size="large" color={Colors.buttonColor} />
+                </View>
+            ) : messageList.length === 0 ? (
+                <View style={styles.loader}>
+                    <Image source={require('../../assets/images/nodata.png')} style={styles.nodata_sty} />
+                    <View style={styles.button}>
+                        <Text style={styles.button_txt}>No Message Found</Text>
                     </View>
-                    :
-
+                </View>
+            ) : (
                 <FlatList
                     data={messageList}
                     renderItem={({ item, index }) => (
@@ -66,11 +72,7 @@ const Message = () => {
                     )}
                     keyExtractor={(item, index) => index.toString()}
                 />
-            }
-
-
-
-
+            )}
         </View>
     );
 };
