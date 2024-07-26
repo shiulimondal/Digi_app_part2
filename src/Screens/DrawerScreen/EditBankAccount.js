@@ -20,7 +20,6 @@ const EditBankAccount = () => {
 
     const [accountHolderName, setAccountHolderName] = useState('');
     const [bankName, setBankName] = useState('');
-    // const [branchName, setBranchName] = useState('');
     const [accountNumber, setAccountNumber] = useState('');
     const [ifsc, setIfsc] = useState('');
     const [btnLoader, setBtnLoader] = useState(false);
@@ -38,7 +37,6 @@ const EditBankAccount = () => {
                     if (account) {
                         setAccountHolderName(account.account_holder_name);
                         setBankName(account.bank_name);
-                        // setBranchName(account.branch_name);
                         setAccountNumber(account.account_no);
                         setIfsc(account.ifsc_code);
                     }
@@ -54,7 +52,6 @@ const EditBankAccount = () => {
             id: AccountId,
             account_holder_name: accountHolderName,
             bank_name: bankName,
-            // branch_name: branchName,
             account_no: accountNumber,
             ifsc_code: ifsc
         };
@@ -63,7 +60,6 @@ const EditBankAccount = () => {
         HomeService.updateBankAcc(data)
             .then((res) => {
                 setBtnLoader(false);
-                console.log('Update Response:==================', res);
                 if (res.status === true) {
                     NavigationService.navigate('MyBankAccount');
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
@@ -113,14 +109,6 @@ const EditBankAccount = () => {
                     onChangeText={(val) => setBankName(val)}
                 />
 
-                {/* <Text style={styles.input_title_txt}>Branch Name</Text>
-                <AppTextInput
-                    placeholder='Branch Name'
-                    inputContainerStyle={styles.inputContainer}
-                    mainContainerStyle={styles.inputMainContainer}
-                    value={branchName}
-                    onChangeText={(val) => setBranchName(val)}
-                /> */}
 
                 <Text style={styles.input_title_txt}>Account Number</Text>
                 <AppTextInput
@@ -175,7 +163,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.Inter.semibold,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(17),
         color: Colors.black,
     },

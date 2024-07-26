@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.Inter.semibold,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(18),
         color: Colors.black,
     }

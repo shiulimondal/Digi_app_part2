@@ -52,9 +52,8 @@ const SubCategoryProfile = () => {
                 <View style={{ height: height / 2.5 }}>
                     <SwiperFlatList
                         autoplay
-                        autoplayDelay={3}
+                        autoplayDelay={2}
                         autoplayLoop
-                        // index={2}
                         showPagination
                         paginationStyle={{
                             bottom: moderateScale(14),
@@ -75,7 +74,7 @@ const SubCategoryProfile = () => {
                         }}
                         data={profileData}
                         renderItem={({ item }) => (
-                            <View style={{ height: height / 2.7, backgroundColor: 'blue' }}>
+                            <View style={{ height: height / 2.7, }}>
                                 <Image source={item?.profile}
                                     style={{
                                         height: height / 2.5,
@@ -219,7 +218,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.Inter.semibold,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(17),
         color: Colors.black,
     },

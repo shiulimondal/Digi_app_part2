@@ -77,19 +77,20 @@ const ForgetPassword = ({ navigation }) => {
             "password": cnfPassword,
             "password_confirmation": REcnfPassword
         }
-        console.log('555555555555555555',data);
+        console.log('555555555555555555', data);
         setBtnLoader(true)
         AuthService.getforgotpassword(data)
             .then((res) => {
-                console.log('fogggggggggggggggggggggggggggggaskjflkJFLKJ',res);
-                // if (res && res.success === true) {
-                //     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-                //     setBtnLoader(false)
-                //     NavigationService.navigate('UserLogin')
-                // }
-                // else {
-                //     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-                // }
+                console.log('fogggggggggggggggggggggggggggggaskjflkJFLKJ=======', res);
+                if (res && res.success === true) {
+                    Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+                    setBtnLoader(false)
+                    NavigationService.navigate('UserLogin', { PhNumber: res })
+                }
+                else {
+                    // Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+                    setBtnLoader(false)
+                }
             })
             .catch((err) => {
                 setBtnLoader(false)
@@ -205,7 +206,7 @@ const ForgetPassword = ({ navigation }) => {
 
 
                 <AppButton
-                    title="Change Password"
+                    title="Add Password"
                     style={styles.button}
                     textStyle={styles.button_txt}
                     // onPress={() => { NavigationService.navigate('BottomTab')}}

@@ -22,7 +22,7 @@ const UserLogin = ({ navigation }) => {
     const route = useRoute();
     const dispatch = useDispatch()
     const RegisterData = route.params.PhNumber;
-    console.log('getNumber===========================', RegisterData);
+    console.log('getNumber========================================', RegisterData);
     const [mobile, setMobile] = useState(RegisterData?.phone)
     const [password, setPassword] = useState('')
     const [passwordShow, setPasswordShow] = useState(true);
@@ -42,10 +42,11 @@ const UserLogin = ({ navigation }) => {
             return
         }
         let data = {
-            "phone": RegisterData?.phone,
+            "phone": RegisterData?.phone || mobile,
             "password": password,
             "device_token": ""
         };
+        console.log('gogggggggggggggggggggggggggggggg',data);
         setBtnLoader(true);
         AuthService.getLogin(data)
             .then((res) => {
@@ -80,6 +81,7 @@ const UserLogin = ({ navigation }) => {
                 <Text style={styles.input_title_txt}>Mobile Number</Text>
                 <AppTextInput
                     placeholder='Enter Mobile Number'
+                    keyboardType='numeric'
                     maxLength={10}
                     inputContainerStyle={{
                         marginHorizontal: moderateScale(15),
@@ -91,17 +93,13 @@ const UserLogin = ({ navigation }) => {
                         marginTop: moderateScale(5)
                     }}
                     value={mobile}
-                    onChangeText={() => setMobile(RegisterData.phone)}
+                    onChangeText={() => setMobile(RegisterData?.phone)}
                     rightAction={
-                        <TouchableOpacity
-
-                        >
-                            {mobile > 10 ? (
+                        <TouchableOpacity>
+                            {mobile?.length === 10 ? (
                                 <Image source={require('../../assets/images/check.png')}
                                     style={{ height: moderateScale(15), width: moderateScale(15) }} />
-                            ) : (
-                                null
-                            )}
+                            ) : null}
                         </TouchableOpacity>
                     }
 

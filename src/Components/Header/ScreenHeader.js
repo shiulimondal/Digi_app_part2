@@ -46,7 +46,7 @@ const ScreenHeader = () => {
 const styles = StyleSheet.create({
   main_view: {
     paddingBottom: moderateScale(7),
-    height: moderateScale(45),
+    height: moderateScale(50),
     width: '100%',
     backgroundColor: Colors.header,
     alignItems: 'center',

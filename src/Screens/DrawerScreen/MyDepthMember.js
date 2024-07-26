@@ -120,13 +120,12 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.Inter.semibold,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
     flatListContent: {
         paddingHorizontal: 10,
-        // backgroundColor: 'green'
     },
     list_view: {
         height: moderateScale(50),
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
     sl_txt: {
         color: Colors.secondaryFont,
         fontFamily:FONTS.Inter.semibold,
-        fontSize:moderateScale(17),
+        fontSize:moderateScale(14),
        
     }
 });

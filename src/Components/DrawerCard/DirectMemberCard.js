@@ -14,7 +14,7 @@ const DirectMemberCard = ({ item, index }) => {
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
-                        color: Colors.black
+                        color: '#333333'
                     }}>{index + 1}</Text>
 
                 </View>
@@ -23,7 +23,7 @@ const DirectMemberCard = ({ item, index }) => {
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
-                        color: Colors.black
+                        color: '#333333'
                     }}>{item.joiningDate}</Text>
 
                 </View>
@@ -32,12 +32,12 @@ const DirectMemberCard = ({ item, index }) => {
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
-                        color: Colors.black
+                        color: '#333333'
                     }}>{item.name}</Text>
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
-                        color: Colors.black
+                        color: '#333333'
                     }}>{item.phoneNo}</Text>
 
                 </View>
@@ -48,7 +48,7 @@ const DirectMemberCard = ({ item, index }) => {
                         maxWidth: '70%',
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
-                        color: Colors.black
+                        color: '#333333'
                     }}>{item.address}</Text>
 
                 </View>
@@ -56,11 +56,13 @@ const DirectMemberCard = ({ item, index }) => {
                 <View style={{ width: moderateScale(200), alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={{
                         ...styles.button_sty,
-                        backgroundColor: item.status === false ? '#FE0505' : '#00AB11'
+                        backgroundColor: item.status === false ? '#FE0505' : '#00AB11',
+                        width:item.status === false ? moderateScale(95): moderateScale(130)
+
                     }}>
                         <Text style={{
-                            fontFamily: FONTS.Inter.bold,
-                            fontSize: moderateScale(13),
+                            fontFamily: FONTS.Inter.semibold,
+                            fontSize: moderateScale(12),
                             color: Colors.secondaryFont
                         }}>{item.status === false ? 'INACTIVE' : 'Active Member'}</Text>
                     </TouchableOpacity>
@@ -72,10 +74,12 @@ const DirectMemberCard = ({ item, index }) => {
                                 color: Colors.black
                             }} >{item.status_message}</Text>
                             :
-                            <Text style={{
+                            <Text numberOfLines={2} style={{
                                 fontFamily: FONTS.Inter.semibold,
                                 fontSize: moderateScale(12),
-                                color: Colors.black
+                                color: Colors.black,
+                                maxWidth:'50%',
+                                textAlign:'center'
                             }}>{item.status_message}</Text>
                     }
 
@@ -106,11 +110,10 @@ const styles = StyleSheet.create({
         padding: moderateScale(2)
     },
     button_sty: {
-        height: moderateScale(35),
-        width: moderateScale(110),
+        height: moderateScale(28),
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: moderateScale(10)
+        borderRadius: moderateScale(7)
     }
 });
 

@@ -24,10 +24,10 @@ const BottomTab = () => {
             screenOptions={{
                 headerShown: false,
                 tabBarActiveTintColor: Colors.buttonColor,
-                tabBarInactiveTintColor: '#777',
+                tabBarInactiveTintColor: '#333333',
                 tabBarLabelStyle: {
                     fontSize: moderateScale(9),
-                    fontFamily: FONTS.semibold,
+                    fontFamily: FONTS.Inter.medium,
                     marginBottom: moderateScale(10),
                 },
                 tabBarStyle: {
@@ -50,7 +50,7 @@ const BottomTab = () => {
                             style={{
                                 height: moderateScale(focused ? 23 : 20),
                                 width: moderateScale(focused ? 23 : 20),
-                                tintColor: focused ? Colors.buttonColor : undefined,
+                                tintColor: focused ? Colors.buttonColor : '#333333',
                             }}
                         />
                     ),
@@ -69,7 +69,7 @@ const BottomTab = () => {
                             style={{
                                 height: moderateScale(focused ? 23 : 20),
                                 width: moderateScale(focused ? 23 : 20),
-                                tintColor: focused ? Colors.buttonColor : undefined,
+                               tintColor: focused ? Colors.buttonColor : '#333333',
                             }}
                         />
                     ),
@@ -89,7 +89,7 @@ const BottomTab = () => {
                             style={{
                                 height: moderateScale(focused ? 23 : 20),
                                 width: moderateScale(focused ? 23 : 20),
-                                tintColor: focused ? Colors.buttonColor : undefined,
+                               tintColor: focused ? Colors.buttonColor : '#333333',
                             }}
                         />
                     ),
@@ -108,7 +108,7 @@ const BottomTab = () => {
                             style={{
                                 height: moderateScale(focused ? 23 : 20),
                                 width: moderateScale(focused ? 23 : 20),
-                                tintColor: focused ? Colors.buttonColor : undefined,
+                               tintColor: focused ? Colors.buttonColor : '#333333',
                             }}
                         />
                     ),

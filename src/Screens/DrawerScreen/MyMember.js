@@ -32,7 +32,11 @@ const MyMember = ({ navigation }) => {
             <ScrollView howsVerticalScrollIndicator={false}>
                 <View style={styles.primary_view}>
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={styles.primary_txt}>D1 + D2 Your total Member = 400</Text>
+                        <Text style={{...styles.primary_txt,
+                            color:Colors.black,
+                            fontSize:moderateScale(16),
+
+                            }}>D1 + D2 Your total Member = 400</Text>
                     </View>
 
                     <View style={styles.secondary_view}>
@@ -97,7 +101,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.Inter.semibold,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
     },
     price_txt: {
         fontFamily: FONTS.Inter.semibold,
-        fontSize: moderateScale(14),
+        fontSize: moderateScale(17),
         color: Colors.black,
         right: moderateScale(10)
     },
@@ -155,7 +159,7 @@ const styles = StyleSheet.create({
     message_view: {
         backgroundColor: '#2E99E7',
         marginHorizontal: moderateScale(15),
-        marginTop: moderateScale(25),
+        marginTop: moderateScale(20),
         borderRadius: moderateScale(10),
         alignItems: 'center',
         justifyContent: 'center',
@@ -163,7 +167,7 @@ const styles = StyleSheet.create({
     },
     total_message_txt: {
         fontFamily: FONTS.Inter.semibold,
-        fontSize: moderateScale(25),
+        fontSize: moderateScale(20),
         color: Colors.secondaryFont
     },
     banner_sty: {
@@ -171,6 +175,7 @@ const styles = StyleSheet.create({
         width: width - moderateScale(30),
         alignSelf: 'center',
         resizeMode: 'contain',
+        marginTop:moderateScale(15)
     }
 });
 

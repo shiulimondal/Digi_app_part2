@@ -117,7 +117,6 @@ const MyProfile = () => {
             'district_id': pickdistrict,
             'pin_code': pinCode
         };
-        console.log('putdataaaaaaa', data);
         setBtnLoader(true); 
         try {
             const res = await HomeService.updateProfile(data);
@@ -163,11 +162,12 @@ const MyProfile = () => {
                         <View style={styles.ref_view}>
                             <Text style={styles.ref_code_txt}>Referral Code : </Text>
                             <View style={{
-                                padding: moderateScale(7),
+                                padding: moderateScale(3),
                                 backgroundColor: Colors.buttonColor,
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                borderRadius: moderateScale(25)
+                                borderRadius: moderateScale(25),
+                                width:moderateScale(80)
                             }}>
                                 <Text style={styles.ref_txt}>{ProfileData.user_referral_code}</Text>
                             </View>
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.Inter.semibold,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     },
     ref_txt: {
         fontFamily: FONTS.Inter.semibold,
-        fontSize: moderateScale(15),
+        fontSize: moderateScale(14),
         color: Colors.secondaryFont,
     },
     ref_code_txt: {

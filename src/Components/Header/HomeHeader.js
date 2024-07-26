@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 import { Colors } from '../../Constants/Colors';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { moderateScale } from '../../Constants/PixelRatio';
@@ -36,7 +36,8 @@ const HomeHeader = () => {
       <StatusBar backgroundColor={Colors.buttonColor} barStyle='light-content' />
       <View style={styles.main_view}>
         <TouchableOpacity onPress={(val)=>handlePress(val)}>
-          <Icon name='bars' type='FontAwesome5' size={22} color={Colors.secondaryFont} />
+          {/* <Icon name='bars' type='FontAwesome5' size={22} color={Colors.secondaryFont} /> */}
+          <Image  source={require('../../assets/images/bar.png')} style={styles.bar_img}/>
         </TouchableOpacity>
         <Text style={styles.header_txt}>Welcome to Digi Help</Text>
         <Pressable onPress={() => {
@@ -56,7 +57,7 @@ const HomeHeader = () => {
 const styles = StyleSheet.create({
   main_view: {
     paddingBottom: moderateScale(7),
-    height: moderateScale(45),
+    height: moderateScale(50),
     width: '100%',
     backgroundColor: Colors.header,
     alignItems: 'center',
@@ -69,6 +70,11 @@ const styles = StyleSheet.create({
     fontSize: responsiveHeight(2),
     color: Colors.secondaryFont,
   },
+  bar_img:{
+    height:moderateScale(32),
+    width:moderateScale(32),
+    resizeMode:'contain'
+  }
 });
 
 export default HomeHeader;

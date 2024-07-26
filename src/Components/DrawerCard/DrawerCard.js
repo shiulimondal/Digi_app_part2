@@ -14,16 +14,14 @@ import Toast from "react-native-simple-toast";
 const DrawerCard = ({ navigation }) => {
     const dispatch = useDispatch()
     const { userData } = useSelector(state => state.User)
-    console.log('userData==========================', userData);
-
     const drawerScreen = [
         {
-            img: require('../../assets/images/dhome.png'),
+            img: require('../../assets/images/homed2.png'),
             title: 'Home',
             handleClick: 'Home'
         },
         {
-            img: require('../../assets/images/duser.png'),
+            img: require('../../assets/images/duser2.png'),
             title: 'My Profile',
             handleClick: 'MyProfile'
         },
@@ -33,27 +31,27 @@ const DrawerCard = ({ navigation }) => {
             handleClick: 'MyBankAccount'
         },
         {
-            img: require('../../assets/images/duser.png'),
+            img: require('../../assets/images/duser2.png'),
             title: 'My Member',
             handleClick: 'MyMember'
         },
         {
-            img: require('../../assets/images/dwallate.png'),
+            img: require('../../assets/images/walletd2.png'),
             title: 'My Income',
             // handleClick: 'MyIncome'
         },
         {
-            img: require('../../assets/images/dwork.png'),
+            img: require('../../assets/images/dworkd2.png'),
             title: 'How It Works',
             handleClick: 'DrawerWorks'
         },
         {
-            img: require('../../assets/images/dsupport.png'),
+            img: require('../../assets/images/dsupport2.png'),
             title: 'Support',
             handleClick: 'Help'
         },
         {
-            img: require('../../assets/images/dgroup.png'),
+            img: require('../../assets/images/dabout2.png'),
             title: 'About Us',
             handleClick: 'AboutUs'
         },
@@ -91,13 +89,13 @@ const DrawerCard = ({ navigation }) => {
                             <Text style={{
                                 fontSize: moderateScale(20),
                                 color: Colors.secondaryFont,
-                                fontFamily: FONTS.Inter.bold
+                                fontFamily: FONTS.Inter.semibold
                             }}
                             >{userData?.first_name?.charAt(0).toUpperCase()}</Text>
                         </View>
                         <Text style={styles.user_name}>{userData.full_name}</Text>
                     </View>
-                    <Icon name='right' type='AntDesign' size={22} />
+                    <Icon name='chevron-right' type='Feather' size={22} />
                 </Pressable>
 
                 <View style={{ height: moderateScale(20) }} />
@@ -107,7 +105,7 @@ const DrawerCard = ({ navigation }) => {
                             style={{ ...styles.card_sty }}
                             onPress={() => { handleDrawerScreen(item) }}>
                             <Image source={item.img} style={{ ...styles.notification_img, tintColor: '#fff' }} />
-                            <Text style={{ ...styles.notification_txt, color: '#fff' }}>{item.title}</Text>
+                            <Text style={{ ...styles.notification_txt, color: '#fff', }}>{item.title}</Text>
                         </TouchableOpacity>
                     );
                 })}
@@ -149,11 +147,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderLeftWidth: 4,
         padding: moderateScale(10),
+       paddingHorizontal:moderateScale(17),
     },
     notification_txt: {
         fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(14),
-        marginLeft: moderateScale(12),
+        marginLeft: moderateScale(22),
     },
     main_view: {
         flexDirection: 'row',
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.secondaryFont,
         borderRadius: moderateScale(10),
         paddingHorizontal: moderateScale(10),
-        padding: moderateScale(6),
+        padding: moderateScale(7),
         justifyContent: 'space-between'
     },
     user_circle: {
@@ -173,20 +172,20 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.buttonColor,
         alignItems: 'center',
         justifyContent: 'center',
-        height: moderateScale(50),
-        width: moderateScale(50)
+        height: moderateScale(44),
+        width: moderateScale(44)
     },
     logout_view: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginHorizontal: moderateScale(15),
+        marginHorizontal: moderateScale(19),
         marginTop: moderateScale(20),
         marginBottom: moderateScale(20)
     },
     logout_txt: {
         fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(14),
-        marginLeft: moderateScale(12),
+        marginLeft: moderateScale(24),
         color: Colors.secondaryFont
     },
     notification_img: {

@@ -216,54 +216,6 @@ const SubCatForm = (props) => {
     };
 
 
-
-
-    //         const finalFormData = new FormData();
-    //         const formDataFields = formData.map(field => ({
-    //             type: field.type,
-    //             select_box_type: field.select_box_type,
-    //             label: field.label,
-    //             name: field.name,
-    //             is_required: "1",
-    //             option: field.option,
-    //             value: formValues[field.name] || null 
-    //         }));
-
-
-    //         finalFormData.append('form_data', JSON.stringify(formDataFields));
-
-    //         selectedDocuments.forEach((doc, index) => {
-    //             finalFormData.append(`file_${index}`, {
-    //                 uri: doc.uri,
-    //                 type: 'file',
-    //                 name: doc.fileName,
-    //             });
-    //         });
-
-    //         console.log('Final FormData:==============================', JSON.stringify(finalFormData));
-
-    //         setBtnLoader(true);
-    //         HomeService.submitFormData(finalFormData)
-    //             .then((res) => {
-    //                 console.log('Submission Response:=================', res);
-    //                 if (res) {
-    //                     setBtnLoader(false);
-    //                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-    //                     console.log('Submission sucessssssssssss Response:', res);
-    //                 } else {
-    //                     setBtnLoader(false);
-    //                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-    //                     console.log('Submission errrrrrrrrrrrrrrrr Response:', res);
-    //                 }
-    //             })
-    //             .catch((err) => {
-    //                 setBtnLoader(false);
-    //                 console.error('Submit Error:', err);
-    //             });
-    //     };
-
-
-
     const handleSubmit = () => {
         const finalFormData = formData.map(field => {
             if (field.type === 'file') {
@@ -309,35 +261,6 @@ const SubCatForm = (props) => {
                 console.error('Submit Error:', err);
             });
     };
-
-
-    // const handleSubmit = () => {
-
-    //      const finalData = {
-    //         "form_id": getFormData,
-    //         "form_data": formData
-    //     };
-
-    //     // console.log('Final Data:=========================', JSON.stringify(finalData));
-    //     // setBtnLoader(true);
-    //     // HomeService.submitFormData(finalData)
-    //     //     .then((res) => {
-    //     //         console.log('Submission Response:=============', res);
-    //     //         if (res) {
-    //     //             setBtnLoader(false);
-    //     //             Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-    //     //         } else {
-    //     //             setBtnLoader(false);
-    //     //             Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-    //     //         }
-    //     //     })
-    //     //     .catch((err) => {
-    //     //         setBtnLoader(false);
-    //     //         console.error('Submit Error:', err);
-    //     //     });
-    // };
-
-
 
 
     return (
@@ -529,7 +452,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.Inter.semibold,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(17),
         color: Colors.black,
     },

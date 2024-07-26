@@ -6,7 +6,7 @@ import { Colors } from '../../Constants/Colors';
 import { FONTS } from '../../Constants/Fonts';
 
 // create a component
-const DepthMemberCard = ({ item, index }) => {
+const DirectMemberCard = ({ item, index }) => {
     return (
         <View style={styles.container}>
             <View style={styles.list_view}>
@@ -14,7 +14,7 @@ const DepthMemberCard = ({ item, index }) => {
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
-                        color: Colors.black
+                        color: '#333333'
                     }}>{index + 1}</Text>
 
                 </View>
@@ -23,7 +23,7 @@ const DepthMemberCard = ({ item, index }) => {
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
-                        color: Colors.black
+                        color: '#333333'
                     }}>{item.joiningDate}</Text>
 
                 </View>
@@ -32,12 +32,12 @@ const DepthMemberCard = ({ item, index }) => {
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
-                        color: Colors.black
+                        color: '#333333'
                     }}>{item.name}</Text>
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
-                        color: Colors.black
+                        color: '#333333'
                     }}>{item.phoneNo}</Text>
 
                 </View>
@@ -48,7 +48,7 @@ const DepthMemberCard = ({ item, index }) => {
                         maxWidth: '70%',
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(12),
-                        color: Colors.black
+                        color: '#333333'
                     }}>{item.address}</Text>
 
                 </View>
@@ -56,11 +56,13 @@ const DepthMemberCard = ({ item, index }) => {
                 <View style={{ width: moderateScale(200), alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={{
                         ...styles.button_sty,
-                        backgroundColor: item.status === false ? '#FE0505' : '#00AB11'
+                        backgroundColor: item.status === false ? '#FE0505' : '#00AB11',
+                        width:item.status === false ? moderateScale(95): moderateScale(130)
+
                     }}>
                         <Text style={{
-                            fontFamily: FONTS.Inter.bold,
-                            fontSize: moderateScale(13),
+                            fontFamily: FONTS.Inter.semibold,
+                            fontSize: moderateScale(12),
                             color: Colors.secondaryFont
                         }}>{item.status === false ? 'INACTIVE' : 'Active Member'}</Text>
                     </TouchableOpacity>
@@ -72,10 +74,12 @@ const DepthMemberCard = ({ item, index }) => {
                                 color: Colors.black
                             }} >{item.status_message}</Text>
                             :
-                            <Text style={{
+                            <Text numberOfLines={2} style={{
                                 fontFamily: FONTS.Inter.semibold,
                                 fontSize: moderateScale(12),
-                                color: Colors.black
+                                color: Colors.black,
+                                maxWidth:'50%',
+                                textAlign:'center'
                             }}>{item.status_message}</Text>
                     }
 
@@ -94,26 +98,24 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginHorizontal: moderateScale(15),
         borderColor: Colors.grey,
-        padding: moderateScale(5),
+        padding: moderateScale(10),
         paddingHorizontal: 0
     },
     list_view: {
-        height: moderateScale(60),
         flexDirection: 'row',
         borderTopRightRadius: moderateScale(10),
         borderTopLeftRadius: moderateScale(10),
         marginHorizontal: moderateScale(15),
         marginTop: moderateScale(15),
-        padding: moderateScale(5)
+        padding: moderateScale(2)
     },
     button_sty: {
-        height: moderateScale(35),
-        width: moderateScale(110),
+        height: moderateScale(28),
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: moderateScale(10)
+        borderRadius: moderateScale(7)
     }
 });
 
 //make this component available to the app
-export default DepthMemberCard;
+export default DirectMemberCard;

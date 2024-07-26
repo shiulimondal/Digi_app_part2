@@ -142,7 +142,6 @@ const MyBankAccount = () => {
                                                     flexDirection: 'row',
                                                     justifyContent: 'space-between',
                                                     alignItems: 'center',
-                                                    marginTop: moderateScale(7)
                                                 }}>
                                                     <Text style={{
                                                         fontFamily: FONTS.Inter.semibold,
@@ -152,7 +151,12 @@ const MyBankAccount = () => {
                                                     <TouchableOpacity
                                                         onPress={() => NavigationService.navigate('EditBankAccount', { bId: item.id })}
                                                         style={styles.add_icon_circle}>
-                                                        <Icon name='pen' size={13} type='FontAwesome5' color={'#fff'} />
+                                                       <Image source={require('../../assets/images/bankedit.png')}
+                                                      style={{
+                                                        height:moderateScale(14),
+                                                        width:moderateScale(14)
+                                                      }}
+                                                      />
                                                     </TouchableOpacity>
 
                                                 </View>
@@ -162,13 +166,7 @@ const MyBankAccount = () => {
                                                     fontSize: moderateScale(14),
                                                     marginTop: moderateScale(5)
                                                 }}>{item.account_no}</Text>
-                                                {/* <Text style={{
-                                                    fontFamily: FONTS.Inter.medium,
-                                                    color: Colors.black,
-                                                    fontSize: moderateScale(14),
-                                                    marginTop: moderateScale(5)
-                                                }}>{item.branch_name}</Text> */}
-
+                                 
                                                 <View style={{
                                                     flexDirection: 'row',
                                                     justifyContent: 'space-between',
@@ -176,12 +174,17 @@ const MyBankAccount = () => {
                                                     marginTop: moderateScale(7)
                                                 }}>
                                                     <Text style={{
-                                                        fontFamily: FONTS.Inter.semibold,
+                                                        fontFamily: FONTS.Inter.medium,
                                                         color: Colors.black,
                                                         fontSize: moderateScale(14),
                                                     }}>{item.ifsc_code}</Text>
                                                     <Pressable onPress={() => setdelBankAcc(item.id)} style={{ ...styles.add_icon_circle, backgroundColor: '#FF3434' }}>
-                                                        <Icon name='delete' size={13} type='AntDesign' color={'#fff'} />
+                                                      <Image source={require('../../assets/images/bankdelete.png')}
+                                                      style={{
+                                                        height:moderateScale(14),
+                                                        width:moderateScale(14)
+                                                      }}
+                                                      />
                                                     </Pressable>
 
                                                 </View>
@@ -212,7 +215,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.Inter.semibold,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(17),
         color: Colors.black,
     },
@@ -236,19 +239,19 @@ const styles = StyleSheet.create({
         fontSize: responsiveFontSize(2.5)
     },
     add_button: {
-        height: moderateScale(35),
+        height: moderateScale(29),
         width: moderateScale(130),
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: Colors.buttonColor,
-        borderRadius: moderateScale(7),
+        borderRadius: moderateScale(5),
         marginHorizontal: moderateScale(15),
         marginTop: moderateScale(10)
     },
     add_txt: {
         color: Colors.secondaryFont,
         fontFamily: FONTS.semibold,
-        fontSize: moderateScale(10)
+        fontSize: moderateScale(11)
     },
     add_icon_circle: {
         height: moderateScale(26),

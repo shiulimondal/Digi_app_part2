@@ -11,7 +11,7 @@ import SwiperFlatList from 'react-native-swiper-flatlist';
 const { height, width } = Dimensions.get('screen');
 
 const SubCategoryListCard = ({ item, index }) => {
-    console.log('subbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbsssssssssss', item);
+    // console.log('subbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbsssssssssss', item);
 
     return (
         <Card index={index} style={styles.container}>

@@ -83,7 +83,7 @@ const Home = ({ navigation }) => {
           scrollViewRef.current.scrollTo({ x: nextIndex * screenWidth, animated: true });
         }
         setCurrentIndex(nextIndex);
-      }, 700); // set a suitable interval time
+      }, 2000); 
 
       return () => clearInterval(interval);
     }
@@ -121,7 +121,7 @@ const Home = ({ navigation }) => {
           <View style={styles.loaderContainer}>
             <View style={{
               backgroundColor: 'rgba(95,37,158,0.1)',
-              height: moderateScale(55),
+              height: moderateScale(40),
               width: width - moderateScale(20),
               borderRadius: moderateScale(10),
               alignSelf: 'center',
@@ -136,15 +136,15 @@ const Home = ({ navigation }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: Colors.background,
-                borderRadius: moderateScale(30),
-                height: moderateScale(28),
-                width: moderateScale(28),
+                borderRadius: moderateScale(12),
+                height: moderateScale(22),
+                width: moderateScale(22),
               }}>
-                <Text style={{ ...styles.user_name, color: Colors.buttonColor }}>{userData?.first_name?.charAt(0).toUpperCase()}</Text>
+                <Text style={{ ...styles.user_name, color: Colors.buttonColor,fontFamily:FONTS.Inter.bold }}>{userData?.first_name?.charAt(0).toUpperCase()}</Text>
               </View>
               <Text style={{
                 ...styles.user_name,
-                marginLeft: moderateScale(7)
+                marginLeft: moderateScale(10)
               }}>{userData.full_name}</Text>
             </View>
 
@@ -167,26 +167,24 @@ const Home = ({ navigation }) => {
               </ScrollView>
             </View>
           ) :
-          <ScrollView
-          ref={scrollViewRef}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            marginTop:moderateScale(7),
-            marginBottom:moderateScale(7),
-            marginLeft:moderateScale(10),
-            flexDirection:'row'
-          }}
-        >
-        
-          {categoryData &&
-            categoryData.map((item, index) => (
-              <View key={index} style={{ width: screenWidth ,}}>
-                <CategoryCard item={item} key={index} />
-              </View>
-            ))}
-        </ScrollView>
+            <ScrollView
+              ref={scrollViewRef}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                marginTop: moderateScale(7),
+                marginBottom: moderateScale(5),
+              }}
+            >
+
+              {categoryData &&
+                categoryData.map((item, index) => (
+                  <View key={index} style={{ width: screenWidth, }}>
+                    <CategoryCard item={item} key={index} />
+                  </View>
+                ))}
+            </ScrollView>
           }
         </View>
         {
@@ -224,9 +222,13 @@ const Home = ({ navigation }) => {
                 </View>
                 <TouchableOpacity onPress={toggleModal} style={styles.end_view}>
                   <Text style={styles.Click_txt}>View Term & Condition for referral income</Text>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.primary_txt}>Click hare</Text>
-                    <Icon name='arrowright' type='AntDesign' color={Colors.secondaryFont} style={{ marginLeft: 10 }} />
+                  <View style={{ flexDirection: 'row',alignItems:'center' }}>
+                    <Text style={{ ...styles.primary_txt, marginBottom: moderateScale(5),fontSize:moderateScale(11) }}>Click hare</Text>
+                    <Image source={require('../../assets/images/homeclickr.png')} style={{
+                      height:moderateScale(15),
+                      width:moderateScale(20),
+                      marginLeft:moderateScale(7)
+                    }}/>
                   </View>
 
                 </TouchableOpacity>
@@ -270,16 +272,7 @@ const Home = ({ navigation }) => {
           loading ?
             <View style={styles.homeB_loder}></View>
             :
-            <View style={styles.bottom_banner}>
-              <Text style={styles.top_txt}>Know the seeciality of this app</Text>
-              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: moderateScale(15) }}>
-                <Text style={styles.top_txt}>Passive</Text>
-                <Image style={{ height: moderateScale(35), width: moderateScale(50), marginHorizontal: moderateScale(20) }}
-                  source={require('../../assets/images/youtube.png')} />
-                <Text style={styles.top_txt}>Income</Text>
-              </View>
-              <Text style={{ ...styles.top_txt, marginTop: moderateScale(10) }}>Know the seeciality of this app</Text>
-            </View>
+            <Image source={require('../../assets/images/bottomBanner.png')} style={styles.bottombanner_sty} />
         }
 
 
@@ -332,12 +325,13 @@ const styles = StyleSheet.create({
   top_view: {
     backgroundColor: Colors.buttonColor,
     marginHorizontal: moderateScale(10),
-    padding: moderateScale(10),
+    padding: moderateScale(5),
     marginTop: moderateScale(7),
     borderRadius: moderateScale(10),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal:moderateScale(10)
   },
   user_name: {
     fontFamily: FONTS.Inter.semibold,
@@ -373,55 +367,56 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
     padding: moderateScale(10),
     marginHorizontal: moderateScale(10),
-    borderRadius: moderateScale(15),
+    borderRadius: moderateScale(10),
     paddingHorizontal: moderateScale(0),
     paddingBottom: moderateScale(0),
     marginTop: moderateScale(10)
   },
   primary_txt: {
-    fontFamily: FONTS.Inter.semibold,
+    fontFamily: FONTS.Inter.medium,
     color: Colors.secondaryFont,
     marginBottom: moderateScale(10),
     fontSize: moderateScale(13)
   },
   secondary_view: {
     backgroundColor: Colors.buttonColor,
-    borderRadius: moderateScale(15),
+    borderRadius: moderateScale(10),
     padding: moderateScale(10),
   },
   amount_txt: {
     fontFamily: FONTS.Inter.semibold,
     color: Colors.secondaryFont,
     marginBottom: moderateScale(10),
-    fontSize: moderateScale(15)
+    fontSize: moderateScale(16)
   },
   button_view: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: moderateScale(7)
+    marginTop: moderateScale(3)
   },
   botton_sty: {
     backgroundColor: '#06D001',
-    width: moderateScale(145),
-    height: moderateScale(40),
-    borderRadius: moderateScale(12),
+    width: moderateScale(147),
+    height: moderateScale(35),
+    borderRadius: moderateScale(10),
     alignItems: 'center',
     justifyContent: 'center'
   },
   button_txt: {
-    fontFamily: FONTS.Inter.semibold,
-    fontSize: moderateScale(14),
+    fontFamily: FONTS.Inter.medium,
+    fontSize: moderateScale(13),
     color: Colors.secondaryFont
   },
   end_view: {
     backgroundColor: '#2B26FD',
-    borderRadius: moderateScale(15),
-    padding: moderateScale(10),
+    borderRadius: moderateScale(10),
     marginTop: moderateScale(15),
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: moderateScale(7),
+    justifyContent: 'center'
   },
   Click_txt: {
-    fontFamily: FONTS.Inter.semibold,
+    fontFamily: FONTS.Inter.medium,
     color: Colors.secondaryFont,
     fontSize: moderateScale(13)
   },
@@ -490,6 +485,13 @@ const styles = StyleSheet.create({
     marginRight: moderateScale(7),
     marginBottom: moderateScale(15),
     paddingHorizontal: moderateScale(5)
+  },
+  bottombanner_sty: {
+    height: moderateScale(170),
+    width: width - moderateScale(20),
+    alignSelf: 'center',
+    marginVertical: moderateScale(10),
+    resizeMode: 'contain'
   }
 });
 

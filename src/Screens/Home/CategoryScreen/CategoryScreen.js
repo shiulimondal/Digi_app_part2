@@ -40,7 +40,7 @@ const CategoryScreen = ({ navigation }) => {
         <View style={{ flexDirection: 'row' }}>
           <View style={{ alignSelf: 'flex-end' }}>
             <Pressable onPress={() => navigation.goBack()}>
-              <Icon name='left' type='AntDesign' size={22} />
+            <Icon name='chevron-left' type='FontAwesome5' size={23} />
             </Pressable>
           </View>
           <View style={{ alignItems: 'center', flex: 1 }}>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   },
   header_txt: {
     textAlign: 'center',
-    fontFamily: FONTS.Inter.semibold,
+    fontFamily: FONTS.Inter.medium,
     fontSize: moderateScale(17),
     color: Colors.black,
   }

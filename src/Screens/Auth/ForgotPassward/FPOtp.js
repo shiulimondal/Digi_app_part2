@@ -26,18 +26,15 @@ const FPOtp = ({ navigation }) => {
 
   const setOtpVerify = () => {
     let data = {
-      "phone": MobileNumber?.data,
+      "phone": MobileNumber?.phone,
       "otp": phoneOtp
     };
     console.log('putdata========', data);
     setBtnLoader(true);
     AuthService.getforgotOtp(data)
       .then((res) => {
-        console.log("Response=====================:", res);
         setBtnLoader(false);
         if (res.success === true) {
-          console.log('resssssssssssssssssss========', res);
-          console.log('resssssssssssssssssss========', res.data);
           NavigationService.navigate('ForgetPassword', { PhNumber: res});
         } else {
           Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);

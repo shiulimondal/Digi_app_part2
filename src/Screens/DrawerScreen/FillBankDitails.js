@@ -26,27 +26,22 @@ const FillBankDitails = () => {
         let data = {
             "account_holder_name": accountHolderName,
             "bank_name": bankName,
-            // "branch_name": branchName,
             "account_no": accountNumber,
             "ifsc_code": ifsc
         };
-        console.log("Responsedataaaaaa:==========++++++++++++++++++++++++++++", data);
         setBtnLoader(true);
         HomeService.addBankAcc(data)
             .then((res) => {
                 setBtnLoader(false);
-                console.log("Responsedataaaaaa:===============", res);
                 if (res.status === true) {
                     NavigationService.navigate('MyBankAccount')
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
                 } else {
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-                    console.log('logggggggggggggggggggg');
                 }
             })
             .catch((err) => {
                 console.error("Error================00000000000000000000000000:", err);
-                Toast.show("Error sending OTP", Toast.SHORT, Toast.BOTTOM);
                 setBtnLoader(false);
             });
     };
@@ -185,7 +180,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.Inter.semibold,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(17),
         color: Colors.black,
     },

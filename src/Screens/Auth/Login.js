@@ -72,12 +72,12 @@ const Login = ({ navigation }) => {
         if (res.status === true) {
           NavigationService.navigate("LoginOTP", { PhNumberData: res });
         } else {
-          Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+          Toast.show('This mobile number already register', Toast.SHORT, Toast.BOTTOM);
         }
       })
       .catch((err) => {
         console.error("Error:", err);
-        Toast.show("Error sending OTP", Toast.SHORT, Toast.BOTTOM);
+        // Toast.show("Error sending OTP", Toast.SHORT, Toast.BOTTOM);
         setBtnLoader(false);
       });
   };

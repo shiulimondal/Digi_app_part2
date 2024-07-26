@@ -64,7 +64,7 @@ const ViewSubcategory = () => {
                 <>
 
 
-                    {/* {
+                    {
                         subCatDataList && subCatDataList.length === 0 ?
                             <View style={styles.loader}>
                                 <Image source={require('../../../assets/images/nodata.png')} style={styles.nodata_sty} />
@@ -73,7 +73,7 @@ const ViewSubcategory = () => {
                                 </View>
                             </View>
                             :
-                            <> */}
+                            <>
                                 <View style={styles.top_view}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ alignSelf: 'flex-end' }}>
@@ -128,8 +128,8 @@ const ViewSubcategory = () => {
                                     )}
                                     keyExtractor={(item, index) => index.toString()}
                                 />
-                            {/* </>
-                    } */}
+                            </>
+                    }
 
                     <Pressable onPress={() => NavigationService.navigate('SubCatFrom', { CatId: cat_idData, SubID: Sub_idData })} style={styles.add_button}>
                         <Icon name='plus' type='AntDesign' size={32} />
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
     },
     header_txt: {
         textAlign: 'center',
-        fontFamily: FONTS.Inter.semibold,
+        fontFamily: FONTS.Inter.medium,
         fontSize: moderateScale(17),
         color: Colors.black,
     },

@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.buttonColor
     },
     splash_img: {
-        height: moderateScale(100),
-        width: moderateScale(180),
+        height: moderateScale(160),
+        width: moderateScale(290),
     },
     bottomsplash_img: {
         height: moderateScale(180),

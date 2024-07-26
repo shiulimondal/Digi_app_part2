@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     width: moderateScale(40)
   },
   title_txt: {
-    fontFamily: FONTS.Inter.semibold,
+    fontFamily: FONTS.Inter.medium,
     fontSize: moderateScale(13),
     marginTop: moderateScale(7),
     color: Colors.secondaryFont
