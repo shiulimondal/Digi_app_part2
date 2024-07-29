@@ -42,6 +42,9 @@ import FPOtp from './src/Screens/Auth/ForgotPassward/FPOtp';
 import ForgetPassword from './src/Screens/Auth/ForgotPassward/ForgetPassword';
 import PrivacyPolicy from './src/Screens/Auth/PrivacyPolicy';
 import TermsAndConditions from './src/Screens/Auth/TermsAndConditions';
+import FundingDetails from './src/Screens/DrawerScreen/FundingDetails';
+import IncomeStructure from './src/Screens/Home/ReferScreen/IncomeStructure';
+import TransferMoney from './src/Screens/Home/ReferScreen/TransferMoney';
 
 
 
@@ -95,6 +98,9 @@ const App = () => {
                 <Stack.Screen name="MyBankAccount" component={MyBankAccount} />
                 <Stack.Screen name="MyMember" component={MyMember} />
                 <Stack.Screen name="MyIncome" component={MyIncome} />
+                <Stack.Screen name="FundingDetails" component={FundingDetails} />
+                <Stack.Screen name="IncomeStructure" component={IncomeStructure} />
+                <Stack.Screen name="TransferMoney" component={TransferMoney} />
                 <Stack.Screen name="DrawerWorks" component={DrawerWorks} />
                 <Stack.Screen name="Settings" component={Settings} />
                 <Stack.Screen name="ChangePassword" component={ChangePassword} />
@@ -107,6 +113,7 @@ const App = () => {
                 <Stack.Screen name="ViewSubcategory" component={ViewSubcategory} />
                 <Stack.Screen name="SubCategoryProfile" component={SubCategoryProfile} />
                 <Stack.Screen name="SubCategorySubscription" component={SubCategorySubscription} />
+          
 
               </>
 

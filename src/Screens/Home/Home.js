@@ -83,11 +83,17 @@ const Home = ({ navigation }) => {
           scrollViewRef.current.scrollTo({ x: nextIndex * screenWidth, animated: true });
         }
         setCurrentIndex(nextIndex);
-      }, 2000); 
+      }, 2000);
 
       return () => clearInterval(interval);
     }
   }, [currentIndex, categoryData]);
+
+  const extendedCategoryData = [
+    ...categoryData.slice(-1), 
+    ...categoryData,
+    ...categoryData.slice(0, 1) 
+  ];
 
   const UserData = [
     {
@@ -98,12 +104,12 @@ const Home = ({ navigation }) => {
     {
       img: require('../../assets/images/income.png'),
       title: 'My Income',
-      // handleClick: 'Home'
+      handleClick: 'MyIncome'
     },
     {
       img: require('../../assets/images/funding.png'),
       title: 'Funding Details',
-      // handleClick: 'Home'
+      handleClick: 'FundingDetails'
     },
     {
       img: require('../../assets/images/share.png'),
@@ -140,7 +146,7 @@ const Home = ({ navigation }) => {
                 height: moderateScale(22),
                 width: moderateScale(22),
               }}>
-                <Text style={{ ...styles.user_name, color: Colors.buttonColor,fontFamily:FONTS.Inter.bold }}>{userData?.first_name?.charAt(0).toUpperCase()}</Text>
+                <Text style={{ ...styles.user_name, color: Colors.buttonColor, fontFamily: FONTS.Inter.bold }}>{userData?.first_name?.charAt(0).toUpperCase()}</Text>
               </View>
               <Text style={{
                 ...styles.user_name,
@@ -177,9 +183,8 @@ const Home = ({ navigation }) => {
                 marginBottom: moderateScale(5),
               }}
             >
-
-              {categoryData &&
-                categoryData.map((item, index) => (
+              {extendedCategoryData &&
+                extendedCategoryData.map((item, index) => (
                   <View key={index} style={{ width: screenWidth, }}>
                     <CategoryCard item={item} key={index} />
                   </View>
@@ -213,22 +218,26 @@ const Home = ({ navigation }) => {
                   <Text style={styles.amount_txt}>₹ 2050</Text>
                 </View>
                 <View style={styles.button_view}>
-                  <Pressable style={styles.botton_sty}>
+                  <Pressable 
+                  onPress={()=>NavigationService.navigate('IncomeStructure')}
+                  style={styles.botton_sty}>
                     <Text style={styles.button_txt}>Income Structure</Text>
                   </Pressable>
-                  <Pressable style={styles.botton_sty}>
+                  <Pressable 
+                  onPress={()=>NavigationService.navigate('TransferMoney')}
+                  style={styles.botton_sty}>
                     <Text style={styles.button_txt}>Withdraw Request</Text>
                   </Pressable>
                 </View>
                 <TouchableOpacity onPress={toggleModal} style={styles.end_view}>
                   <Text style={styles.Click_txt}>View Term & Condition for referral income</Text>
-                  <View style={{ flexDirection: 'row',alignItems:'center' }}>
-                    <Text style={{ ...styles.primary_txt, marginBottom: moderateScale(5),fontSize:moderateScale(11) }}>Click hare</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ ...styles.primary_txt, marginBottom: moderateScale(5), fontSize: moderateScale(11) }}>Click hare</Text>
                     <Image source={require('../../assets/images/homeclickr.png')} style={{
-                      height:moderateScale(15),
-                      width:moderateScale(20),
-                      marginLeft:moderateScale(7)
-                    }}/>
+                      height: moderateScale(15),
+                      width: moderateScale(20),
+                      marginLeft: moderateScale(7)
+                    }} />
                   </View>
 
                 </TouchableOpacity>
@@ -331,7 +340,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal:moderateScale(10)
+    paddingHorizontal: moderateScale(10)
   },
   user_name: {
     fontFamily: FONTS.Inter.semibold,

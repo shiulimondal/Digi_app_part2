@@ -142,11 +142,6 @@ const MyProfile = () => {
             <ScreenHeader />
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
-                    <View style={{ alignSelf: 'flex-end' }}>
-                        <Pressable onPress={() => NavigationService.goBack()}>
-                            <Icon name='chevron-left' type='FontAwesome5' size={23} />
-                        </Pressable>
-                    </View>
                     <View style={{ alignItems: 'center', flex: 1 }}>
                         <Text style={styles.header_txt}>My Profile</Text>
                     </View>

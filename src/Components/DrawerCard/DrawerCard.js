@@ -38,7 +38,7 @@ const DrawerCard = ({ navigation }) => {
         {
             img: require('../../assets/images/walletd2.png'),
             title: 'My Income',
-            // handleClick: 'MyIncome'
+            handleClick: 'MyIncome'
         },
         {
             img: require('../../assets/images/dworkd2.png'),

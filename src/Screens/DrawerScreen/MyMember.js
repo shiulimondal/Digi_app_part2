@@ -19,11 +19,6 @@ const MyMember = ({ navigation }) => {
 
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
-                    <View style={{ alignSelf: 'flex-end' }}>
-                        <Pressable onPress={() => navigation.goBack()}>
-                        <Icon name='chevron-left' type='FontAwesome5' size={23} />
-                        </Pressable>
-                    </View>
                     <View style={{ alignItems: 'center', flex: 1 }}>
                         <Text style={styles.header_txt}>My Member</Text>
                     </View>
@@ -81,7 +76,6 @@ const MyMember = ({ navigation }) => {
                     <Text style={styles.total_message_txt}>Your Total Member will
                         Generate Commission</Text>
                 </View>
-
                 <Image source={require('../../assets/images/memberBanner.png')} style={styles.banner_sty} />
 
             </ScrollView>
@@ -175,7 +169,8 @@ const styles = StyleSheet.create({
         width: width - moderateScale(30),
         alignSelf: 'center',
         resizeMode: 'contain',
-        marginTop:moderateScale(15)
+        marginTop:moderateScale(15),
+        
     }
 });
 

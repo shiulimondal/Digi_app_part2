@@ -1,3 +1,4 @@
+
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList, ScrollView, Dimensions } from 'react-native';
@@ -5,52 +6,45 @@ import { Icon } from 'react-native-basic-elements';
 import { Colors } from '../../Constants/Colors';
 import { FONTS } from '../../Constants/Fonts';
 import { moderateScale } from '../../Constants/PixelRatio';
-import HomeHeader from '../../Components/Header/HomeHeader';
-
-import DepthMemberCard from '../../Components/DrawerCard/DepthMemberCard';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
+import FundingCard from '../../Components/DrawerCard/FundingCard';
 
 
 const { height, width } = Dimensions.get('window')
-const MyDepthMember = ({ navigation }) => {
+const FundingDetails = ({ navigation }) => {
 
-    const direactMenverData = [
+    const fundingData = [
         {
-            sl_no: "",
-            joiningDate: '10/12/2024',
-            name: 'HAPI MD KHAN ',
-            phoneNo: '9876543210',
-            address: "West Bengal Birbhum",
-            status: false,
-            status_message: 'Not paid member'
+            Date: '10/12/2024',
+            paid: '₹541',
+            remark: 'Add Profile',
+            category: "Job",
+            Commissions: 'D-1 ₹45.88'
         },
         {
-            sl_no: "",
-            joiningDate: '10/12/2024',
-            name: 'Altab Hossain',
-            phoneNo: '9876543210',
-            address: "West Bengal Birbhum",
-            status: true,
-            status_message: 'Service user Find groom'
+            Date: '10/12/2024',
+            paid: '₹541',
+            remark: 'Add Profile',
+            category: "Job",
+            Commissions: 'D-1 ₹45.88'
         },
         {
-            sl_no: "",
-            joiningDate: '10/12/2024',
-            name: 'Rabis Kumar',
-            phoneNo: '9876543210',
-            address: "West Bengal Mursidabad",
-            status: true,
-            status_message: 'Add Profile Mechanic'
+            Date: '10/12/2024',
+            paid: '₹541',
+            remark: 'Add Profile',
+            category: "Job",
+            Commissions: 'D-1 ₹45.88'
         },
+
     ]
     return (
         <View style={styles.container}>
-             <ScreenHeader />
+            <ScreenHeader />
 
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ alignItems: 'center', flex: 1 }}>
-                        <Text style={styles.header_txt}>My Depth  2 Members</Text>
+                        <Text style={styles.header_txt}>Funding  Details</Text>
                     </View>
                 </View>
             </View>
@@ -58,39 +52,38 @@ const MyDepthMember = ({ navigation }) => {
             <ScrollView showsHorizontalScrollIndicator={false} horizontal >
                 <View>
                     <View style={styles.list_view}>
-                        <View style={{ width: moderateScale(80), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.sl_txt}>Sl NO.</Text>
+                        <View style={{ width: moderateScale(90), alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={styles.sl_txt}>Date</Text>
 
                         </View>
 
                         <View style={{ width: moderateScale(130), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.sl_txt}>JOINING DATE</Text>
+                            <Text style={styles.sl_txt}>Paid</Text>
 
                         </View>
 
                         <View style={{ width: moderateScale(150), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.sl_txt}>NAME</Text>
+                            <Text style={styles.sl_txt}>Remarks</Text>
 
                         </View>
 
 
                         <View style={{ width: moderateScale(180), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.sl_txt}>ADDRESS</Text>
+                            <Text style={styles.sl_txt}>Category</Text>
 
                         </View>
 
-                        <View style={{ width: moderateScale(200), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.sl_txt}>STATUS</Text>
+                        <View style={{ width: moderateScale(180), alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={styles.sl_txt}>Commissions</Text>
 
                         </View>
                     </View>
 
-
                     <View>
                         {
-                            direactMenverData.map((item, index) => {
+                            fundingData.map((item, index) => {
                                 return (
-                                    <DepthMemberCard item={item} index={index} />
+                                    <FundingCard item={item} index={index} />
                                 )
                             })
                         }
@@ -124,7 +117,7 @@ const styles = StyleSheet.create({
     },
     list_view: {
         height: moderateScale(50),
-        backgroundColor: Colors.black,
+        backgroundColor: '#333333',
         flexDirection: 'row',
         borderTopRightRadius: moderateScale(10),
         borderTopLeftRadius: moderateScale(10),
@@ -135,11 +128,12 @@ const styles = StyleSheet.create({
     },
     sl_txt: {
         color: Colors.secondaryFont,
-        fontFamily:FONTS.Inter.semibold,
-        fontSize:moderateScale(14),
-       
+        fontFamily: FONTS.Inter.semibold,
+        fontSize: moderateScale(14),
+
     }
 });
 
 //make this component available to the app
-export default MyDepthMember;
+export default FundingDetails;
+

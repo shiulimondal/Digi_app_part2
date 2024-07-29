@@ -8,6 +8,8 @@ import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { FONTS } from '../../Constants/Fonts';
 import { useSharedValue, withTiming, runOnJS } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native';
+import NavigationService from '../../Services/Navigation';
+
 
 
 const ScreenHeader = () => {
@@ -18,15 +20,14 @@ const ScreenHeader = () => {
   const navigateToNotification = () => {
     navigation.navigate('NotificationScreen');
   };
-
-
-
   return (
     <View>
       <StatusBar backgroundColor={Colors.buttonColor} barStyle='light-content' />
       <View style={styles.main_view}>
-        <View onPress={(val)=>handlePress(val)}>
-          <Icon name='bars' type='FontAwesome5' size={22} color={Colors.buttonColor} />
+        <View >
+          <Pressable onPress={() => NavigationService.goBack()}>
+            <Icon name='chevron-left' type='FontAwesome5' size={21} color={'#fff'}/>
+          </Pressable>
         </View>
         <Text style={styles.header_txt}>Welcome to Digi Help</Text>
         <Pressable onPress={() => {
