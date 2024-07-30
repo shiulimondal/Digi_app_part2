@@ -81,6 +81,9 @@ const submitSubscriptionData = async (data) => {
 const setChangePassword = async (data) => {
     return HttpClient.post('/change-password',data);
 }
+const setbanneryoutubelink = async () => {
+    return HttpClient.post('/home');
+}
 
 
 const HomeService = {
@@ -109,7 +112,8 @@ const HomeService = {
     setOption_DisttrictList,
     submitFormData,
     submitSubscriptionData,
-    setChangePassword
+    setChangePassword,
+    setbanneryoutubelink
 }
 
 export default HomeService;

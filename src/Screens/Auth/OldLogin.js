@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { FONTS } from '../../Constants/Fonts';
@@ -14,20 +14,29 @@ import { useDispatch } from 'react-redux';
 import Toast from "react-native-simple-toast";
 import NavigationService from '../../Services/Navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // create a component
 const OldLogin = ({ navigation }) => {
-    const dispatch = useDispatch()
-    const [mobile, setMobile] = useState('')
-    const [password, setPassword] = useState('')
+    const dispatch = useDispatch();
+    const [mobile, setMobile] = useState('');
+    const [password, setPassword] = useState('');
     const [passwordShow, setPasswordShow] = useState(true);
     const [btnLoader, setBtnLoader] = useState(false);
     const [check, setCheck] = useState(false);
 
+    useEffect(() => {
+        const getStoredMobile = async () => {
+            const storedMobile = await AsyncStorage.getItem('mobile');
+            if (storedMobile) {
+                setMobile(storedMobile);
+            }
+        };
+        getStoredMobile();
+    }, []);
+
     const getUseLogin = async () => {
-        if (password == '') {
+        if (password === '') {
             Toast.show('Please enter password');
         } else if (password.length < 6) {
             Toast.show('Password must be at least 6 characters');
@@ -35,8 +44,9 @@ const OldLogin = ({ navigation }) => {
 
         if (!check) {
             Toast.show('Please Click Check Box', Toast.SHORT);
-            return
+            return;
         }
+
         let data = {
             "phone": mobile,
             "password": password,
@@ -44,13 +54,14 @@ const OldLogin = ({ navigation }) => {
         };
         setBtnLoader(true);
         AuthService.getLogin(data)
-            .then((res) => {
+            .then(async (res) => {
                 console.log('resssssssssssssssssssssssss', res);
                 setBtnLoader(false);
                 if (res.status === true) {
                     AuthService.setAccount(res.data);
                     AuthService.setToken(res?.token);
-                    dispatch(setuser(res.data))
+                    dispatch(setuser(res.data));
+                    await AsyncStorage.setItem('mobile', mobile)
                 } else {
                     Toast.show('User not found', Toast.SHORT, Toast.BOTTOM);
                 }
@@ -61,9 +72,6 @@ const OldLogin = ({ navigation }) => {
                 setBtnLoader(false);
             });
     };
-
-
-
 
     return (
         <View style={styles.container}>
@@ -139,10 +147,9 @@ const OldLogin = ({ navigation }) => {
                         activeColor={Colors.buttonColor}
                     />
                     <View>
-                        <Text style={styles.policy_txt}>I have read & agree to the <Text onPress={()=>NavigationService.navigate('TermsAndConditions')} style={{ color: '#146CEA' }}>Terms and Conditions</Text></Text>
-                        <Text style={styles.policy_txt}>and <Text  onPress={()=>NavigationService.navigate('PrivacyPolicy')} style={{ color: '#146CEA' }}>Privacy Policy.</Text></Text>
+                        <Text style={styles.policy_txt}>I have read & agree to the <Text onPress={() => NavigationService.navigate('TermsAndConditions')} style={{ color: '#146CEA' }}>Terms and Conditions</Text></Text>
+                        <Text style={styles.policy_txt}>and <Text onPress={() => NavigationService.navigate('PrivacyPolicy')} style={{ color: '#146CEA' }}>Privacy Policy.</Text></Text>
                     </View>
-
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: moderateScale(20), marginTop: moderateScale(20) }}>
@@ -155,7 +162,6 @@ const OldLogin = ({ navigation }) => {
                                 :
                                 <Text style={styles.button_log_txt}>LOGIN</Text>
                         }
-
                     </TouchableOpacity>
                     <TouchableOpacity 
                     onPress={()=>NavigationService.navigate('FPlogin')}
@@ -164,7 +170,7 @@ const OldLogin = ({ navigation }) => {
                     </TouchableOpacity> 
                 </View>
 
-                <Text style={{ fontFamily:FONTS.Inter.semibold, color: Colors.black, textAlign: 'center', marginTop: moderateScale(30) }}>New User</Text>
+                <Text style={{ fontFamily: FONTS.Inter.semibold, color: Colors.black, textAlign: 'center', marginTop: moderateScale(30) }}>New User</Text>
 
                 <AppButton
                     title="NEW USER REGISTER NOW"
@@ -173,10 +179,10 @@ const OldLogin = ({ navigation }) => {
                     onPress={() => { NavigationService.navigate('Login') }}
                 />
             </KeyboardAwareScrollView>
-
         </View>
     );
 };
+
 
 // define your styles
 const styles = StyleSheet.create({

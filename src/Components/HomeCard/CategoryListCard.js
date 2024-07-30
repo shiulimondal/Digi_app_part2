@@ -18,7 +18,7 @@ const CategoryListCard = ({ item, index }) => {
             <View style={styles.img_circle}>
                 <Image source={{ uri: item.image_path }} style={styles.img_sty} />
             </View>
-            <Text  style={styles.title_txt}>{item.name}</Text>
+            <Text numberOfLines={1} style={styles.title_txt}>{item.name}</Text>
             </View>
             <Icon  name='right' type='AntDesign' size={22}/>
            
@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(15),
         textAlign: 'center',
         color: Colors.black,
-        marginLeft:moderateScale(10)
+        marginLeft:moderateScale(10),
+        maxWidth:'79%'
     }
 });
 

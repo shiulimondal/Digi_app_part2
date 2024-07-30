@@ -29,7 +29,9 @@ const Message = () => {
                 setLoading(false);
                 if (res && res.status === true) {
                     console.log('listttttttttttttttttttt================', res.data);
-                    setMessageList(res.data);
+                    // Reverse the array so the most recent message is first
+                    const reversedMessages = res.data.reverse();
+                    setMessageList(reversedMessages);
                 }
             })
             .catch((err) => {
@@ -37,6 +39,8 @@ const Message = () => {
                 setLoading(false);
             });
     };
+
+    // const reversedMessages = [...res.data].reverse();
 
     return (
         <View style={styles.container}>

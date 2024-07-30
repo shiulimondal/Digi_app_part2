@@ -8,6 +8,7 @@ import { FONTS } from '../../../Constants/Fonts';
 import { Card } from 'react-native-basic-elements';
 import { ScrollView } from 'react-native';
 import { Image } from 'react-native';
+import AllBottonComponent from '../../../Components/BottomComponent/AllBottonComponent';
 
 
 const { height, width } = Dimensions.get('screen')
@@ -27,7 +28,7 @@ const IncomeStructure = () => {
             </View>
 
             <ScrollView howsVerticalScrollIndicator={false}>
-            <View style={styles.primary_view}>
+                <View style={styles.primary_view}>
                     <View style={{ alignItems: 'center' }}>
                         <Text style={{
                             ...styles.primary_txt,
@@ -39,18 +40,18 @@ const IncomeStructure = () => {
                     <View style={styles.secondary_view}>
                         <View style={styles.inner_view}>
                             <Text style={{
-                               ...styles.inner_txt
+                                ...styles.inner_txt
                             }}>From Second Level Member (Depth - 2)      </Text>
                             <Text style={{
-                               ...styles.inner_txt
+                                ...styles.inner_txt
                             }}>Rs - 15% </Text>
                         </View>
-                        <View style={{...styles.inner_view,borderTopWidth:1,borderColor:'#fff'}}>
-                            <Text  style={{
-                               ...styles.inner_txt
+                        <View style={{ ...styles.inner_view, borderTopWidth: 1, borderColor: '#fff' }}>
+                            <Text style={{
+                                ...styles.inner_txt
                             }}>From Second Level Member (Depth - 2)</Text>
                             <Text style={{
-                               ...styles.inner_txt
+                                ...styles.inner_txt
                             }}>Rs - 5%</Text>
                         </View>
 
@@ -62,6 +63,16 @@ const IncomeStructure = () => {
                 <Image source={require('../../../assets/images/incomebanner.png')} style={styles.banner_sty} />
 
             </ScrollView>
+            <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };
@@ -113,10 +124,10 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(13)
     },
     secondary_view: {
-        backgroundColor:'#999',
+        backgroundColor: '#999',
         borderRadius: moderateScale(0),
-        borderBottomLeftRadius:moderateScale(10),
-        borderBottomRightRadius:moderateScale(10),
+        borderBottomLeftRadius: moderateScale(10),
+        borderBottomRightRadius: moderateScale(10),
 
     },
     amount_txt: {
@@ -144,16 +155,16 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         marginTop: moderateScale(15),
     },
-    inner_view:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        padding:moderateScale(10)
+    inner_view: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: moderateScale(10)
     },
-    inner_txt:{
+    inner_txt: {
         marginBottom: moderateScale(3),
         color: Colors.secondaryFont,
         fontSize: moderateScale(12),
-        fontFamily:FONTS.Inter.semibold
+        fontFamily: FONTS.Inter.semibold
     }
 });
 

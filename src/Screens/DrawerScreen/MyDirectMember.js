@@ -8,6 +8,7 @@ import { moderateScale } from '../../Constants/PixelRatio';
 import HomeHeader from '../../Components/Header/HomeHeader';
 import DirectMemberCard from '../../Components/DrawerCard/DirectMemberCard';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
+import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 
 const { height, width } = Dimensions.get('window')
@@ -96,6 +97,16 @@ const MyDirectMember = ({ navigation }) => {
                 </View>
 
             </ScrollView>
+            <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };

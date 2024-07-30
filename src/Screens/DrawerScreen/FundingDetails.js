@@ -8,6 +8,7 @@ import { FONTS } from '../../Constants/Fonts';
 import { moderateScale } from '../../Constants/PixelRatio';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
 import FundingCard from '../../Components/DrawerCard/FundingCard';
+import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 
 const { height, width } = Dimensions.get('window')
@@ -91,6 +92,15 @@ const FundingDetails = ({ navigation }) => {
                 </View>
 
             </ScrollView>
+            
+            <View style={{
+                height: moderateScale(60),
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };

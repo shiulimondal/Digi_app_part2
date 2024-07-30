@@ -6,6 +6,7 @@ import { moderateScale } from '../../Constants/PixelRatio';
 import { FONTS } from '../../Constants/Fonts';
 import { Icon } from 'react-native-basic-elements';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
+import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 
 
@@ -79,6 +80,17 @@ const MyMember = ({ navigation }) => {
                 <Image source={require('../../assets/images/memberBanner.png')} style={styles.banner_sty} />
 
             </ScrollView>
+            
+            <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };

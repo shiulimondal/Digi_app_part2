@@ -9,6 +9,7 @@ import { Card, Icon } from 'react-native-basic-elements';
 import ScreenHeader from '../../../Components/Header/ScreenHeader';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
+import AllBottonComponent from '../../../Components/BottomComponent/AllBottonComponent';
 
 const { height, width } = Dimensions.get('screen')
 // create a component
@@ -196,6 +197,16 @@ const SubCategoryProfile = () => {
 
                 </View>
             </ScrollView>
+            <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };

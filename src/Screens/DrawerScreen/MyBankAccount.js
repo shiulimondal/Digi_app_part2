@@ -11,6 +11,7 @@ import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dim
 import Toast from "react-native-simple-toast";
 import ScreenHeader from '../../Components/Header/ScreenHeader';
 import { useFocusEffect } from '@react-navigation/native';
+import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 // create a component
 const MyBankAccount = () => {
@@ -129,8 +130,8 @@ const MyBankAccount = () => {
                                         return (
                                             <Card key={index} style={{
                                                 marginHorizontal: moderateScale(10),
-                                                marginTop:moderateScale(10),
-                                                marginBottom:moderateScale(10)
+                                                marginTop: moderateScale(10),
+                                                marginBottom: moderateScale(10)
                                             }}>
 
                                                 <View style={{
@@ -146,12 +147,12 @@ const MyBankAccount = () => {
                                                     <TouchableOpacity
                                                         onPress={() => NavigationService.navigate('EditBankAccount', { bId: item.id })}
                                                         style={styles.add_icon_circle}>
-                                                       <Image source={require('../../assets/images/bankedit.png')}
-                                                      style={{
-                                                        height:moderateScale(14),
-                                                        width:moderateScale(14)
-                                                      }}
-                                                      />
+                                                        <Image source={require('../../assets/images/bankedit.png')}
+                                                            style={{
+                                                                height: moderateScale(14),
+                                                                width: moderateScale(14)
+                                                            }}
+                                                        />
                                                     </TouchableOpacity>
 
                                                 </View>
@@ -161,7 +162,14 @@ const MyBankAccount = () => {
                                                     fontSize: moderateScale(14),
                                                     marginTop: moderateScale(5)
                                                 }}>{item.account_no}</Text>
-                                 
+
+                                                <Text style={{
+                                                    fontFamily: FONTS.Inter.medium,
+                                                    color: Colors.black,
+                                                    fontSize: moderateScale(14),
+                                                    marginTop: moderateScale(5)
+                                                }}>{item.bank_name}</Text>
+
                                                 <View style={{
                                                     flexDirection: 'row',
                                                     justifyContent: 'space-between',
@@ -174,12 +182,12 @@ const MyBankAccount = () => {
                                                         fontSize: moderateScale(14),
                                                     }}>{item.ifsc_code}</Text>
                                                     <Pressable onPress={() => setdelBankAcc(item.id)} style={{ ...styles.add_icon_circle, backgroundColor: '#FF3434' }}>
-                                                      <Image source={require('../../assets/images/bankdelete.png')}
-                                                      style={{
-                                                        height:moderateScale(14),
-                                                        width:moderateScale(14)
-                                                      }}
-                                                      />
+                                                        <Image source={require('../../assets/images/bankdelete.png')}
+                                                            style={{
+                                                                height: moderateScale(14),
+                                                                width: moderateScale(14)
+                                                            }}
+                                                        />
                                                     </Pressable>
 
                                                 </View>
@@ -193,6 +201,16 @@ const MyBankAccount = () => {
 
                 )
             }
+            <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };

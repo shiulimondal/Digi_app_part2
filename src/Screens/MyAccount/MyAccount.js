@@ -16,7 +16,7 @@ const MyAccount = () => {
     return (
         <View style={styles.container}>
             <HomeHeader />
-            <KeyboardAwareScrollView>
+            {/* <KeyboardAwareScrollView> */}
                 <Text style={styles.title_txt}>Add Your Business Profile</Text>
                 <Image source={require('../../assets/images/profilebanner.jpg')} style={styles.img_sty} />
                 <AppButton
@@ -41,7 +41,7 @@ const MyAccount = () => {
                     }}
                     textStyle={styles.button_txt}
                 />
-            </KeyboardAwareScrollView>
+            {/* </KeyboardAwareScrollView> */}
 
         </View>
     );
@@ -57,13 +57,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: moderateScale(15),
         color: Colors.buttonColor,
-        fontSize: moderateScale(30),
+        fontSize: moderateScale(28),
         color: Colors.buttonColor,
         fontFamily: FONTS.Almendra.regular
     },
     img_sty: {
-        height: moderateScale(220),
-        width: moderateScale(220),
+        height: moderateScale(200),
+        width: moderateScale(200),
         resizeMode: 'contain',
         alignSelf: 'center'
     },

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Modal } from 'react-native';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { Colors } from '../../Constants/Colors';
 import { FONTS } from '../../Constants/Fonts';
@@ -15,7 +15,7 @@ const SubCategoryCard = ({ item, index }) => {
             { sub_name: item.name, catId: item.category_id, subId:item.id })}
             key={index} style={styles.container}>
             <Image source={{ uri: item.image_path }} style={styles.img_sty} />
-            <Text style={styles.title_txt}>{item.name}</Text>
+            <Text numberOfLines={2} style={styles.title_txt}>{item.name}</Text>
 
         </TouchableOpacity>
     );
@@ -25,13 +25,14 @@ const SubCategoryCard = ({ item, index }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: Colors.cardColor,
-        elevation: moderateScale(1),
+        elevation: moderateScale(4),
         alignItems: 'center',
         paddingHorizontal: moderateScale(15),
         padding: moderateScale(10),
         width: moderateScale(155),
         borderRadius: moderateScale(12),
-        marginBottom:moderateScale(10)
+        marginBottom:moderateScale(10),
+        height:moderateScale(160)
     },
     img_sty: {
         height: moderateScale(92),

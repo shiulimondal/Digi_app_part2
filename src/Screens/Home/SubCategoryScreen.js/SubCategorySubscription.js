@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import sha256 from 'sha256'
 import Base64 from 'react-native-base64'
 import Toast from "react-native-simple-toast";
+import AllBottonComponent from '../../../Components/BottomComponent/AllBottonComponent';
 
 // create a component
 const { height, width } = Dimensions.get('screen');
@@ -249,7 +250,16 @@ const SubCategorySubscription = () => {
                     </TouchableOpacity>
                 </View>
             )}
-
+             <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };

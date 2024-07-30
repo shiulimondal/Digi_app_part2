@@ -15,6 +15,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Toast from "react-native-simple-toast";
 import Home from '../Home';
 import HttpClient from '../../../Utils/HttpClient';
+import AllBottonComponent from '../../../Components/BottomComponent/AllBottonComponent';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -429,6 +430,17 @@ const SubCatForm = (props) => {
                     </TouchableOpacity>
                 </View>
             </Modal>
+
+            <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };

@@ -8,6 +8,7 @@ import { FONTS } from '../../../Constants/Fonts';
 import CategoryListCard from '../../../Components/HomeCard/CategoryListCard';
 import HomeService from '../../../Services/HomeServises';
 import ScreenHeader from '../../../Components/Header/ScreenHeader';
+import AllBottonComponent from '../../../Components/BottomComponent/AllBottonComponent';
 
 
 const { height, width } = Dimensions.get('screen');
@@ -67,6 +68,17 @@ const CategoryScreen = ({ navigation }) => {
           keyExtractor={(item, index) => index.toString()}
         />
       }
+     <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
+
 
     </View>
   );

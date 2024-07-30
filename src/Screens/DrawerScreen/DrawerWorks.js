@@ -7,6 +7,7 @@ import { Icon } from 'react-native-basic-elements';
 import WorkCard from '../../Components/DrawerCard/WorkCard';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
 import HomeService from '../../Services/HomeServises';
+import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 
 const { height, width } = Dimensions.get('screen');
@@ -55,9 +56,18 @@ const DrawerWorks = ({ navigation }) => {
                     )}
                     keyExtractor={(item, index) => index.toString()}
                 />
+                 <View style={{
+                height: moderateScale(60),
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
             </>
             }
 
+           
         </View>
     );
 };

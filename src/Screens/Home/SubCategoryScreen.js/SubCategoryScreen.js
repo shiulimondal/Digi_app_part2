@@ -12,6 +12,7 @@ import HomeService from '../../../Services/HomeServises';
 import { useRoute } from '@react-navigation/native';
 import ScreenHeader from '../../../Components/Header/ScreenHeader';
 import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
+import AllBottonComponent from '../../../Components/BottomComponent/AllBottonComponent';
 
 // create a component
 const SubCategoryScreen = () => {
@@ -119,9 +120,18 @@ const SubCategoryScreen = () => {
                             </>
                     }
 
-
                 </>
             )}
+             <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
 
         </View>
     );

@@ -9,6 +9,7 @@ import { moderateScale } from '../../Constants/PixelRatio';
 import { FONTS } from '../../Constants/Fonts';
 import { Switch } from 'react-native-switch';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
+import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 // create a component
 const Settings = ({ navigation }) => {
@@ -67,6 +68,16 @@ const Settings = ({ navigation }) => {
 
                
             </Card>
+            <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };

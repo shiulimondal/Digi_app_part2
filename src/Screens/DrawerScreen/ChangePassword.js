@@ -10,6 +10,7 @@ import ScreenHeader from '../../Components/Header/ScreenHeader';
 import HomeService from '../../Services/HomeServises';
 import NavigationService from '../../Services/Navigation';
 import Toast from "react-native-simple-toast";
+import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 // create a component
 const ChangePassword = ({ navigation }) => {
@@ -180,6 +181,14 @@ const ChangePassword = ({ navigation }) => {
                     disabled={btnLoader}
                 />
             </ScrollView>
+            <View style={{
+                height: moderateScale(60),
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };

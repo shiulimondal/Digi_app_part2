@@ -12,7 +12,8 @@ import UserDataCard from '../../Components/HomeCard/UserDataCard';
 import { useSelector } from 'react-redux';
 import NavigationService from '../../Services/Navigation';
 import HomeService from '../../Services/HomeServises';
-import { SwiperFlatList } from 'react-native-swiper-flatlist';
+import YouTubeIframe from 'react-native-youtube-iframe';
+
 
 const { height, width } = Dimensions.get('screen');
 const Home = ({ navigation }) => {
@@ -24,7 +25,8 @@ const Home = ({ navigation }) => {
   const scrollViewRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const screenWidth = moderateScale(110)
-  // console.log('screenWidthscreenWidthscreenWidth',screenWidth);
+  const [videoLink, setVideoLink] = useState()
+  console.log('cattttttttttttttttttt',categoryData);
 
   const [bgColor, setBgColor] = useState([
 
@@ -51,6 +53,7 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     fatchCategory();
+    getYoutubeLink();
   }, [])
 
   const fatchCategory = async () => {
@@ -90,10 +93,31 @@ const Home = ({ navigation }) => {
   }, [currentIndex, categoryData]);
 
   const extendedCategoryData = [
-    ...categoryData.slice(-1), 
     ...categoryData,
-    ...categoryData.slice(0, 1) 
+    ...categoryData,
   ];
+  
+
+  const getYoutubeLink = async () => {
+    try {
+      const res = await HomeService.setbanneryoutubelink();
+      if (res && res.success === true) {
+        // console.log('videoooooooooooooooooooo', res.data);
+        setVideoLink(res.data);
+        setLoading(false); 
+      }
+    } catch (err) {
+      console.log('err', err);
+      setLoading(false);
+    }
+  };
+
+  const extractVideoId = (url) => {
+    const match = url.match(/youtube\.com\/embed\/([^?]+)/);
+    return match ? match[1] : null;
+  };
+
+  const videoId = videoLink ? extractVideoId(videoLink.video_link) : null;
 
   const UserData = [
     {
@@ -218,14 +242,14 @@ const Home = ({ navigation }) => {
                   <Text style={styles.amount_txt}>₹ 2050</Text>
                 </View>
                 <View style={styles.button_view}>
-                  <Pressable 
-                  onPress={()=>NavigationService.navigate('IncomeStructure')}
-                  style={styles.botton_sty}>
+                  <Pressable
+                    onPress={() => NavigationService.navigate('IncomeStructure')}
+                    style={styles.botton_sty}>
                     <Text style={styles.button_txt}>Income Structure</Text>
                   </Pressable>
-                  <Pressable 
-                  onPress={()=>NavigationService.navigate('TransferMoney')}
-                  style={styles.botton_sty}>
+                  <Pressable
+                    onPress={() => NavigationService.navigate('TransferMoney')}
+                    style={styles.botton_sty}>
                     <Text style={styles.button_txt}>Withdraw Request</Text>
                   </Pressable>
                 </View>
@@ -279,12 +303,17 @@ const Home = ({ navigation }) => {
 
         {
           loading ?
-            <View style={styles.homeB_loder}></View>
+            <View style={{ ...styles.homeB_loder, borderRadius: (0) }}></View>
             :
-            <Image source={require('../../assets/images/bottomBanner.png')} style={styles.bottombanner_sty} />
+            <View style={styles.videoContainer}>
+
+              <YouTubeIframe
+                videoId={videoId}
+                height={200}
+                play={false}
+              />
+            </View>
         }
-
-
       </ScrollView>
 
       <Modal
@@ -499,9 +528,27 @@ const styles = StyleSheet.create({
     height: moderateScale(170),
     width: width - moderateScale(20),
     alignSelf: 'center',
-    marginVertical: moderateScale(10),
-    resizeMode: 'contain'
-  }
+    resizeMode: 'contain',
+    marginTop: moderateScale(1),
+    marginBottom: moderateScale(10)
+  },
+  videoContainer: {
+   height: moderateScale(170),
+    width: width - moderateScale(20),
+    alignSelf: 'center',
+    resizeMode: 'contain',
+    marginTop: moderateScale(7),
+    marginBottom: moderateScale(30)
+  },
+  youtybeicon: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: 50, 
+    height: 50,
+    marginLeft: -25, 
+    marginTop: -25, 
+  },
 });
 
 export default Home;

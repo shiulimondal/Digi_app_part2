@@ -45,6 +45,8 @@ import TermsAndConditions from './src/Screens/Auth/TermsAndConditions';
 import FundingDetails from './src/Screens/DrawerScreen/FundingDetails';
 import IncomeStructure from './src/Screens/Home/ReferScreen/IncomeStructure';
 import TransferMoney from './src/Screens/Home/ReferScreen/TransferMoney';
+import TransferEditBank from './src/Screens/Home/ReferScreen/TransferEditBank';
+import TransferFillBank from './src/Screens/Home/ReferScreen/TransferFillBank';
 
 
 
@@ -101,6 +103,8 @@ const App = () => {
                 <Stack.Screen name="FundingDetails" component={FundingDetails} />
                 <Stack.Screen name="IncomeStructure" component={IncomeStructure} />
                 <Stack.Screen name="TransferMoney" component={TransferMoney} />
+                <Stack.Screen name="TransferEditBank" component={TransferEditBank} />
+                <Stack.Screen name="TransferFillBank" component={TransferFillBank} />
                 <Stack.Screen name="DrawerWorks" component={DrawerWorks} />
                 <Stack.Screen name="Settings" component={Settings} />
                 <Stack.Screen name="ChangePassword" component={ChangePassword} />

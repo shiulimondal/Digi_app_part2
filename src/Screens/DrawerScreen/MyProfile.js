@@ -18,6 +18,7 @@ import HomeService from '../../Services/HomeServises';
 import AuthService from '../../Services/Auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { setuser } from '../../Redux/reducer/User';
+import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -326,6 +327,16 @@ const MyProfile = () => {
                     </View>
                 )}
             </KeyboardAwareScrollView>
+            <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };

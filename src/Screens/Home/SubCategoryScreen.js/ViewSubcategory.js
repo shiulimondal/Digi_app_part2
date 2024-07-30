@@ -11,6 +11,7 @@ import { useRoute } from '@react-navigation/native';
 import SubCategoryListCard from '../../../Components/HomeCard/SubCategoryListCard';
 import Modal from "react-native-modal";
 import HomeService from '../../../Services/HomeServises';
+import SubCatBottomTab from '../../../Components/BottomComponent/SubCatBottomTab';
 
 // create a component
 const ViewSubcategory = () => {
@@ -126,9 +127,7 @@ const ViewSubcategory = () => {
                             </>
                     }
 
-                    <Pressable onPress={() => NavigationService.navigate('SubCatFrom', { CatId: cat_idData, SubID: Sub_idData })} style={styles.add_button}>
-                        <Icon name='plus' type='AntDesign' size={32} />
-                    </Pressable>
+                   
                 </>
             }
 
@@ -344,6 +343,21 @@ const ViewSubcategory = () => {
                 </View>
 
             </Modal>
+            <View style={{flex:1}}/>
+            <View style={{
+               ...styles.bottom_card
+            }}>
+                <Text style={styles.bottomcard_text}>WIll YOU ADD BRIDE PROFILE ?</Text>
+            </View>
+           
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                elevation:4
+            }}>
+              <SubCatBottomTab />
+            </View>
 
         </View>
     );
@@ -399,25 +413,6 @@ const styles = StyleSheet.create({
         width: moderateScale(20),
         tintColor: Colors.secondaryFont
     },
-    add_button: {
-        width: moderateScale(54),
-        height: moderateScale(54),
-        borderRadius: moderateScale(35),
-        backgroundColor: '#FFBC0E',
-        justifyContent: 'center',
-        alignItems: 'center',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        position: 'absolute',
-        bottom: moderateScale(50),
-        right: moderateScale(20)
-    },
     modalView: {
         backgroundColor: "white",
         borderRadius: moderateScale(18),
@@ -471,6 +466,21 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(14),
         textAlign: 'center'
     },
+    bottom_card:{
+        height:moderateScale(50),
+        backgroundColor:'#FFBC0E',
+        marginTop: moderateScale(10),
+        alignItems:'center',
+        justifyContent:'center',
+        bottom:0,
+        elevation:4
+    },
+    bottomcard_text:{
+        fontFamily:FONTS.Inter.semibold,
+        fontSize:moderateScale(16),
+        paddingBottom:moderateScale(5),
+        color:Colors.secondaryFont
+    }
 });
 
 //make this component available to the app

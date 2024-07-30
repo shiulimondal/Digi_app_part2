@@ -11,6 +11,7 @@ import HomeService from '../../Services/HomeServises';
 import Toast from "react-native-simple-toast";
 import { useRoute } from '@react-navigation/native';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
+import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 // create a component
 const FillBankDitails = () => {
@@ -158,6 +159,14 @@ const FillBankDitails = () => {
                     disabled={btnLoader}
                 />
             </ScrollView>
+            <View style={{
+              height: moderateScale(60),
+              backgroundColor: Colors.background,
+              marginTop: moderateScale(10),
+              elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };

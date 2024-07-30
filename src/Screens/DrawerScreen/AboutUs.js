@@ -7,6 +7,7 @@ import { Icon } from 'react-native-basic-elements';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
 import AboutUsCard from '../../Components/DrawerCard/AboutUsCard';
 import HomeService from '../../Services/HomeServises';
+import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 const { height, width } = Dimensions.get('screen');
 const AboutUs = ({ navigation }) => {
@@ -41,9 +42,6 @@ const AboutUs = ({ navigation }) => {
                 <View style={styles.top_view}>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ alignSelf: 'flex-end' }}>
-                            <Pressable onPress={() => navigation.goBack()}>
-                                <Icon name='chevron-left' type='FontAwesome5' size={23} />
-                            </Pressable>
                         </View>
                         <View style={{ alignItems: 'center', flex: 1 }}>
                             <Text style={styles.header_txt}>How it Works</Text>
@@ -58,8 +56,17 @@ const AboutUs = ({ navigation }) => {
                     )}
                     keyExtractor={(item, index) => index.toString()}
                 />
+                <View style={{
+                    height: moderateScale(60),
+                    backgroundColor: Colors.background,
+                    marginTop: moderateScale(10),
+                    elevation:4
+                }}>
+                    <AllBottonComponent />
+                </View>
             </>
             }
+
         </View>
     );
 };

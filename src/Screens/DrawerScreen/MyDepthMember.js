@@ -9,6 +9,7 @@ import HomeHeader from '../../Components/Header/HomeHeader';
 
 import DepthMemberCard from '../../Components/DrawerCard/DepthMemberCard';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
+import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 
 const { height, width } = Dimensions.get('window')
@@ -98,6 +99,16 @@ const MyDepthMember = ({ navigation }) => {
                 </View>
 
             </ScrollView>
+            <View style={{flex:1}}/>
+              <View style={{
+                height: moderateScale(60),
+                bottom:0,
+                backgroundColor: Colors.background,
+                marginTop: moderateScale(10),
+                elevation:4
+            }}>
+                <AllBottonComponent />
+            </View>
         </View>
     );
 };
