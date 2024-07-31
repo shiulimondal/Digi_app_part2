@@ -275,7 +275,6 @@ const Home = ({ navigation }) => {
                   </View>
 
                 </TouchableOpacity>
-
               </View>
             </View>
         }
@@ -291,8 +290,8 @@ const Home = ({ navigation }) => {
                 <View
                   key={index}
                   style={{
-                    ...styles.categoryloder, width: moderateScale(150),
-                    height: moderateScale(100)
+                    ...styles.categoryloder, width: moderateScale(156),
+                    height: moderateScale(100), marginRight: moderateScale(8),
                   }}
                 ></View>
               ))}
@@ -547,7 +546,7 @@ const styles = StyleSheet.create({
     width: width - moderateScale(20),
     alignSelf: 'center',
     resizeMode: 'contain',
-    marginTop: moderateScale(7),
+    marginTop: moderateScale(10),
     marginBottom: moderateScale(30)
   },
   youtybeicon: {
