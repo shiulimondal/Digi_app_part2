@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Pressable, Image, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Pressable, Image, ActivityIndicator, FlatList } from 'react-native';
 import HomeHeader from '../../Components/Header/HomeHeader';
 import { Colors } from '../../Constants/Colors';
 import { moderateScale } from '../../Constants/PixelRatio';
@@ -13,20 +13,20 @@ import { useSelector } from 'react-redux';
 import NavigationService from '../../Services/Navigation';
 import HomeService from '../../Services/HomeServises';
 import YouTubeIframe from 'react-native-youtube-iframe';
+import { useSharedValue } from 'react-native-reanimated';
 
 
 const { height, width } = Dimensions.get('screen');
 const Home = ({ navigation }) => {
   const { userData } = useSelector(state => state.User)
-  // console.log('userData==========================', userData);
+  const flatListRef = useRef(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [categoryData, setcategoryData] = useState('')
   const [loading, setLoading] = useState(true);
-  const scrollViewRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const screenWidth = moderateScale(110)
   const [videoLink, setVideoLink] = useState()
-  console.log('cattttttttttttttttttt',categoryData);
+
 
   const [bgColor, setBgColor] = useState([
 
@@ -79,11 +79,11 @@ const Home = ({ navigation }) => {
     if (categoryData && categoryData.length > 0) {
       interval = setInterval(() => {
         let nextIndex = currentIndex + 1;
-        if (nextIndex >= categoryData.length) {
+        if (nextIndex >= categoryData.length * 2) {
           nextIndex = 0;
-        }
-        if (scrollViewRef.current) {
-          scrollViewRef.current.scrollTo({ x: nextIndex * screenWidth, animated: true });
+          flatListRef.current.scrollToOffset({ offset: 0, animated: false });
+        } else {
+          flatListRef.current.scrollToOffset({ offset: nextIndex * screenWidth, animated: true });
         }
         setCurrentIndex(nextIndex);
       }, 2000);
@@ -92,11 +92,21 @@ const Home = ({ navigation }) => {
     }
   }, [currentIndex, categoryData]);
 
-  const extendedCategoryData = [
-    ...categoryData,
-    ...categoryData,
-  ];
-  
+  const scrollX = useSharedValue(0);
+
+  const onScroll = e => {
+    scrollX.value = e.nativeEvent.contentOffset.x;
+  };
+
+  const onMomentumScrollEnd = () => {
+    if (currentIndex >= categoryData.length) {
+      flatListRef.current.scrollToOffset({
+        offset: (currentIndex - categoryData.length) * screenWidth,
+        animated: false,
+      });
+      setCurrentIndex(currentIndex - categoryData.length);
+    }
+  };
 
   const getYoutubeLink = async () => {
     try {
@@ -104,7 +114,7 @@ const Home = ({ navigation }) => {
       if (res && res.success === true) {
         // console.log('videoooooooooooooooooooo', res.data);
         setVideoLink(res.data);
-        setLoading(false); 
+        setLoading(false);
       }
     } catch (err) {
       console.log('err', err);
@@ -197,23 +207,23 @@ const Home = ({ navigation }) => {
               </ScrollView>
             </View>
           ) :
-            <ScrollView
-              ref={scrollViewRef}
+          <View style={{marginTop:moderateScale(10)}}>
+            <FlatList
+              ref={flatListRef}
+              data={[...categoryData, ...categoryData,...categoryData]}
               horizontal
-              pagingEnabled
+              style={{paddingLeft:moderateScale(10),marginBottom:moderateScale(10)}}
+              bounces={false}
+              onScroll={onScroll}
+              scrollEventThrottle={18}
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{
-                marginTop: moderateScale(7),
-                marginBottom: moderateScale(5),
-              }}
-            >
-              {extendedCategoryData &&
-                extendedCategoryData.map((item, index) => (
-                  <View key={index} style={{ width: screenWidth, }}>
-                    <CategoryCard item={item} key={index} />
-                  </View>
-                ))}
-            </ScrollView>
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item, index }) => (
+                <CategoryCard item={item} key={index} />
+              )}
+              onMomentumScrollEnd={onMomentumScrollEnd}
+            />
+            </View>
           }
         </View>
         {
@@ -533,7 +543,7 @@ const styles = StyleSheet.create({
     marginBottom: moderateScale(10)
   },
   videoContainer: {
-   height: moderateScale(170),
+    height: moderateScale(170),
     width: width - moderateScale(20),
     alignSelf: 'center',
     resizeMode: 'contain',
@@ -544,10 +554,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: 50, 
+    width: 50,
     height: 50,
-    marginLeft: -25, 
-    marginTop: -25, 
+    marginLeft: -25,
+    marginTop: -25,
   },
 });
 
