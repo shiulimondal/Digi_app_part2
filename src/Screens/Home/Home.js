@@ -212,7 +212,7 @@ const Home = ({ navigation }) => {
               ref={flatListRef}
               data={[...categoryData, ...categoryData,...categoryData]}
               horizontal
-              style={{paddingLeft:moderateScale(10),marginBottom:moderateScale(10)}}
+              style={{paddingLeft:moderateScale(10),marginBottom:moderateScale(7)}}
               bounces={false}
               onScroll={onScroll}
               scrollEventThrottle={18}

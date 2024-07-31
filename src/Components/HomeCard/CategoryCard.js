@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(12),
         width: moderateScale(70),
         textAlign: 'center',
-        marginTop: moderateScale(7),
+        marginTop: moderateScale(5),
         color: Colors.black,
     }
 });
