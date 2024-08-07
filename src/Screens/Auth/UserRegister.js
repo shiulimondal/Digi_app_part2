@@ -3,7 +3,6 @@
 import React, { Component, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Colors } from '../../Constants/Colors';
-import Header from '../../Components/Header/Header';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { FONTS } from '../../Constants/Fonts';
 import { AppButton, AppTextInput, CheckBox, Icon } from 'react-native-basic-elements';
@@ -17,6 +16,7 @@ import { setuser } from '../../Redux/reducer/User';
 import Modal from "react-native-modal";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NavigationService from '../../Services/Navigation';
+import LogRegHeader from '../../Components/Header/LogRegHeader';
 
 
 // create a component
@@ -33,39 +33,66 @@ const UserRegister = ({ navigation }) => {
     const [btnLoader, setBtnLoader] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
     const [allData, setAllData] = useState('')
+    const [passwordError, setPasswordError] = useState(false);
+    const [cnfPasswordError, setCnfPasswordError] = useState(false);
+
+
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
 
     const getoprnmodalRegister = async () => {
+
+        let hasError = false;
         if (userName === '') {
             Toast.show('Please enter Full Name');
-            return false;
+            hasError = true;
+            return false
         }
-        if (password == '') {
+        if (password === '') {
             Toast.show('Please enter password');
+            setPasswordError(true);
+            hasError = true;
+            return false
         } else if (password.length < 6) {
             Toast.show('Password must be at least 6 characters');
+            setPasswordError(true);
+            hasError = true;
+            return false
+        } else {
+            setPasswordError(false);
         }
 
-        if (cnfPassword == '') {
+        if (cnfPassword === '') {
             Toast.show('Please enter Confirm password');
+            setCnfPasswordError(true);
+            hasError = true;
+            return false
         } else if (cnfPassword !== password) {
             Toast.show('Passwords do not match');
+            setCnfPasswordError(true);
+            hasError = true;
+            return false
+        } else {
+            setCnfPasswordError(false);
         }
+
         if (!check) {
             Toast.show('Please Click Check Box', Toast.SHORT);
-            return
+            hasError = true;
+            return false
         }
+
+        if (hasError) return;
         let data = {
             "name": userName,
             "phone": MobileNumber.phone,
             "password": password,
             "password_confirmation": cnfPassword
         };
-        setModalVisible(true)
         setAllData(data)
+        setModalVisible(true)
     };
 
     const getRegister = async () => {
@@ -88,7 +115,7 @@ const UserRegister = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Header />
+            <LogRegHeader />
             <View style={styles.top_view}>
                 <Text style={styles.top_text}>REGISTER & LOGIN TO YOUR ACCOUNT</Text>
             </View>
@@ -100,7 +127,8 @@ const UserRegister = ({ navigation }) => {
                     inputContainerStyle={{
                         marginHorizontal: moderateScale(15),
                         borderRadius: moderateScale(5),
-                        paddingHorizontal: moderateScale(7)
+                        paddingHorizontal: moderateScale(7),
+                        borderColor:Colors.grey
                     }}
                     inputStyle={{ fontFamily: FONTS.medium, fontSize: moderateScale(14) }}
                     mainContainerStyle={{
@@ -117,7 +145,8 @@ const UserRegister = ({ navigation }) => {
                     inputContainerStyle={{
                         marginHorizontal: moderateScale(15),
                         borderRadius: moderateScale(5),
-                        paddingHorizontal: moderateScale(7)
+                        paddingHorizontal: moderateScale(7),
+                        borderColor: passwordError ? Colors.red : Colors.grey
                     }}
                     inputStyle={{ fontFamily: FONTS.medium, fontSize: moderateScale(14) }}
                     rightAction={
@@ -138,7 +167,10 @@ const UserRegister = ({ navigation }) => {
                     onRightIconPress={() => setPasswordShow(!passwordShow)}
                     secureTextEntry={passwordShow}
                     value={password}
-                    onChangeText={(val) => setPassword(val)}
+                    onChangeText={(val) => {
+                        setPassword(val);
+                        setPasswordError(false);
+                    }}
 
                 />
 
@@ -148,7 +180,8 @@ const UserRegister = ({ navigation }) => {
                     inputContainerStyle={{
                         marginHorizontal: moderateScale(15),
                         borderRadius: moderateScale(5),
-                        paddingHorizontal: moderateScale(7)
+                        paddingHorizontal: moderateScale(7),
+                        borderColor: cnfPasswordError ? Colors.red : Colors.grey
                     }}
                     inputStyle={{ fontFamily: FONTS.medium, fontSize: moderateScale(14) }}
                     rightAction={
@@ -169,7 +202,10 @@ const UserRegister = ({ navigation }) => {
                     onRightIconPress={() => setReConfirmPasswordShow(!reConfirmPasswordShow)}
                     secureTextEntry={reConfirmPasswordShow}
                     value={cnfPassword}
-                    onChangeText={(val) => setCnfPassword(val)}
+                    onChangeText={(val) => {
+                        setCnfPassword(val);
+                        setCnfPasswordError(false);
+                    }}
                 />
 
                 <View style={{ flexDirection: 'row', marginTop: moderateScale(20), marginHorizontal: moderateScale(20) }}>
@@ -198,7 +234,10 @@ const UserRegister = ({ navigation }) => {
                 </View>
             </KeyboardAwareScrollView>
 
-            <Modal isVisible={isModalVisible}>
+            <Modal isVisible={isModalVisible}
+            onBackButtonPress={() => setModalVisible(false)}
+            onBackdropPress={() => setModalVisible(false)}
+            >
                 <View style={styles.modalView}>
                     <Image source={require('../../assets/images/register.png')} style={{ height: 80, width: 80 }} />
                     <Text style={{
@@ -211,7 +250,7 @@ const UserRegister = ({ navigation }) => {
                     <Text style={styles.modal_massege}>Register Successfully </Text>
 
                     <TouchableOpacity
-                        onPress={() => { getRegister() }}
+                        onPress={() => { getRegister(),setModalVisible(true)}}
                         style={styles.button_sty}>
                         {
                             btnLoader ?
@@ -283,7 +322,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: moderateScale(10),
         padding: moderateScale(20),
-        borderWidth: 2,
+        // borderWidth: 2,
         alignItems: 'center'
     },
     modal_massege: {

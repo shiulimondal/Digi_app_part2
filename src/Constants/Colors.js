@@ -15,6 +15,7 @@ export const Colors = {
     inputBorder: '#00000024',
     buttonColor:'#5F259E',
     cardColor:'#efe9f5',
+    modaltxt:'#333333'
   };
 
 

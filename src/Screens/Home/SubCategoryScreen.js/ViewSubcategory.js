@@ -13,6 +13,7 @@ import Modal from "react-native-modal";
 import HomeService from '../../../Services/HomeServises';
 import SubCatBottomTab from '../../../Components/BottomComponent/SubCatBottomTab';
 
+
 // create a component
 const ViewSubcategory = () => {
     const route = useRoute()
@@ -78,7 +79,7 @@ const ViewSubcategory = () => {
                                 <View style={styles.top_view}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ alignItems: 'center', flex: 1 }}>
-                                            <Text style={styles.header_txt}>{ SubDataName?.charAt(0)?.toUpperCase() + SubDataName?.slice(1)?.toLowerCase()}</Text>
+                                            <Text style={styles.header_txt}>{SubDataName?.charAt(0)?.toUpperCase() + SubDataName?.slice(1)?.toLowerCase()}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -127,7 +128,7 @@ const ViewSubcategory = () => {
                             </>
                     }
 
-                   
+
                 </>
             }
 
@@ -343,21 +344,22 @@ const ViewSubcategory = () => {
                 </View>
 
             </Modal>
-            <View style={{flex:1}}/>
-            <View style={{
-               ...styles.bottom_card
-            }}>
-                <Text style={styles.bottomcard_text}>WIll YOU ADD BRIDE PROFILE ?</Text>
-            </View>
-           
-              <View style={{
-                height: moderateScale(60),
-                bottom:0,
-                backgroundColor: Colors.background,
-                elevation:4
-            }}>
-              <SubCatBottomTab />
-            </View>
+         
+                        <View style={{ flex: 1 }} />
+                        <View style={{
+                            ...styles.bottom_card
+                        }}>
+                            <Text numberOfLines={1} style={styles.bottomcard_text}>WIll YOU ADD {SubDataName?.toUpperCase()} PROFILE ?</Text>
+                        </View>
+
+                        <View style={{
+                            height: moderateScale(60),
+                            bottom: 0,
+                            backgroundColor: Colors.background,
+                            elevation: 4
+                        }}>
+                            <SubCatBottomTab subName={SubDataName} CatId={cat_idData} SubID={Sub_idData} />
+                        </View>
 
         </View>
     );
@@ -466,20 +468,22 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(14),
         textAlign: 'center'
     },
-    bottom_card:{
-        height:moderateScale(50),
-        backgroundColor:'#FFBC0E',
+    bottom_card: {
+        height: moderateScale(50),
+        backgroundColor: '#FFBC0E',
         marginTop: moderateScale(10),
-        alignItems:'center',
-        justifyContent:'center',
-        bottom:0,
-        elevation:4
+        alignItems: 'center',
+        justifyContent: 'center',
+        bottom: 0,
+        elevation: 4
     },
-    bottomcard_text:{
-        fontFamily:FONTS.Inter.semibold,
-        fontSize:moderateScale(16),
-        paddingBottom:moderateScale(5),
-        color:Colors.secondaryFont
+    bottomcard_text: {
+        fontFamily: FONTS.Inter.semibold,
+        fontSize: moderateScale(15),
+        paddingBottom: moderateScale(5),
+        color: Colors.secondaryFont,
+        marginHorizontal:moderateScale(5),
+        textAlign:'center'
     }
 });
 

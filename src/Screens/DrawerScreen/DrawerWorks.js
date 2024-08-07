@@ -25,7 +25,6 @@ const DrawerWorks = ({ navigation }) => {
             .then((res) => {
                 setLoading(false)
                 if (res && res.success == true) {
-                    console.log('ressssssssssssssshowwwwwwww', res.data);
                     setWorkData(res.data)
                 }
             })

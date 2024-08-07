@@ -57,7 +57,6 @@ const TransferEditBank = () => {
             account_no: accountNumber,
             ifsc_code: ifsc
         };
-        console.log('Update Data:', data);
         setBtnLoader(true);
         HomeService.updateBankAcc(data)
             .then((res) => {

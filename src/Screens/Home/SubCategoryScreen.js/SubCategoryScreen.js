@@ -35,7 +35,6 @@ const SubCategoryScreen = () => {
             .then((res) => {
                 if (res && res.success == true) {
                     setLoading(false);
-                    console.log('subbbbbbbbbbbbbbbbbbbbb', res.data);
                     setsubcategoryData(res.data)
                 }
             })
@@ -44,32 +43,6 @@ const SubCategoryScreen = () => {
             })
     }
 
-    const categoryData = [
-        {
-            cat_logo: require('../../../assets/images/sub1.png'),
-            title: 'Find Bride'
-        },
-        {
-            cat_logo: require('../../../assets/images/sub2.png'),
-            title: 'Find Groom'
-        },
-        {
-            cat_logo: require('../../../assets/images/sub3.png'),
-            title: 'Caterer'
-        },
-        {
-            cat_logo: require('../../../assets/images/sub4.png'),
-            title: 'Photographer'
-        },
-        {
-            cat_logo: require('../../../assets/images/sub5.png'),
-            title: 'Cooks'
-        },
-        {
-            cat_logo: require('../../../assets/images/sub6.png'),
-            title: 'Musical party '
-        }
-    ];
 
     return (
         <View style={styles.container}>

@@ -57,29 +57,29 @@ const MyDirectMember = ({ navigation }) => {
 
             <ScrollView showsHorizontalScrollIndicator={false} horizontal >
                 <View>
-                    <View style={styles.list_view}>
-                        <View style={{ width: moderateScale(80), alignItems: 'center', justifyContent: 'center' }}>
+                <View style={styles.list_view}>
+                        <View style={{ width: moderateScale(40), alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.sl_txt}>Sl NO.</Text>
 
                         </View>
 
-                        <View style={{ width: moderateScale(130), alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: moderateScale(100), alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.sl_txt}>JOINING DATE</Text>
 
                         </View>
 
-                        <View style={{ width: moderateScale(150), alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: moderateScale(90), alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.sl_txt}>NAME</Text>
 
                         </View>
 
 
-                        <View style={{ width: moderateScale(180), alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: moderateScale(100), alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.sl_txt}>ADDRESS</Text>
 
                         </View>
 
-                        <View style={{ width: moderateScale(200), alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: moderateScale(80), alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.sl_txt}>STATUS</Text>
 
                         </View>
@@ -137,12 +137,12 @@ const styles = StyleSheet.create({
         marginHorizontal: moderateScale(15),
         marginTop: moderateScale(15),
         padding: moderateScale(5),
-        width: width - 400
+        width: width - 500
     },
     sl_txt: {
         color: Colors.secondaryFont,
         fontFamily:FONTS.Inter.semibold,
-        fontSize:moderateScale(14),
+        fontSize:moderateScale(12),
        
     }
 });

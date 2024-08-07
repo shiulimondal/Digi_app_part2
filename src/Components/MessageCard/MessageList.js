@@ -13,7 +13,7 @@ const MessageList = ({ item, index }) => {
     const toggleReply = () => {
         setShowReply(prevShowReply => !prevShowReply);
     };
-    console.log('messageeeeeeeeeeeeeeeeeee============', item);
+
 
     return (
         <View index={index} style={styles.container}>

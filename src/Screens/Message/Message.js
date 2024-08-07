@@ -25,13 +25,11 @@ const Message = () => {
         setLoading(true);
         HomeService.getMessage_list()
             .then((res) => {
-                console.log('messageeeeeeeeeeeeeeee', res);
                 setLoading(false);
                 if (res && res.status === true) {
-                    console.log('listttttttttttttttttttt================', res.data);
-                    // Reverse the array so the most recent message is first
-                    const reversedMessages = res.data.reverse();
-                    setMessageList(reversedMessages);
+                    // console.log('listttttttttttttttttttt================', res.data);
+                    // const reversedMessages = res.data.reverse();
+                    setMessageList(res.data);
                 }
             })
             .catch((err) => {
@@ -39,9 +37,6 @@ const Message = () => {
                 setLoading(false);
             });
     };
-
-    // const reversedMessages = [...res.data].reverse();
-
     return (
         <View style={styles.container}>
             <HomeHeader />

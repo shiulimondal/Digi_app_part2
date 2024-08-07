@@ -46,7 +46,7 @@ const MyDepthMember = ({ navigation }) => {
     ]
     return (
         <View style={styles.container}>
-             <ScreenHeader />
+            <ScreenHeader />
 
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
@@ -59,28 +59,28 @@ const MyDepthMember = ({ navigation }) => {
             <ScrollView showsHorizontalScrollIndicator={false} horizontal >
                 <View>
                     <View style={styles.list_view}>
-                        <View style={{ width: moderateScale(80), alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: moderateScale(40), alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.sl_txt}>Sl NO.</Text>
 
                         </View>
 
-                        <View style={{ width: moderateScale(130), alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: moderateScale(100), alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.sl_txt}>JOINING DATE</Text>
 
                         </View>
 
-                        <View style={{ width: moderateScale(150), alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: moderateScale(90), alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.sl_txt}>NAME</Text>
 
                         </View>
 
 
-                        <View style={{ width: moderateScale(180), alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: moderateScale(100), alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.sl_txt}>ADDRESS</Text>
 
                         </View>
 
-                        <View style={{ width: moderateScale(200), alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: moderateScale(80), alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.sl_txt}>STATUS</Text>
 
                         </View>
@@ -99,13 +99,13 @@ const MyDepthMember = ({ navigation }) => {
                 </View>
 
             </ScrollView>
-            <View style={{flex:1}}/>
-              <View style={{
+            <View style={{ flex: 1 }} />
+            <View style={{
                 height: moderateScale(60),
-                bottom:0,
+                bottom: 0,
                 backgroundColor: Colors.background,
                 marginTop: moderateScale(10),
-                elevation:4
+                elevation: 4
             }}>
                 <AllBottonComponent />
             </View>
@@ -142,13 +142,13 @@ const styles = StyleSheet.create({
         marginHorizontal: moderateScale(15),
         marginTop: moderateScale(15),
         padding: moderateScale(5),
-        width: width - 400
+        width: width - 500,
     },
     sl_txt: {
         color: Colors.secondaryFont,
-        fontFamily:FONTS.Inter.semibold,
-        fontSize:moderateScale(14),
-       
+        fontFamily: FONTS.Inter.semibold,
+        fontSize: moderateScale(10),
+
     }
 });
 

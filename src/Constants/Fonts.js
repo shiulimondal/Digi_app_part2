@@ -18,6 +18,9 @@ const FONTS = {
     regular: 'Almendra-Regular',
     light: 'Almendra-Italic',
     medium: 'Almendra-Medium'
+  },
+  GreyQo:{
+    regular:'GreyQo-Regular'
   }
 };
 

@@ -22,8 +22,8 @@ const { height, width } = Dimensions.get('screen');
 const SubCatForm = (props) => {
     const ImgUri = "https://acuitysoftware.co/digi-help-app/storage/app/public"
     const route = useRoute();
-    const cat_Data_id = route.params.CatId;
-    const Sub_Data_id = route.params.SubID;
+    const cat_Data_id = route.params.CatIdData;
+    const Sub_Data_id = route.params.SubIdData;
     const [loading, setLoading] = useState(true);
     const [btnLoader, setBtnLoader] = useState(false);
     const [getFormData, setgetFormData] = useState([]);
@@ -38,8 +38,8 @@ const SubCatForm = (props) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    console.log('formDataformDataformDataformData', formData);
-    console.log('frommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmimageeeeeeeeeeeeeeeeeeeeeeee',ImageData);
+    // console.log('formDataformDataformDataformData', formData);
+    // console.log('frommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmimageeeeeeeeeeeeeeeeeeeeeeee', ImageData);
 
     useEffect(() => {
         getSubAllData();
@@ -53,11 +53,11 @@ const SubCatForm = (props) => {
         };
         HomeService.get_profilefrom(data)
             .then((res) => {
-                console.log('Response:===================================', JSON.stringify(res));
+                // console.log('Response:===================================', JSON.stringify(res));
                 setLoading(false);
                 if (res.status === true) {
                     setgetFormData(res.data.id)
-                    const requiredFields = res.data.form_body.filter((field) => field.is_required === '1');
+                    const requiredFields = res.data.form_body.filter((field) => field.is_required === '1' || '0');
                     setFormData(requiredFields);
                     requiredFields.forEach(field => {
                         if (field.type === 'select') {
@@ -97,15 +97,6 @@ const SubCatForm = (props) => {
         }
     };
 
-    // const onButtonPress = async (type, options) => {
-    //     const result = type === 'capture'
-    //         ? await launchCamera(options)
-    //         : await launchImageLibrary({ ...options, selectionLimit: 0 });
-    //     if (result?.assets) {
-    //         setSelectedDocuments([...selectedDocuments, ...result.assets]);
-    //         setModalVisible(false);
-    //     }
-    // };
 
 
     const onButtonPress = async (type, options) => {
@@ -113,20 +104,20 @@ const SubCatForm = (props) => {
             const result = type === 'capture'
                 ? await launchCamera(options)
                 : await launchImageLibrary({ ...options, selectionLimit: 0 });
-    
-            console.log('Result:===================', result);
-    
+
+            // console.log('Result:===================', result);
+
             if (result?.assets) {
                 const selectedAssets = result.assets;
                 setSelectedDocuments([...selectedDocuments, ...selectedAssets]);
-    
+
                 selectedAssets.forEach(async (asset) => {
                     const file = {
                         uri: asset.uri,
                         type: asset.type,
                         name: asset.fileName,
                     };
-    
+
                     if (file.uri && file.type && file.name) {
                         try {
                             const response = await HttpClient.upload('/business-account/upload-image', file, {});
@@ -156,7 +147,7 @@ const SubCatForm = (props) => {
         const data = { option: pickerId };
         HomeService.setOptionList(data)
             .then((res) => {
-                // console.log('ggggggggggggggg', res);
+                console.log('ggggggggggggggg==========================', res);
                 if (res.status === true) {
                     setDropdownValues((prev) => ({
                         ...prev,
@@ -177,30 +168,31 @@ const SubCatForm = (props) => {
         if (name === 'state') {
             setSelectedState(value);
             if (value) {
-                console.log('State selected:===============', value); 
+                console.log('State selected:===============', value);
                 getStateList(value);
             }
         }
     };
 
     const getStateList = (stateId) => {
-        console.log('Fetching districts for stateId:', stateId); 
+        console.log('Fetching districts for stateId:=======================', stateId);
         const value = {
             "option_list_id": stateId,
             "option": 2
         };
+        console.log('Districts putttttttttttttttt======================', value);
         HomeService.setOption_DisttrictList(value)
             .then((res) => {
-                // console.log('Districts fetched=======================', res);
+                console.log('Districts fetched=======================', res);
                 if (res.status === true) {
-                    // console.log('Districts fetched successfully:=======================', res.data);
+                    console.log('Districts fetched successfully:=======================', res.data);
                     const newDistricts = res.data || [];
                     setDropdownValues(prev => ({
                         ...prev,
                         district: newDistricts
                     }));
                 } else {
-                    // console.error('Failed to fetch districts:==========', res.message);
+                    console.error('Failed to fetch districts:==========', res.message);
                     setDropdownValues(prev => ({
                         ...prev,
                         district: []
@@ -208,7 +200,7 @@ const SubCatForm = (props) => {
                 }
             })
             .catch((err) => {
-                // console.error('Error fetching districts:', err);
+                console.error('Error fetching districts:', err);
                 setDropdownValues(prev => ({
                     ...prev,
                     district: []
@@ -251,7 +243,7 @@ const SubCatForm = (props) => {
                 if (res) {
                     setBtnLoader(false);
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-                    NavigationService.navigate('SubCategorySubscription')
+                    NavigationService.navigate('SubCategorySubscription', { catId: res?.data?.category_id, subId: res?.data?.sub_category_id })
                 } else {
                     setBtnLoader(false);
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
@@ -431,13 +423,13 @@ const SubCatForm = (props) => {
                 </View>
             </Modal>
 
-            <View style={{flex:1}}/>
-              <View style={{
+            <View style={{ flex: 1 }} />
+            <View style={{
                 height: moderateScale(60),
-                bottom:0,
+                bottom: 0,
                 backgroundColor: Colors.background,
                 marginTop: moderateScale(10),
-                elevation:4
+                elevation: 4
             }}>
                 <AllBottonComponent />
             </View>

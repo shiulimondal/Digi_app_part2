@@ -13,22 +13,35 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 import { FONTS } from '../../Constants/Fonts';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from "react-native-simple-toast";
+// import RNOtpVerify, { getHash, removeListener, startOtpListener } from 'react-native-otp-verify';
 
 
 
 // Create a component
 const LoginOTP = ({ navigation }) => {
   const { login_status } = useSelector(state => state.User);
-  console.log('otpscreennnnnnnnnnnnnnnnnlogin_status', login_status);
   const route = useRoute();
   const dispatch = useDispatch()
   const MobileNumber = route.params.PhNumberData;
   const [phoneOtp, setPhoneOtp] = useState('');
   const [btnLoader, setBtnLoader] = useState(false);
-  console.log('MobileNumber', MobileNumber.phone);
-  console.log('MobileNumberOTPPPPPPPPPPP', phoneOtp);
-  console.log('MobileNumberOTPPPPPPPPPPP=========', MobileNumber);
 
+    // useEffect(() => {
+    //   getHash().then(hash => {
+    //     console.log('hashhhhhhhhhhhhh',hash);
+        
+    //   }).catch(console.log);
+    
+    //   startOtpListener(message => {
+    //     console.log('juuuuuuuuuuuuuuu',message);
+        
+    //     // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
+    //     // const otp = /(\d{4})/g.exec(message)[1];
+    //     // console.log('otppppppppppppppppppppppp',otp);
+        
+    //   });
+    //   return () => removeListener();
+    // }, []);
 
 
   const setOtpVerify = () => {
@@ -44,8 +57,6 @@ const LoginOTP = ({ navigation }) => {
         console.log("Response=====================:", res);
         setBtnLoader(false);
         if (res.status === true) {
-          console.log('resssssssssssssssssss========',res);
-          console.log('resssssssssssssssssss========',res.data);
           if (res.account_verified === false) {
             NavigationService.navigate('UserRegister', { PhNumber: res.data });
           } else {
@@ -58,7 +69,6 @@ const LoginOTP = ({ navigation }) => {
       })
       .catch((err) => {
         console.error("Error============================:", err);
-        Toast.show("Error sending OTP", Toast.SHORT, Toast.BOTTOM);
         setBtnLoader(false);
       });
   };

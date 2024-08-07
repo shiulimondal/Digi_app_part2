@@ -74,7 +74,7 @@ const BottomTab = () => {
                 component={MyAccount}
                 options={{
                     unmountOnBlur: true,
-                    tabBarLabel: 'MY ACCOUNT',
+                    tabBarLabel: 'MY PROFILES',
                     tabBarIcon: ({ focused }) => (
                         <Image
                             source={require('../assets/images/account.png')}

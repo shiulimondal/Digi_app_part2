@@ -4,13 +4,15 @@ import ScreenHeader from '../../../Components/Header/ScreenHeader';
 import { Colors } from '../../../Constants/Colors';
 import { moderateScale } from '../../../Constants/PixelRatio';
 import { FONTS } from '../../../Constants/Fonts';
-import { AppTextInput, Icon, RadioButton } from 'react-native-basic-elements';
+import { AppButton, AppTextInput, Card, Icon, RadioButton } from 'react-native-basic-elements';
 import numberToWords from 'number-to-words';
 import { useFocusEffect } from '@react-navigation/native';
 import HomeService from '../../../Services/HomeServises';
 import NavigationService from '../../../Services/Navigation';
 import Toast from "react-native-simple-toast";
+import Modal from "react-native-modal";
 import AllBottonComponent from '../../../Components/BottomComponent/AllBottonComponent';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const toTitleCase = (str) => {
     return str.replace(/\w\S*/g, (txt) => {
@@ -29,6 +31,13 @@ const TransferMoney = () => {
     const [accountList, setAccountList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [allData, setAllData] = useState('')
+    const [btnLoader, setBtnLoader] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
+    console.log('selectbankiddddddddddddddddddd', selectedAccount);
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
 
     useEffect(() => {
         if (transferCash) {
@@ -49,7 +58,7 @@ const TransferMoney = () => {
     }, [transferCash]);
 
     const fetchBankList = async () => {
-        setLoading(true); 
+        setLoading(true);
         HomeService.getBankAccList()
             .then((res) => {
                 console.log('blockdataaa1111111111111111111111111', res);
@@ -82,10 +91,8 @@ const TransferMoney = () => {
         let data = {
             "id": delID
         };
-        console.log("delidddddddddddddddddddddddd", data);
         HomeService.deleteBankAcc(data)
             .then((res) => {
-                console.log("Responsedataaaaaa:===============", res);
                 if (res.status === true) {
                     Toast.show('Your Bank Account Deleted Successfully');
                     fetchBankList();
@@ -97,6 +104,36 @@ const TransferMoney = () => {
                 console.error("Error:", err);
             });
     };
+
+    const getmodalwithdraw = async () => {
+        if (transferCash === '') {
+            Toast.show('Please enter amount');
+            return false
+        }
+        const data = {
+            "amount": transferCash,
+            bank_id: selectedAccount
+        }
+        setAllData(data)
+        setModalVisible(true)
+    };
+
+    const getwithdraw = (() => {
+        setBtnLoader(true)
+        HomeService.setwithdraw(allData)
+            .then((res) => {
+                if (res && res.success === true) {
+                    setModalVisible(false)
+                    setBtnLoader(false)
+                    Toast.show('Withdraw request send to Admin Successfully');
+                    NavigationService.navigate('BottomTab')
+                }
+            })
+            .catch((err) => {
+                console.error("Error:", err);
+                setBtnLoader(false)
+            })
+    })
 
     return (
         <View style={styles.container}>
@@ -118,6 +155,7 @@ const TransferMoney = () => {
                 keyboardType='phone-pad'
                 maxLength={6}
             />
+
             {amountInWords ? (
                 <Text numberOfLines={1} style={styles.amount_in_words}>{amountInWords}</Text>
             ) : null}
@@ -147,7 +185,7 @@ const TransferMoney = () => {
                 {
                     accountList?.map((item, index) => {
                         return (
-                            <View key={index} style={styles.bank_list}>
+                            <Card key={index} style={styles.bank_list}>
                                 <RadioButton
                                     selected={selectedAccount === item.id}
                                     onChange={() => setSelectedAccount(item.id)}
@@ -163,10 +201,10 @@ const TransferMoney = () => {
                                                 style={{ height: moderateScale(14), width: moderateScale(14) }} />
                                         </TouchableOpacity>
                                     </View>
-                                    <Text style={{ ...styles.accountholder_txt, marginTop: moderateScale(5) }}>{item.account_no}</Text>
-                                    <Text style={{ ...styles.accountholder_txt, marginTop: moderateScale(5) }}>{item.bank_name}</Text>
-                                    <View style={{ ...styles.secondart_view, marginTop: moderateScale(7) }}>
-                                        <Text style={styles.accountholder_txt}>{item.ifsc_code}</Text>
+                                    <Text style={{ ...styles.accountnumber_txt, marginTop: moderateScale(5) }}>{item.account_no}</Text>
+                                    <Text style={{ ...styles.accountnumber_txt, marginTop: moderateScale(5) }}>{item.bank_name}</Text>
+                                    <View style={{ ...styles.secondart_view, marginTop: moderateScale(5) }}>
+                                        <Text style={styles.accountnumber_txt}>{item.ifsc_code}</Text>
                                         <Pressable
                                             onPress={() => setDelBankAcc(item.id)}
                                             style={{ ...styles.add_icon_circle, backgroundColor: '#FF3434' }}>
@@ -175,33 +213,69 @@ const TransferMoney = () => {
                                         </Pressable>
                                     </View>
                                 </View>
-                            </View>
+                            </Card>
                         )
                     })
                 }
             </ScrollView>
 
-             {loading && (
+            {loading && (
                 <View style={styles.loader}>
                     <ActivityIndicator size="large" color={Colors.buttonColor} />
                 </View>
-            )} 
+            )}
 
             {selectedAccount && (
-                <Pressable style={styles.submitButton} onPress={() => {/* Handle the submission */}}>
+                <Pressable
+                    style={styles.submitButton} onPress={() => { getmodalwithdraw() }}>
                     <Text style={styles.submitButtonText}>Confirm Transfer</Text>
                 </Pressable>
             )}
-            <View style={{flex:1}}/>
-              <View style={{
+            <View style={{ flex: 1 }} />
+            <View style={{
                 height: moderateScale(60),
-                bottom:0,
+                bottom: 0,
                 backgroundColor: Colors.background,
                 marginTop: moderateScale(10),
-                elevation:4
+                elevation: 4
             }}>
                 <AllBottonComponent />
             </View>
+
+            <Modal
+                isVisible={isModalVisible}
+                onBackButtonPress={() => setModalVisible(false)}
+                onBackdropPress={() => setModalVisible(false)}
+            >
+                <View style={styles.modalView}>
+                    <View style={styles.modal_box_view}>
+                        <Text style={styles.modal_massege}>Withdrawal Instructions</Text>
+
+                        <Text style={styles.modal_text}>1: The number of withdrawals is unlimited. The minimum withdrawals amount is 100/- </Text>
+                        <Text style={styles.modal_text}>2: IFSC should be 11 characters and 5th character should be 0. If you fill in wrong bank information, your withdrawal will fail.</Text>
+                        <Text style={styles.modal_text}>3: Withdrawal fee: 6% Admin maintenance charges.</Text>
+                        <Text style={styles.modal_text}>4: Withdrawal time: 1-3 Working days</Text>
+                    </View>
+
+                    <AppButton
+                        shadow={true}
+                        title='Got It'
+                        textStyle={styles.modal_button_txt_sty}
+                        style={styles.modal_button_sty}
+                        onPress={() => { getwithdraw() }}
+                        loader={
+                            btnLoader
+                              ? {
+                                position: "right",
+                                color: "#fff",
+                                size: "small",
+                              }
+                              : null
+                          }
+                          disabled={btnLoader}
+                    />
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -284,9 +358,9 @@ const styles = StyleSheet.create({
     },
     bank_list: {
         flexDirection: 'row',
-        marginTop: moderateScale(15),
-        marginHorizontal: moderateScale(15),
-        padding: moderateScale(7)
+        marginHorizontal: moderateScale(10),
+        marginTop: moderateScale(10),
+        marginBottom: moderateScale(5)
     },
     primary_view: {
         marginLeft: moderateScale(15),
@@ -308,6 +382,11 @@ const styles = StyleSheet.create({
     },
     accountholder_txt: {
         fontFamily: FONTS.Inter.semibold,
+        color: Colors.black,
+        fontSize: moderateScale(14),
+    },
+    accountnumber_txt: {
+        fontFamily: FONTS.Inter.medium,
         color: Colors.black,
         fontSize: moderateScale(14),
     },
@@ -335,6 +414,48 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(16),
         color: Colors.white,
+    },
+    modalView: {
+        backgroundColor: "white",
+        borderRadius: (10),
+        padding: (20),
+        // borderWidth: 2,
+        alignItems: 'center'
+    },
+    modal_box_view: {
+        borderRadius: moderateScale(10),
+        borderWidth: 1,
+        borderColor: '#CCCCCC',
+        padding: moderateScale(10),
+        paddingBottom: moderateScale(15)
+    },
+    modal_massege: {
+        fontFamily: FONTS.Inter.semibold,
+        fontSize: moderateScale(16),
+        color: Colors.black,
+        textAlign: 'center'
+    },
+    modal_text: {
+        fontFamily: FONTS.regular,
+        fontSize: moderateScale(12),
+        color: Colors.modaltxt,
+        marginTop: moderateScale(10)
+    },
+    modal_button_sty: {
+        backgroundColor: 'red',
+        borderRadius: 20,
+        height: moderateScale(35),
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        width: responsiveWidth(28),
+        marginTop: responsiveHeight(4)
+    },
+    modal_button_txt_sty: {
+        fontFamily: FONTS.Inter.bold,
+        fontSize: moderateScale(15),
+        alignSelf: 'center',
+        color: '#fff'
     },
 });
 

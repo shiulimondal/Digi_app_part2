@@ -84,6 +84,12 @@ const setChangePassword = async (data) => {
 const setbanneryoutubelink = async () => {
     return HttpClient.post('/home');
 }
+const setwithdraw = async (data) => {
+    return HttpClient.post('/withdraw-request',data);
+}
+const getfundDetails = async (data) => {
+    return HttpClient.post('/commision-list',data);
+}
 
 
 const HomeService = {
@@ -113,7 +119,9 @@ const HomeService = {
     submitFormData,
     submitSubscriptionData,
     setChangePassword,
-    setbanneryoutubelink
+    setbanneryoutubelink,
+    setwithdraw,
+    getfundDetails
 }
 
 export default HomeService;

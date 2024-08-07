@@ -30,6 +30,8 @@ const TransferFillBank = () => {
             "account_no": accountNumber,
             "ifsc_code": ifsc
         };
+        console.log('bankdata000000000000000',data);
+        
         setBtnLoader(true);
         HomeService.addBankAcc(data)
             .then((res) => {

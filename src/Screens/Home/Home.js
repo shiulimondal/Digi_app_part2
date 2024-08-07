@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Pressable, Image, ActivityIndicator, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Pressable, Image, ActivityIndicator, FlatList, Share, Alert } from 'react-native';
 import HomeHeader from '../../Components/Header/HomeHeader';
 import { Colors } from '../../Constants/Colors';
 import { moderateScale } from '../../Constants/PixelRatio';
@@ -148,10 +148,31 @@ const Home = ({ navigation }) => {
     {
       img: require('../../assets/images/share.png'),
       title: 'Refer & Earn',
-      // handleClick: 'Home'
+      handleClick: () => onShare()
     }
   ]
 
+  const onShare = async () => {
+    try {
+      const message = `Check out this amazing app! Download This app. https://yourapp.link/${userData.user_referral_code}`;
+      const result = await Share.share({
+        message: message,
+        title: 'Share This App',
+      });
+  
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          console.log('Shared with activity type: ', result.activityType);
+        } else {
+          console.log('Share successful');
+        }
+      } else if (result.action === Share.dismissedAction) {
+        console.log('Share dismissed');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -207,22 +228,22 @@ const Home = ({ navigation }) => {
               </ScrollView>
             </View>
           ) :
-          <View style={{marginTop:moderateScale(10)}}>
-            <FlatList
-              ref={flatListRef}
-              data={[...categoryData, ...categoryData,...categoryData]}
-              horizontal
-              style={{paddingLeft:moderateScale(10),marginBottom:moderateScale(7)}}
-              bounces={false}
-              onScroll={onScroll}
-              scrollEventThrottle={18}
-              showsHorizontalScrollIndicator={false}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item, index }) => (
-                <CategoryCard item={item} key={index} />
-              )}
-              onMomentumScrollEnd={onMomentumScrollEnd}
-            />
+            <View style={{ marginTop: moderateScale(10) }}>
+              <FlatList
+                ref={flatListRef}
+                data={[...categoryData, ...categoryData, ...categoryData]}
+                horizontal
+                style={{ paddingLeft: moderateScale(10), marginBottom: moderateScale(7) }}
+                bounces={false}
+                onScroll={onScroll}
+                scrollEventThrottle={18}
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => (
+                  <CategoryCard item={item} key={index} />
+                )}
+                onMomentumScrollEnd={onMomentumScrollEnd}
+              />
             </View>
           }
         </View>
@@ -299,13 +320,14 @@ const Home = ({ navigation }) => {
           </View>
         ) :
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: moderateScale(10), justifyContent: 'space-between' }}>
-            {
-              UserData.map((item, index) => {
-                return (
-                  <UserDataCard item={item} key={index} />
-                )
-              })
-            }
+            {UserData.map((item, index) => (
+              <UserDataCard
+                key={index}
+                item={item}
+                navigation={navigation}
+                onPress={item.handleClick}
+              />
+            ))}
 
           </View>
         }

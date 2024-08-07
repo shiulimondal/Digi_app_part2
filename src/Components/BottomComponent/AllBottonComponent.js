@@ -32,7 +32,7 @@ const AllBottonComponent = () => {
                     resizeMode='contain'
                     style={styles.img_sty}
                 />
-                <Text style={styles.title}>MY ACCOUNT</Text>
+                <Text style={styles.title}>MY PROFILES</Text>
             </Pressable>
 
             <Pressable onPress={() => NavigationService.navigate('BottomTab', { screen: 'Help' })} style={styles.main_view}>

@@ -53,10 +53,8 @@ const MyBankAccount = () => {
         let data = {
             "id": delID
         };
-        console.log("delidddddddddddddddddddddddd", data);
         HomeService.deleteBankAcc(data)
             .then((res) => {
-                console.log("Responsedataaaaaa:===============", res);
                 if (res.status === true) {
                     Toast.show('Your Bank Account Deleted Successfully');
                     fatchBank_list();

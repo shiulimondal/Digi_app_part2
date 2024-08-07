@@ -32,7 +32,6 @@ const EditBankAccount = () => {
     const fetchBankList = async () => {
         HomeService.getBankAccList()
             .then((res) => {
-                console.log('Fetched Bank List:', res);
                 if (res && res.status === true) {
                     const account = res.data.find(acc => acc.id === AccountId);
                     if (account) {

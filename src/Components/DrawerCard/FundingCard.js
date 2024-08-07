@@ -10,49 +10,58 @@ const FundingCard = ({ item, index }) => {
     return (
         <View style={styles.container}>
             <View style={styles.list_view}>
+                <View style={{ width: moderateScale(60), alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{
+                        fontFamily: FONTS.Inter.semibold,
+                        fontSize: moderateScale(10),
+                        color: Colors.secondaryFont
+                    }}>{item.date}</Text>
+
+                </View>
+
                 <View style={{ width: moderateScale(80), alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
-                        fontSize: moderateScale(12),
+                        fontSize: moderateScale(10),
                         color: Colors.secondaryFont
-                    }}>{item.Date}</Text>
+                    }}>₹ {item.amount}</Text>
 
                 </View>
 
-                <View style={{ width: moderateScale(130), alignItems: 'center', justifyContent: 'center' }}>
+                {/* <View style={{ width: moderateScale(65), alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
-                        fontSize: moderateScale(12),
-                        color: Colors.secondaryFont
-                    }}>{item.paid}</Text>
-
-                </View>
-
-                <View style={{ width: moderateScale(150), alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{
-                        fontFamily: FONTS.Inter.semibold,
-                        fontSize: moderateScale(12),
+                        fontSize: moderateScale(10),
                         color: Colors.secondaryFont
                     }}>{item.remark}</Text>
 
-                </View>
+                </View> */}
 
 
-                <View style={{ width: moderateScale(160), alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{
+                <View style={{ width: moderateScale(100), alignItems: 'center', justifyContent: 'center' }}>
+                    <Text numberOfLines={1} style={{
                         fontFamily: FONTS.Inter.semibold,
-                        fontSize: moderateScale(12),
-                        color: Colors.secondaryFont
+                        fontSize: moderateScale(10),
+                        color: Colors.secondaryFont,
+                        maxWidth:'40%'
                     }}>{item.category}</Text>
 
                 </View>
-
-                <View style={{ width: moderateScale(200), alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ width: moderateScale(110), alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
-                        fontSize: moderateScale(12),
+                        fontSize: moderateScale(10),
                         color: Colors.secondaryFont
-                    }}>{item.Commissions}</Text>
+                    }}>{item.SubCategory}</Text>
+
+                </View>
+
+                <View style={{ width: moderateScale(120), alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{
+                        fontFamily: FONTS.Inter.semibold,
+                        fontSize: moderateScale(10),
+                        color: Colors.secondaryFont
+                    }}>{item.commission_amount}</Text>
 
 
                 </View>
@@ -69,7 +78,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginHorizontal: moderateScale(15),
         borderColor: Colors.grey,
-        padding: moderateScale(10),
+        padding: moderateScale(9),
         paddingHorizontal: 0,
         backgroundColor: Colors.buttonColor
     },
@@ -78,8 +87,8 @@ const styles = StyleSheet.create({
         borderTopRightRadius: moderateScale(10),
         borderTopLeftRadius: moderateScale(10),
         marginHorizontal: moderateScale(15),
-        marginTop: moderateScale(15),
-        padding: moderateScale(2)
+        // marginTop: moderateScale(15),
+        // padding: moderateScale(2)
     },
     button_sty: {
         height: moderateScale(28),

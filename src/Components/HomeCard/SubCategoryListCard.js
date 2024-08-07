@@ -11,12 +11,15 @@ import SwiperFlatList from 'react-native-swiper-flatlist';
 const { height, width } = Dimensions.get('screen');
 
 const SubCategoryListCard = ({ item, index }) => {
-    // console.log('subbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbsssssssssss', item);
+    console.log('subbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbsssssssssss', item);
 
     return (
         <Card index={index} style={styles.container}>
             <View>
-                <Image source={{ uri: item?.images[0]?.image_path }} style={styles.user_img} />
+                <Image 
+                    source={item?.images?.[0]?.image_path ? { uri: item.images[0].image_path } : require('../../assets/images/profile.png')} 
+                    style={styles.user_img} 
+                />
                 <View style={styles.call_view}>
                     <LinearGradient style={styles.gradint_view} start={{ x: 0.3, y: 1 }} end={{ x: 1, y: 1 }} colors={['#00AB11', '#2AD200']}>
                         <Icon name='locked' type='Fontisto' size={16} />
@@ -24,18 +27,28 @@ const SubCategoryListCard = ({ item, index }) => {
                     </LinearGradient>
                 </View>
             </View>
-            <View style={styles.buttom_view}>
-                <Image source={require('../../assets/images/location-pin.png')} style={styles.location_sty} />
-                <Text style={styles.address_txt}>{item.state}, {item.district}</Text>
-            </View>
-            <View style={styles.buttom_view}>
-                <Image source={require('../../assets/images/account.png')} style={styles.location_sty} />
-                <Text style={styles.address_txt}>{item.name}</Text>
-            </View>
-            <View style={styles.buttom_view}>
-                <Image source={require('../../assets/images/calendar1.png')} style={styles.location_sty} />
-                <Text style={styles.address_txt}>Gender - {item.gender}</Text>
-            </View>
+
+            {item.state && item.district && (
+                <View style={styles.buttom_view}>
+                    <Image source={require('../../assets/images/location-pin.png')} style={styles.location_sty} />
+                    <Text style={styles.address_txt}>{item.state}, {item.district}</Text>
+                </View>
+            )}
+
+            {item.Name && (
+                <View style={styles.buttom_view}>
+                    <Image source={require('../../assets/images/account.png')} style={styles.location_sty} />
+                    <Text style={styles.address_txt}>{item.Name}</Text>
+                </View>
+            )}
+
+            {item.gender && (
+                <View style={styles.buttom_view}>
+                    <Image source={require('../../assets/images/calendar1.png')} style={styles.location_sty} />
+                    <Text style={styles.address_txt}>Gender - {item.gender}</Text>
+                </View>
+            )}
+
             <Pressable 
                 onPress={() => NavigationService.navigate('SubCategoryProfile')} 
                 style={styles.button_sty}>

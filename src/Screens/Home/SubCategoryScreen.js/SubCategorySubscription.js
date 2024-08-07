@@ -15,10 +15,16 @@ import sha256 from 'sha256'
 import Base64 from 'react-native-base64'
 import Toast from "react-native-simple-toast";
 import AllBottonComponent from '../../../Components/BottomComponent/AllBottonComponent';
+import { useRoute } from '@react-navigation/native';
 
 // create a component
 const { height, width } = Dimensions.get('screen');
 const SubCategorySubscription = () => {
+    const route = useRoute()
+    const category_id = route.params.catId;
+    const Subcategory_id = route.params.subId;
+    console.log('subsunsriptioncategoryiddddddddddd=====================', category_id);
+    console.log('subcatttttttttttttttidddddddddddddd', Subcategory_id);
     const { userData } = useSelector(state => state.User)
     const [selected, setSelected] = useState(null);
     const [subscriptionList, setsubscriptionList] = useState([]);
@@ -27,7 +33,7 @@ const SubCategorySubscription = () => {
     const [mrp, setmrp] = useState('');
     const [Day, setday] = useState('');
     const [planId, setplanId] = useState('');
-    console.log('hhhhhhhhhhhhhhhhhhhhhhhh',selected);
+    console.log('planiddddddddddddddddddddd', planId);
 
     const handleSelection = (planName) => {
         setSelected(planName.name);
@@ -66,6 +72,7 @@ const SubCategorySubscription = () => {
     }
 
     const submitPayment = () => {
+
         // PhonePePaymentSDK.init(environment, merchantId, appId, enableLogging).then(res => {
         //     const requestBody = {
         //         "merchantId": merchantId,
@@ -116,19 +123,23 @@ const SubCategorySubscription = () => {
         const data = {
             "subscription_id": planId,
             "order_id": "167776676767",
-            "payment_id": "pay_83939393"
+            "payment_id": "pay_83939393",
+            "category_id": category_id,
+            "subcategory_id": Subcategory_id
         }
-        console.log('gerrrrrrrrrrrrr',data);
+        console.log('gerrrrrrrrrrrrr===============', data);
         HomeService.submitSubscriptionData(data)
-        .then((res)=>{
-            if (res && res.status === true) {
-                Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
-                NavigationService.navigate('BottomTab')
-            }
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
+            .then((res) => {
+                console.log('subscripionresssssssssssssssss',res);
+                
+                if (res && res.status === true) {
+                    Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+                    NavigationService.navigate('BottomTab')
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
 
@@ -159,68 +170,68 @@ const SubCategorySubscription = () => {
                 }}>Payment plans chosen exclusively for you</Text>
                 {
                     subscriptionList.length === 0 ?
-                    <ActivityIndicator size="large" color={Colors.buttonColor} style={{ marginTop: height / 3 }} />
-                    :
-                    <>
-                       {
-                    subscriptionList.map((item, index) => {
-                        return (
-                            <View key={index} style={styles.plan_main_view}>
-                                {
-                                    item.name === "Annual plan" ?
-                                        <View style={styles.plan_top_view}>
-                                            <Image source={require('../../../assets/images/anplan.png')}
-                                              style={{height:moderateScale(45),width:moderateScale(240),resizeMode:'contain'}}
-                                            />
-                                          
-                                        </View>
-                                        :
-                                        null
-                                }
+                        <ActivityIndicator size="large" color={Colors.buttonColor} style={{ marginTop: height / 3 }} />
+                        :
+                        <>
+                            {
+                                subscriptionList.map((item, index) => {
+                                    return (
+                                        <View key={index} style={styles.plan_main_view}>
+                                            {
+                                                item.name === "Annual plan" ?
+                                                    <View style={styles.plan_top_view}>
+                                                        <Image source={require('../../../assets/images/anplan.png')}
+                                                            style={{ height: moderateScale(45), width: moderateScale(240), resizeMode: 'contain' }}
+                                                        />
 
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    marginTop: moderateScale(10),
-                                    paddingHorizontal: moderateScale(10)
-                                }}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <RadioButton
-                                            selected={selected === item.name}
-                                            onChange={() => handleSelection(item)}
-                                            size={22}
-                                            activeColor={Colors.buttonColor}
-                                            inactiveColor={Colors.buttonColor}
-                                        />
-                                        <Text style={styles.annualplan_txt}>{item.name}</Text>
-                                    </View>
-                                    <View>
-                                        <Text style={styles.price_txt}>₹{item.price}/{item.days} Days</Text>
-                                        <Text style={styles.dis_price_txt}>₹{item.mrp}/{item.days} Days</Text>
-                                    </View>
-                                </View>
-                                <View style={{
-                                    marginTop: moderateScale(10)
-                                }}>
-                                    {selected && (
-                                        <View style={styles.plan_ditels}>
-                                            <View style={styles.img_view}>
-                                                <Image source={require('../../../assets/images/use_sub.png')}
-                                                    style={{ height: moderateScale(30), width: moderateScale(30) }} />
+                                                    </View>
+                                                    :
+                                                    null
+                                            }
+
+                                            <View style={{
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                justifyContent: 'space-between',
+                                                marginTop: moderateScale(10),
+                                                paddingHorizontal: moderateScale(10)
+                                            }}>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <RadioButton
+                                                        selected={selected === item.name}
+                                                        onChange={() => handleSelection(item)}
+                                                        size={22}
+                                                        activeColor={Colors.buttonColor}
+                                                        inactiveColor={Colors.buttonColor}
+                                                    />
+                                                    <Text style={styles.annualplan_txt}>{item.name}</Text>
+                                                </View>
+                                                <View>
+                                                    <Text style={styles.price_txt}>₹{item.price}/{item.days} Days</Text>
+                                                    <Text style={styles.dis_price_txt}>₹{item.mrp}/{item.days} Days</Text>
+                                                </View>
                                             </View>
-                                            <Text numberOfLines={4} style={styles.plan_bottom_txt}>More than 10,000 people are enjoying the benefits of premium membership </Text>
-                                        </View>
+                                            <View style={{
+                                                marginTop: moderateScale(10)
+                                            }}>
+                                                {selected && (
+                                                    <View style={styles.plan_ditels}>
+                                                        <View style={styles.img_view}>
+                                                            <Image source={require('../../../assets/images/use_sub.png')}
+                                                                style={{ height: moderateScale(30), width: moderateScale(30) }} />
+                                                        </View>
+                                                        <Text numberOfLines={4} style={styles.plan_bottom_txt}>More than 10,000 people are enjoying the benefits of premium membership </Text>
+                                                    </View>
 
-                                    )}
-                                </View>
-                            </View>
-                        )
-                    })
+                                                )}
+                                            </View>
+                                        </View>
+                                    )
+                                })
+                            }
+                        </>
                 }
-                    </>
-                }
-             
+
 
 
             </ScrollView>
@@ -243,20 +254,21 @@ const SubCategorySubscription = () => {
                     <TouchableOpacity onPress={() => submitPayment()}>
                         <LinearGradient style={styles.gradint_view} start={{ x: 0.3, y: 1 }} end={{ x: 1, y: 1 }}
                             colors={['#00AB11', '#2AD200']} >
-
                             <Text style={styles.paynow_txt}>Pay Now</Text>
                             <Icon name='arrowright' type='AntDesign' color={Colors.secondaryFont} />
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
+
+
             )}
-             <View style={{flex:1}}/>
-              <View style={{
+            <View style={{ flex: 1 }} />
+            <View style={{
                 height: moderateScale(60),
-                bottom:0,
+                bottom: 0,
                 backgroundColor: Colors.background,
-                marginTop: moderateScale(10),
-                elevation:4
+                // marginTop: moderateScale(10),
+                elevation: 4
             }}>
                 <AllBottonComponent />
             </View>

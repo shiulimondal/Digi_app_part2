@@ -13,6 +13,7 @@ import { Colors } from '../../../Constants/Colors';
 import { moderateScale } from '../../../Constants/PixelRatio';
 import { FONTS } from '../../../Constants/Fonts';
 import Header from '../../../Components/Header/Header';
+import { getHash, removeListener, startOtpListener ,useOtpVerify} from 'react-native-otp-verify';
 
 
 // Create a component
@@ -23,6 +24,26 @@ const FPOtp = ({ navigation }) => {
   const [phoneOtp, setPhoneOtp] = useState('');
   const [btnLoader, setBtnLoader] = useState(false);
   console.log('phoneeeeeeeeeeeeeeee',MobileNumber);
+  const { hash, otp, message, timeoutError, stopListener, startListener } = useOtpVerify({numberOfDigits: 4});
+
+  useEffect(() => {
+    getHash().then(hash => {
+      console.log('hashhhhhhhhhhhhhffff',hash);
+      
+    }).catch(console.log);
+  
+  
+    
+    startListener(message => {
+      // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
+      // const otp = /(\d{4})/g.exec(message)[1];
+      // setOtp(otp);
+      console.log('otppppppppppppppp',otp);
+      console.log('messageeeeee',message);
+    });
+    
+    return () => removeListener();
+  }, []);
 
   const setOtpVerify = () => {
     let data = {

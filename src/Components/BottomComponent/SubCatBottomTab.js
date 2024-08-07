@@ -6,7 +6,11 @@ import { FONTS } from '../../Constants/Fonts';
 import NavigationService from '../../Services/Navigation';
 import { Icon } from 'react-native-basic-elements';
 
-const SubCatBottomTab = () => {
+const SubCatBottomTab = ({CatId,SubID}) => {
+    console.log('gredddddddddddddddddd',CatId);
+    console.log('kooooooooooooooooooooooo',SubID);
+    
+    
     return (
         <View style={styles.container}>
             <Pressable onPress={() => NavigationService.navigate('BottomTab', { screen: 'Home' })} style={styles.main_view}>
@@ -29,7 +33,7 @@ const SubCatBottomTab = () => {
             </Pressable>
 
             <Pressable
-                // onPress={() => NavigationService.navigate('SubCatFrom', { CatId: cat_idData, SubID: Sub_idData })}
+                onPress={() => NavigationService.navigate('SubCatFrom', { CatIdData: CatId, SubIdData: SubID })}
                 style={styles.add_button}>
                 <Icon name='plus' type='AntDesign' size={25} />
             </Pressable>
@@ -42,7 +46,7 @@ const SubCatBottomTab = () => {
                     resizeMode='contain'
                     style={styles.img_sty}
                 />
-                <Text style={styles.title}>MY ACCOUNT</Text>
+                <Text style={styles.title}>MY PROFILES</Text>
             </Pressable>
 
             <Pressable onPress={() => NavigationService.navigate('BottomTab', { screen: 'Help' })} style={styles.main_view}>

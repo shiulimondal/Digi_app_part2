@@ -6,8 +6,18 @@ import { Colors } from '../../Constants/Colors';
 import NavigationService from '../../Services/Navigation';
 
 const UserDataCard = ({ item, index }) => {
+  // const handlePress = () => {
+  //   NavigationService.navigate(item.handleClick);
+  // };
+
   const handlePress = () => {
-    NavigationService.navigate(item.handleClick);
+    if (typeof item.handleClick === 'string') {
+      NavigationService.navigate(item.handleClick);
+    } else if (typeof item.handleClick === 'function') {
+      item.handleClick();
+    } else {
+      console.error('Invalid handleClick type:', typeof item.handleClick);
+    }
   };
 
   return (

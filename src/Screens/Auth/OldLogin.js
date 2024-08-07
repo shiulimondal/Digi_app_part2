@@ -8,13 +8,13 @@ import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dim
 import { useRoute } from '@react-navigation/native';
 import AuthService from '../../Services/Auth';
 import { Colors } from '../../Constants/Colors';
-import Header from '../../Components/Header/Header';
 import { setuser } from '../../Redux/reducer/User';
 import { useDispatch } from 'react-redux';
 import Toast from "react-native-simple-toast";
 import NavigationService from '../../Services/Navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LogRegHeader from '../../Components/Header/LogRegHeader';
 
 // create a component
 const OldLogin = ({ navigation }) => {
@@ -55,7 +55,6 @@ const OldLogin = ({ navigation }) => {
         setBtnLoader(true);
         AuthService.getLogin(data)
             .then(async (res) => {
-                console.log('resssssssssssssssssssssssss', res);
                 setBtnLoader(false);
                 if (res.status === true) {
                     AuthService.setAccount(res.data);
@@ -68,14 +67,13 @@ const OldLogin = ({ navigation }) => {
             })
             .catch((err) => {
                 console.error("Error================00000000000000000000000000:", err);
-                Toast.show('User not found', Toast.SHORT, Toast.BOTTOM);
                 setBtnLoader(false);
             });
     };
 
     return (
         <View style={styles.container}>
-            <Header />
+            <LogRegHeader />
             <View style={styles.top_view}>
                 <Text style={styles.top_text}>REGISTER & LOGIN TO YOUR ACCOUNT</Text>
             </View>

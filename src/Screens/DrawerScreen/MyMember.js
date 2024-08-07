@@ -9,8 +9,6 @@ import ScreenHeader from '../../Components/Header/ScreenHeader';
 import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 
 
-
-
 const { height, width } = Dimensions.get('screen')
 const MyMember = ({ navigation }) => {
 

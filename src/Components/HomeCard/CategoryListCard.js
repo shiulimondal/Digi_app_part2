@@ -16,7 +16,14 @@ const CategoryListCard = ({ item, index }) => {
          index={index} style={styles.container}>
             <View style={{flexDirection:'row',alignItems:'center'}}>
             <View style={styles.img_circle}>
-                <Image source={{ uri: item.image_path }} style={styles.img_sty} />
+                {
+                    item.image_path === null ?
+                    <Image source={require('../../assets/images/blankimg.png')} style={styles.img_sty} />
+                    :
+                    <Image source={{ uri: item.image_path }} style={styles.img_sty} />
+
+                }
+               
             </View>
             <Text numberOfLines={1} style={styles.title_txt}>{item.name}</Text>
             </View>

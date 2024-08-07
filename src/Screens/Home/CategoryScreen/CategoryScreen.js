@@ -24,7 +24,6 @@ const CategoryScreen = ({ navigation }) => {
     HomeService.getCategoryData()
       .then((res) => {
         if (res && res.success == true) {
-          console.log('catttttttttttttttttttttttt', res.data);
           setLoading(false)
           setcategoryData(res.data)
         }
@@ -68,16 +67,16 @@ const CategoryScreen = ({ navigation }) => {
           keyExtractor={(item, index) => index.toString()}
         />
       }
-     <View style={{flex:1}}/>
-              <View style={{
-                height: moderateScale(60),
-                bottom:0,
-                backgroundColor: Colors.background,
-                marginTop: moderateScale(10),
-                elevation:4
-            }}>
-                <AllBottonComponent />
-            </View>
+      <View style={{ flex: 1 }} />
+      <View style={{
+        height: moderateScale(60),
+        bottom: 0,
+        backgroundColor: Colors.background,
+        marginTop: moderateScale(10),
+        elevation: 4
+      }}>
+        <AllBottonComponent />
+      </View>
 
 
     </View>

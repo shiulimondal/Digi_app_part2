@@ -14,13 +14,13 @@ import {
   responsiveFontSize,
   responsiveScreenHeight,
 } from "react-native-responsive-dimensions";
-import Header from "../../Components/Header/Header";
 import { Colors } from "../../Constants/Colors";
 import { AppButton } from "react-native-basic-elements";
 import Toast from "react-native-simple-toast";
 import { FONTS } from "../../Constants/Fonts";
 import AuthService from "../../Services/Auth";
 import NavigationService from "../../Services/Navigation";
+import Header from "../../Components/Header/Header";
 // import DeviceNumber from 'react-native-device-number';
 
 

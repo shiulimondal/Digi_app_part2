@@ -33,13 +33,19 @@ const MyAccount = () => {
                     profile there</Text>
 
                 <AppButton
-                    onPress={() => NavigationService.navigate('Home')}
-                    title="Go Back"
+                    onPress={() => NavigationService.navigate('CategoryScreen')}
+                    title="Click here to add your profile"
                     style={{
                         ...styles.button, backgroundColor: Colors.buttonColor,
                         width: width - moderateScale(30), marginTop: moderateScale(15)
                     }}
-                    textStyle={styles.button_txt}
+                    buttonIcon = {{
+                        position: 'right',
+                        name: 'rightcircleo',
+                        type: 'AntDesign',
+                        color:Colors.secondaryFont
+                    }}
+                    textStyle={styles.clickbutton_txt}
                 />
             {/* </KeyboardAwareScrollView> */}
 
@@ -57,13 +63,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: moderateScale(15),
         color: Colors.buttonColor,
-        fontSize: moderateScale(28),
+        fontSize: moderateScale(32),
         color: Colors.buttonColor,
-        fontFamily: FONTS.Almendra.regular
+        fontFamily: FONTS.Condiment.regular,
     },
     img_sty: {
-        height: moderateScale(200),
-        width: moderateScale(200),
+        height: moderateScale(180),
+        width: moderateScale(180),
         resizeMode: 'contain',
         alignSelf: 'center'
     },
@@ -77,6 +83,11 @@ const styles = StyleSheet.create({
     button_txt: {
         color: Colors.secondaryFont,
         fontFamily: FONTS.Almendra.regular,
+        fontSize: moderateScale(18)
+    },
+    clickbutton_txt:{
+        color: Colors.secondaryFont,
+        fontFamily: FONTS.Inter.regular,
         fontSize: moderateScale(18)
     },
     bottom_txt: {
