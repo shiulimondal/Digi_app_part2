@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, FlatList, Pressable, Image, ActivityIndicator, 
 import { moderateScale } from '../../Constants/PixelRatio';
 import { FONTS } from '../../Constants/Fonts';
 import { Colors } from '../../Constants/Colors';
-import { Icon } from 'react-native-basic-elements';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
 import AboutUsCard from '../../Components/DrawerCard/AboutUsCard';
 import HomeService from '../../Services/HomeServises';
