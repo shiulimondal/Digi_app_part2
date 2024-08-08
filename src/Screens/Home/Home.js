@@ -14,11 +14,16 @@ import NavigationService from '../../Services/Navigation';
 import HomeService from '../../Services/HomeServises';
 import YouTubeIframe from 'react-native-youtube-iframe';
 import { useSharedValue } from 'react-native-reanimated';
+import HomeModal from '../../Components/HomeCard/HomeModal';
+import HomeLoder from '../../Components/HomeCard/HomeLoder';
 
 
 const { height, width } = Dimensions.get('screen');
 const Home = ({ navigation }) => {
   const { userData } = useSelector(state => state.User)
+// console.log('userdataaaaaaaaaaaaaaaaaaaa',userData);
+
+
   const flatListRef = useRef(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [categoryData, setcategoryData] = useState('')
@@ -29,23 +34,11 @@ const Home = ({ navigation }) => {
 
 
   const [bgColor, setBgColor] = useState([
-
-    {
-      boxBg: "#B25EF3"
-    },
-    {
-      boxBg: "#FF406E"
-    },
-    {
-      boxBg: "#7BF55C"
-    },
-    {
-      boxBg: "#FFD64B"
-    },
-    {
-      boxBg: "#FF6C4B"
-    },
-  ])
+    { boxBg: "#B25EF3" },
+    { boxBg: "#FF406E" },
+    { boxBg: "#7BF55C" },
+    { boxBg: "#FFD64B" },
+    { boxBg: "#FF6C4B" },])
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -159,7 +152,7 @@ const Home = ({ navigation }) => {
         message: message,
         title: 'Share This App',
       });
-  
+
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
           console.log('Shared with activity type: ', result.activityType);
@@ -177,61 +170,31 @@ const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <HomeHeader navigation={navigation} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {loading ? (
-          <View style={styles.loaderContainer}>
-            <View style={{
-              backgroundColor: 'rgba(95,37,158,0.1)',
-              height: moderateScale(40),
-              width: width - moderateScale(20),
-              borderRadius: moderateScale(10),
-              alignSelf: 'center',
-              marginTop: moderateScale(10)
-            }}>
-            </View>
-          </View>
-        ) :
+      {loading ?
+        <View style={{ height: height, width: width }}>
+          <HomeLoder />
+        </View>
+        :
+        <ScrollView showsVerticalScrollIndicator={false}>
+
           <View style={styles.top_view}>
             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
               <View style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: Colors.background,
-                borderRadius: moderateScale(12),
-                height: moderateScale(22),
-                width: moderateScale(22),
+                alignItems: 'center', justifyContent: 'center', backgroundColor: Colors.background, borderRadius: moderateScale(12),
+                height: moderateScale(22), width: moderateScale(22),
               }}>
                 <Text style={{ ...styles.user_name, color: Colors.buttonColor, fontFamily: FONTS.Inter.bold }}>{userData?.first_name?.charAt(0).toUpperCase()}</Text>
               </View>
-              <Text style={{
-                ...styles.user_name,
-                marginLeft: moderateScale(10)
-              }}>{userData.full_name}</Text>
+              <Text numberOfLines={1} style={{ ...styles.user_name, marginLeft: moderateScale(10), maxWidth: '80%' }}>{userData.name}</Text>
             </View>
-
             <Text style={styles.user_id}> ID - <Text>{userData.user_referral_code}</Text></Text>
           </View>
-        }
-        <View>
-          {loading ? (
-            <View style={{
-              marginTop: moderateScale(10),
-              paddingHorizontal: moderateScale(10)
-            }}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {[...Array(4)].map((_, index) => (
-                  <View
-                    key={index}
-                    style={styles.categoryloder}
-                  ></View>
-                ))}
-              </ScrollView>
-            </View>
-          ) :
+
+          <View>
             <View style={{ marginTop: moderateScale(10) }}>
               <FlatList
                 ref={flatListRef}
-                data={[...categoryData, ...categoryData, ...categoryData]}
+                data={[...categoryData,...categoryData,...categoryData]}
                 horizontal
                 style={{ paddingLeft: moderateScale(10), marginBottom: moderateScale(7) }}
                 bounces={false}
@@ -245,144 +208,58 @@ const Home = ({ navigation }) => {
                 onMomentumScrollEnd={onMomentumScrollEnd}
               />
             </View>
-          }
-        </View>
-        {
-          loading ?
-            <View style={styles.homeB_loder}></View>
-            :
-            <TouchableOpacity
-              onPress={() => NavigationService.navigate('CategoryScreen')}
-              style={{ alignItems: 'center' }}>
-              <Image source={require('../../assets/images/home_banner.png')} style={styles.home_banner} />
-            </TouchableOpacity>
-        }
 
-        {
-          loading ?
-            <View style={{ ...styles.homeB_loder, height: moderateScale(220) }}></View>
-            :
-            <View style={styles.primary_view}>
-              <View style={{ alignItems: 'center' }}>
-                <Text style={styles.primary_txt}>Refer commission will keep coming Life time</Text>
-              </View>
+          </View>
 
-              <View style={styles.secondary_view}>
-                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text style={styles.primary_txt}>Your refer income (Upto 2 depth)</Text>
-                  <Text style={styles.amount_txt}>₹ 2050</Text>
-                </View>
-                <View style={styles.button_view}>
-                  <Pressable
-                    onPress={() => NavigationService.navigate('IncomeStructure')}
-                    style={styles.botton_sty}>
-                    <Text style={styles.button_txt}>Income Structure</Text>
-                  </Pressable>
-                  <Pressable
-                    onPress={() => NavigationService.navigate('TransferMoney')}
-                    style={styles.botton_sty}>
-                    <Text style={styles.button_txt}>Withdraw Request</Text>
-                  </Pressable>
-                </View>
-                <TouchableOpacity onPress={toggleModal} style={styles.end_view}>
-                  <Text style={styles.Click_txt}>View Term & Condition for referral income</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ ...styles.primary_txt, marginBottom: moderateScale(5), fontSize: moderateScale(11) }}>Click hare</Text>
-                    <Image source={require('../../assets/images/homeclickr.png')} style={{
-                      height: moderateScale(15),
-                      width: moderateScale(20),
-                      marginLeft: moderateScale(7)
-                    }} />
-                  </View>
+          <TouchableOpacity
+            onPress={() => NavigationService.navigate('CategoryScreen')} style={{ alignItems: 'center' }}>
+            <Image source={require('../../assets/images/home_banner.png')} style={styles.home_banner} />
+          </TouchableOpacity>
 
-                </TouchableOpacity>
-              </View>
+          <View style={styles.primary_view}>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={styles.primary_txt}>Refer commission will keep coming Life time</Text>
             </View>
-        }
 
+            <View style={styles.secondary_view}>
+              <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={styles.primary_txt}>Your refer income (Upto 2 depth)</Text>
+                <Text style={styles.amount_txt}>₹ 2050</Text>
+              </View>
+              <View style={styles.button_view}>
+                <Pressable
+                  onPress={() => NavigationService.navigate('IncomeStructure')} style={styles.botton_sty}>
+                  <Text style={styles.button_txt}>Income Structure</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => NavigationService.navigate('TransferMoney')} style={styles.botton_sty}>
+                  <Text style={styles.button_txt}>Withdraw Request</Text>
+                </Pressable>
+              </View>
+              <TouchableOpacity onPress={toggleModal} style={styles.end_view}>
+                <Text style={styles.Click_txt}>View Term & Condition for referral income</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ ...styles.primary_txt, marginBottom: moderateScale(5), fontSize: moderateScale(11) }}>Click hare</Text>
+                  <Image source={require('../../assets/images/homeclickr.png')}
+                    style={{ height: moderateScale(15), width: moderateScale(20), marginLeft: moderateScale(7) }} />
+                </View>
 
-        {loading ? (
-          <View style={{
-            marginTop: moderateScale(-15),
-            paddingHorizontal: moderateScale(10)
-          }}>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-              {[...Array(4)].map((_, index) => (
-                <View
-                  key={index}
-                  style={{
-                    ...styles.categoryloder, width: moderateScale(156),
-                    height: moderateScale(100), marginRight: moderateScale(8),
-                  }}
-                ></View>
-              ))}
+              </TouchableOpacity>
             </View>
           </View>
-        ) :
+
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: moderateScale(10), justifyContent: 'space-between' }}>
             {UserData.map((item, index) => (
-              <UserDataCard
-                key={index}
-                item={item}
-                navigation={navigation}
-                onPress={item.handleClick}
-              />
+              <UserDataCard key={index} item={item} navigation={navigation} onPress={item.handleClick} />
             ))}
 
           </View>
-        }
-
-        {
-          loading ?
-            <View style={{ ...styles.homeB_loder, borderRadius: (0) }}></View>
-            :
-            <View style={styles.videoContainer}>
-
-              <YouTubeIframe
-                videoId={videoId}
-                height={200}
-                play={false}
-              />
-            </View>
-        }
-      </ScrollView>
-
-      <Modal
-        isVisible={isModalVisible}
-        onBackButtonPress={() => setModalVisible(false)}
-        onBackdropPress={() => setModalVisible(false)}
-      >
-        <View style={styles.modalView}>
-          <View style={styles.modal_box_view}>
-            <Text style={styles.modal_massege}>Referral income Instruction</Text>
-            <Text style={styles.modal_text}>Your referral income is actually your affiliate
-              income Unlimited referrals, unlimited
-              commissions. Members referred by you will be
-              considered your customers for life. You'll
-              receive lifetime benefits from your referrals.
-              Whenever your direct member pays for adding
-              a profile or using services, you'll earn a 15%
-              commission. Additionally, for depth 2 members,
-              you'll receive a 5% commission.</Text>
+          <View style={styles.videoContainer}>
+            <YouTubeIframe videoId={videoId} height={200} play={false} />
           </View>
-
-          <View style={{ ...styles.modal_box_view, marginTop: moderateScale(15) }}>
-            <Text style={styles.modal_massege}>Something maintenance charge</Text>
-            <Text style={styles.modal_text}>6% maintenance fee will be deducted from your
-              income. while withdrawing money from your
-              withdrawal amount</Text>
-          </View>
-          <AppButton
-            shadow={true}
-            title='Got It'
-            textStyle={styles.modal_button_txt_sty}
-            style={styles.modal_button_sty}
-            onPress={() => setModalVisible(false)}
-
-          />
-        </View>
-      </Modal>
-
+        </ScrollView>
+      }
+      <HomeModal setModalVisible={setModalVisible} isModalVisible={isModalVisible} />
     </View>
   );
 };
@@ -423,14 +300,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: width - moderateScale(20),
     height: moderateScale(160)
-  },
-  homeB_loder: {
-    width: width - moderateScale(20),
-    height: moderateScale(160),
-    backgroundColor: 'rgba(95,37,158,0.1)',
-    alignSelf: 'center',
-    borderRadius: moderateScale(10),
-    marginBottom: moderateScale(15)
   },
   primary_view: {
     backgroundColor: Colors.blue,
@@ -489,49 +358,6 @@ const styles = StyleSheet.create({
     color: Colors.secondaryFont,
     fontSize: moderateScale(13)
   },
-  modal_box_view: {
-    borderRadius: moderateScale(10),
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: Colors.grey,
-    padding: moderateScale(10)
-  },
-  modalView: {
-    backgroundColor: "white",
-    borderRadius: (10),
-    padding: (20),
-    borderWidth: 2,
-    alignItems: 'center'
-  },
-  modal_massege: {
-    fontFamily: FONTS.Inter.semibold,
-    fontSize: moderateScale(16),
-    color: Colors.black,
-  },
-  modal_text: {
-    fontFamily: FONTS.regular,
-    fontSize: moderateScale(13),
-    color: Colors.black,
-    textAlign: 'center',
-    marginTop: moderateScale(10)
-  },
-  modal_button_sty: {
-    backgroundColor: 'red',
-    borderRadius: 20,
-    height: moderateScale(35),
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    width: responsiveWidth(20),
-    marginTop: responsiveHeight(4)
-  },
-  modal_button_txt_sty: {
-    fontFamily: FONTS.Inter.bold,
-    fontSize: moderateScale(15),
-    alignSelf: 'center',
-    color: '#fff'
-  },
   bottom_banner: {
     backgroundColor: Colors.buttonColor,
     marginTop: moderateScale(10),
@@ -544,16 +370,6 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(20),
     color: Colors.secondaryFont,
     textAlign: 'center'
-  },
-  categoryloder: {
-    backgroundColor: 'rgba(95,37,158,0.1)',
-    height: moderateScale(90),
-    width: moderateScale(94),
-    borderRadius: moderateScale(10),
-    alignSelf: 'center',
-    marginRight: moderateScale(7),
-    marginBottom: moderateScale(15),
-    paddingHorizontal: moderateScale(5)
   },
   bottombanner_sty: {
     height: moderateScale(170),
@@ -571,15 +387,7 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(10),
     marginBottom: moderateScale(30)
   },
-  youtybeicon: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: 50,
-    height: 50,
-    marginLeft: -25,
-    marginTop: -25,
-  },
 });
 
 export default Home;
+

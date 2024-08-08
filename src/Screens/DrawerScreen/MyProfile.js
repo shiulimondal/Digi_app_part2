@@ -66,7 +66,7 @@ const MyProfile = () => {
                 if (res && res.status == true) {
                     setProfileData(res.data);
                     setDateData(res.data.joing_date);
-                    setuseName(res.data.full_name);
+                    setuseName(res.data.name);
                     setmobileno(res.data.phone);
                     setcity(res.data.city);
                     setpinCode(res.data.pin_code);

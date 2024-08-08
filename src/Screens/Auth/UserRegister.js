@@ -30,6 +30,7 @@ const UserRegister = ({ navigation }) => {
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
     const [cnfPassword, setCnfPassword] = useState('')
+    const [refCode, setRefCode] = useState('')
     const [btnLoader, setBtnLoader] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
     const [allData, setAllData] = useState('')
@@ -89,16 +90,22 @@ const UserRegister = ({ navigation }) => {
             "name": userName,
             "phone": MobileNumber.phone,
             "password": password,
-            "password_confirmation": cnfPassword
+            "password_confirmation": cnfPassword,
+            "referral_code":refCode
         };
+        console.log('resdataaaaaaaaaaa',data);
+        
         setAllData(data)
         setModalVisible(true)
     };
 
     const getRegister = async () => {
         setBtnLoader(true)
-        AuthService.register(allData)
+        // AuthService.register(allData)
+        AuthService.refregister(allData)
             .then((res) => {
+                console.log('registerrrrrrrrrrrrrrrrrrrrr',res);
+                
                 if (res.status === true) {
                     setBtnLoader(false)
                     setModalVisible(false)
@@ -206,6 +213,24 @@ const UserRegister = ({ navigation }) => {
                         setCnfPassword(val);
                         setCnfPasswordError(false);
                     }}
+                />
+
+                <Text style={styles.input_title_txt}>Referral Code</Text>
+                <AppTextInput
+                    placeholder='Referral Code (Optional)'
+                    inputContainerStyle={{
+                        marginHorizontal: moderateScale(15),
+                        borderRadius: moderateScale(5),
+                        paddingHorizontal: moderateScale(7),
+                        borderColor:Colors.grey
+                    }}
+                    inputStyle={{ fontFamily: FONTS.medium, fontSize: moderateScale(14) }}
+                    mainContainerStyle={{
+                        marginTop: moderateScale(5)
+                    }}
+                    value={refCode}
+                    onChangeText={(val) => setRefCode(val)}
+
                 />
 
                 <View style={{ flexDirection: 'row', marginTop: moderateScale(20), marginHorizontal: moderateScale(20) }}>

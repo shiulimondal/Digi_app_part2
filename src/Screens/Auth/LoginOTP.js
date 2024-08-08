@@ -13,7 +13,7 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 import { FONTS } from '../../Constants/Fonts';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from "react-native-simple-toast";
-// import RNOtpVerify, { getHash, removeListener, startOtpListener } from 'react-native-otp-verify';
+import { getHash, removeListener, startOtpListener ,useOtpVerify} from 'react-native-otp-verify';
 
 
 
@@ -26,22 +26,26 @@ const LoginOTP = ({ navigation }) => {
   const [phoneOtp, setPhoneOtp] = useState('');
   const [btnLoader, setBtnLoader] = useState(false);
 
-    // useEffect(() => {
-    //   getHash().then(hash => {
-    //     console.log('hashhhhhhhhhhhhh',hash);
-        
-    //   }).catch(console.log);
+  const { hash, otp, message, timeoutError, stopListener, startListener } = useOtpVerify({numberOfDigits: 4});
+
+  useEffect(() => {
+    getHash().then(hash => {
+      console.log('hashhhhhhhhhhhhhffff',hash);
+      
+    }).catch(console.log);
+  
+  
     
-    //   startOtpListener(message => {
-    //     console.log('juuuuuuuuuuuuuuu',message);
-        
-    //     // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
-    //     // const otp = /(\d{4})/g.exec(message)[1];
-    //     // console.log('otppppppppppppppppppppppp',otp);
-        
-    //   });
-    //   return () => removeListener();
-    // }, []);
+    startListener(message => {
+      // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
+      // const otp = /(\d{4})/g.exec(message)[1];
+      // setOtp(otp);
+      console.log('otppppppppppppppp',otp);
+      console.log('messageeeeee',message);
+    });
+    
+    return () => removeListener();
+  }, []);
 
 
   const setOtpVerify = () => {

@@ -1,8 +1,6 @@
-
-//import liraries
-import React, { Component, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, FlatList, ScrollView, Dimensions } from 'react-native';
-import { Icon } from 'react-native-basic-elements';
+// Import libraries
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image } from 'react-native';
 import { Colors } from '../../Constants/Colors';
 import { FONTS } from '../../Constants/Fonts';
 import { moderateScale } from '../../Constants/PixelRatio';
@@ -11,62 +9,34 @@ import FundingCard from '../../Components/DrawerCard/FundingCard';
 import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
 import HomeService from '../../Services/HomeServises';
 import { useSelector } from 'react-redux';
+import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
 
+const { height, width } = Dimensions.get('window');
 
-const { height, width } = Dimensions.get('window')
 const FundingDetails = ({ navigation }) => {
-    const [fundingData, setfundingData] = useState({})
-    const { userData } = useSelector(state => state.User)
-    useEffect(() => {
-        fatchFundingDetails()
-    }, [])
+    const [fundingData, setFundingData] = useState([]);
+    const { userData } = useSelector(state => state.User);
 
-    const fatchFundingDetails = async () => {
-        let deta = {
+    useEffect(() => {
+        fetchFundingDetails();
+    }, []);
+
+    const fetchFundingDetails = async () => {
+        let data = {
             "user_id": userData?.id
-        }
-        HomeService.getfundDetails(deta)
+        };
+        HomeService.getfundDetails(data)
             .then((res) => {
                 console.log('funddataaaaaaaaaaaaaaaaaaaresssssssssssssssssss', res);
                 console.log('funddataaaaaaaaaaaaaaaaaaa', res.data);
                 if (res && res.status === true) {
-                    setfundingData(res.data)
+                    setFundingData(res.data);
                 }
             })
             .catch((err) => {
                 console.log('errrrr', err);
-
-            })
-
+            });
     };
-
-    // const fundingData = [
-    //     {
-    //         Date: '10/12/2024',
-    //         paid: '₹541',
-    //         remark: 'Add Profile',
-    //         category: "Job",
-    //         subCat:"Teacher",
-    //         Commissions: 'D-1 ₹45.88'
-    //     },
-    //     {
-    //         Date: '10/12/2024',
-    //         paid: '₹541',
-    //         remark: 'Add Profile',
-    //         category: "Job",
-    //         subCat:"Teacher",
-    //         Commissions: 'D-1 ₹45.88'
-    //     },
-    //     {
-    //         Date: '10/12/2024',
-    //         paid: '₹541',
-    //         remark: 'Add Profile',
-    //         category: "Business",
-    //         subCat:"Hotel",
-    //         Commissions: 'D-1 ₹45.88'
-    //     },
-
-    // ]
 
     return (
         <View style={styles.container}>
@@ -75,57 +45,54 @@ const FundingDetails = ({ navigation }) => {
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ alignItems: 'center', flex: 1 }}>
-                        <Text style={styles.header_txt}>Funding  Details</Text>
+                        <Text style={styles.header_txt}>Funding Details</Text>
                     </View>
                 </View>
             </View>
-
-            <ScrollView showsHorizontalScrollIndicator={false} horizontal >
-                <View>
-                    <View style={styles.list_view}>
-                        <View style={{ width: moderateScale(65), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.sl_txt}>Date</Text>
-
-                        </View>
-
-                        <View style={{ width: moderateScale(90), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.sl_txt}>Paid</Text>
-
-                        </View>
-
-                        <View style={{ width: moderateScale(60), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.sl_txt}>Remarks</Text>
-
-                        </View>
-
-
-                        <View style={{ width: moderateScale(110), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.sl_txt}>Category</Text>
-
-                        </View>
-                        <View style={{ width: moderateScale(110), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.sl_txt}>SUb-Category</Text>
-
-                        </View>
-
-                        <View style={{ width: moderateScale(100), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.sl_txt}>Commissions</Text>
-
+            {
+                fundingData.length === 0 ?
+                    <View style={styles.loader}>
+                        <Image source={require('../../assets/images/nodata.png')} style={styles.nodata_sty} />
+                        <View style={styles.button}>
+                            <Text style={styles.button_txt}>No Data Found</Text>
                         </View>
                     </View>
+                    :
+                    <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+                        <View>
+                            <View style={styles.list_view}>
+                                <View style={{ width: moderateScale(65), alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={styles.sl_txt}>Date</Text>
+                                </View>
 
-                    <View>
-                        {fundingData &&
-                            fundingData.map((item, index) => {
-                                return (
-                                    <FundingCard item={item} index={index} />
-                                )
-                            })
-                        }
-                    </View>
-                </View>
+                                <View style={{ width: moderateScale(90), alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={styles.sl_txt}>Paid</Text>
+                                </View>
 
-            </ScrollView>
+                                <View style={{ width: moderateScale(60), alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={styles.sl_txt}>Remarks</Text>
+                                </View>
+
+                                <View style={{ width: moderateScale(110), alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={styles.sl_txt}>Category</Text>
+                                </View>
+                                <View style={{ width: moderateScale(110), alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={styles.sl_txt}>Sub-Category</Text>
+                                </View>
+
+                                <View style={{ width: moderateScale(100), alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={styles.sl_txt}>Commissions</Text>
+                                </View>
+                            </View>
+
+                            <View>
+                                {fundingData.map((item, index) => (
+                                    <FundingCard item={item} index={index} key={index} />
+                                ))}
+                            </View>
+                        </View>
+                    </ScrollView>
+            }
 
             <View style={{
                 height: moderateScale(60),
@@ -139,7 +106,7 @@ const FundingDetails = ({ navigation }) => {
     );
 };
 
-// define your styles
+// Define styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -156,9 +123,6 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(17),
         color: Colors.black,
     },
-    flatListContent: {
-        paddingHorizontal: 10,
-    },
     list_view: {
         height: moderateScale(40),
         backgroundColor: '#333333',
@@ -174,10 +138,32 @@ const styles = StyleSheet.create({
         color: Colors.secondaryFont,
         fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(12),
-
-    }
+    },
+    loader: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    nodata_sty: {
+        height: moderateScale(150),
+        width: moderateScale(150),
+        resizeMode: 'contain',
+        tintColor: 'rgba(95,37,158,0.3)',
+    },
+    button: {
+        height: responsiveWidth(11),
+        marginTop: responsiveWidth(5),
+        marginBottom: responsiveWidth(6),
+        marginHorizontal: moderateScale(40),
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: moderateScale(280)
+    },
+    button_txt: {
+        color: Colors.buttonColor,
+        fontFamily: FONTS.Inter.semibold,
+        fontSize: responsiveFontSize(2.5)
+    },
 });
 
-//make this component available to the app
 export default FundingDetails;
-

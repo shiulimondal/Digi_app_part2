@@ -6,10 +6,6 @@ import { Colors } from '../../Constants/Colors';
 import NavigationService from '../../Services/Navigation';
 
 const UserDataCard = ({ item, index }) => {
-  // const handlePress = () => {
-  //   NavigationService.navigate(item.handleClick);
-  // };
-
   const handlePress = () => {
     if (typeof item.handleClick === 'string') {
       NavigationService.navigate(item.handleClick);

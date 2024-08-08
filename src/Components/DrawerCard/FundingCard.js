@@ -13,7 +13,7 @@ const FundingCard = ({ item, index }) => {
                 <View style={{ width: moderateScale(60), alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
-                        fontSize: moderateScale(10),
+                        fontSize: moderateScale(9),
                         color: Colors.secondaryFont
                     }}>{item.date}</Text>
 
@@ -28,14 +28,14 @@ const FundingCard = ({ item, index }) => {
 
                 </View>
 
-                {/* <View style={{ width: moderateScale(65), alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ width: moderateScale(65), alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(10),
                         color: Colors.secondaryFont
-                    }}>{item.remark}</Text>
+                    }}>----</Text>
 
-                </View> */}
+                </View>
 
 
                 <View style={{ width: moderateScale(100), alignItems: 'center', justifyContent: 'center' }}>
@@ -43,7 +43,7 @@ const FundingCard = ({ item, index }) => {
                         fontFamily: FONTS.Inter.semibold,
                         fontSize: moderateScale(10),
                         color: Colors.secondaryFont,
-                        maxWidth:'40%'
+                        maxWidth:'70%'
                     }}>{item.category}</Text>
 
                 </View>

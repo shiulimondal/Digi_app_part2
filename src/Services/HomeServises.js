@@ -92,6 +92,7 @@ const getfundDetails = async (data) => {
 }
 
 
+
 const HomeService = {
     getAccount,
     setAccount,

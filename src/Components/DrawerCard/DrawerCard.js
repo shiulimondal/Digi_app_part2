@@ -93,7 +93,7 @@ const DrawerCard = ({ navigation }) => {
                             }}
                             >{userData?.first_name?.charAt(0).toUpperCase()}</Text>
                         </View>
-                        <Text style={styles.user_name}>{userData.full_name}</Text>
+                        <Text numberOfLines={1} style={styles.user_name}>{userData.name}</Text>
                     </View>
                     <Icon name='chevron-right' type='Feather' size={22} />
                 </Pressable>
@@ -139,7 +139,8 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(15),
         marginLeft: moderateScale(10),
-        color: Colors.black
+        color: Colors.black,
+        maxWidth:'70%'
     },
     card_sty: {
         borderRadius: 0,

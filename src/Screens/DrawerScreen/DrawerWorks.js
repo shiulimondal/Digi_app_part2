@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Pressable, ActivityIndicator, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Pressable, ActivityIndicator, Dimensions, VirtualizedList } from 'react-native';
 import { Colors } from '../../Constants/Colors';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { FONTS } from '../../Constants/Fonts';
@@ -48,7 +48,7 @@ const DrawerWorks = ({ navigation }) => {
                         </View>
                     </View>
                 </View>
-                <FlatList
+                <VirtualizedList
                     data={WorkData}
                     renderItem={({ item, index }) => (
                         <WorkCard item={item} index={index} />

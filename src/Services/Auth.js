@@ -24,6 +24,9 @@ const getVeriftOtp = async (data) => {
 const register = async (data) => {
     return HttpClient.post('/register', data);
 }
+const refregister = async (data) => {
+    return HttpClient.post('/referral-user-register', data);
+}
 const getLogin = async (data) => {
     return HttpClient.post('/login', data);
 }
@@ -47,6 +50,7 @@ const AuthService = {
     getSendOtp,
     getVeriftOtp,
     register,
+    refregister,
     getLogin,
     setToken,
     getToken,

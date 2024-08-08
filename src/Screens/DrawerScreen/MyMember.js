@@ -1,21 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, Pressable, TouchableOpacity, Image, Dimensions,ScrollView } from 'react-native';
-import HomeHeader from '../../Components/Header/HomeHeader';
 import { Colors } from '../../Constants/Colors';
 import { moderateScale } from '../../Constants/PixelRatio';
 import { FONTS } from '../../Constants/Fonts';
 import { Icon } from 'react-native-basic-elements';
 import ScreenHeader from '../../Components/Header/ScreenHeader';
 import AllBottonComponent from '../../Components/BottomComponent/AllBottonComponent';
-
-
 const { height, width } = Dimensions.get('screen')
 const MyMember = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
            <ScreenHeader />
-
             <View style={styles.top_view}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ alignItems: 'center', flex: 1 }}>

@@ -35,8 +35,8 @@ const SubCategoryProfile = () => {
     ]
     return (
         <View style={styles.container}>
-                <ScreenHeader />
-                <ScrollView showsVerticalScrollIndicator={false}>
+            <ScreenHeader />
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.top_view}>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ alignItems: 'center', flex: 1 }}>
@@ -128,6 +128,18 @@ const SubCategoryProfile = () => {
                                     <View style={styles.lineview} />
                                     <Text style={styles.age_txt}>District : <Text style={styles.age_data}>Birbhum</Text></Text>
                                     <View style={styles.lineview} />
+                                    <Text style={styles.age_txt}>City : <Text style={styles.age_data}>Birbhum</Text></Text>
+                                    <View style={styles.lineview} />
+                                    <Text style={styles.age_txt}>Annual income : <Text style={styles.age_data}>12LPA</Text></Text>
+                                    <View style={styles.lineview} />
+                                    <Text style={styles.age_txt}>Height : <Text style={styles.age_data}>5.9"</Text></Text>
+                                    <View style={styles.lineview} />
+                                    <Text style={styles.age_txt}>Marital Status : <Text style={styles.age_data}>Single</Text></Text>
+                                    <View style={styles.lineview} />
+                                    <Text style={styles.age_txt}>Qualification : <Text style={styles.age_data}>B.Tech</Text></Text>
+                                    <View style={styles.lineview} />
+                                    <Text style={styles.age_txt}>Occupation : <Text style={styles.age_data}>Devlopment Executive</Text></Text>
+                                    <View style={styles.lineview} />
                                 </View>
                             </View>
 
@@ -146,7 +158,7 @@ const SubCategoryProfile = () => {
                                 onChange={setRating}
                                 enableHalfStar
                                 starSize={15}
-                                starStyle={{marginHorizontal:0.5 }}
+                                starStyle={{ marginHorizontal: 0.5 }}
                             />
                             <Text style={styles.rating_number_txt}>3.5</Text>
                         </View>
@@ -160,7 +172,7 @@ const SubCategoryProfile = () => {
                                 onChange={setRating}
                                 enableHalfStar
                                 starSize={15}
-                                starStyle={{marginHorizontal:0.5 }}
+                                starStyle={{ marginHorizontal: 0.5 }}
                             />
                             <Text style={styles.rating_number_txt}>3.5</Text>
                         </View>
@@ -174,7 +186,7 @@ const SubCategoryProfile = () => {
                                 onChange={setRating}
                                 enableHalfStar
                                 starSize={15}
-                                starStyle={{marginHorizontal:0.5 }}
+                                starStyle={{ marginHorizontal: 0.5 }}
                             />
                             <Text style={styles.rating_number_txt}>3.5</Text>
                         </View>
@@ -188,7 +200,7 @@ const SubCategoryProfile = () => {
                                 onChange={setRating}
                                 enableHalfStar
                                 starSize={15}
-                                starStyle={{marginHorizontal:0.5 }}
+                                starStyle={{ marginHorizontal: 0.5 }}
                             />
                             <Text style={styles.rating_number_txt}>3.5</Text>
                         </View>
@@ -197,13 +209,13 @@ const SubCategoryProfile = () => {
 
                 </View>
             </ScrollView>
-            <View style={{flex:1}}/>
-              <View style={{
+            <View style={{ flex: 1 }} />
+            <View style={{
                 height: moderateScale(60),
-                bottom:0,
+                bottom: 0,
                 backgroundColor: Colors.background,
-                marginTop: moderateScale(10),
-                elevation:4
+                // marginTop: moderateScale(10),
+                elevation: 4
             }}>
                 <AllBottonComponent />
             </View>
@@ -301,14 +313,14 @@ const styles = StyleSheet.create({
     lineview: {
         borderWidth: 0.5,
         marginHorizontal: moderateScale(15),
-        marginVertical: moderateScale(7),
+        marginVertical: moderateScale(4),
         borderColor: '#D9D9D9'
     },
     age_txt: {
         fontFamily: FONTS.Inter.semibold,
         fontSize: moderateScale(14),
         color: Colors.black,
-        padding: moderateScale(7),
+        padding: moderateScale(3),
         paddingHorizontal: moderateScale(15)
     },
     age_data: {
@@ -333,18 +345,18 @@ const styles = StyleSheet.create({
     },
     review_txt: {
         flexDirection: 'row',
-        alignItems:'center'
+        alignItems: 'center'
     },
-    rating_number_txt:{
-        fontFamily:FONTS.Inter.semibold,
-        fontSize:moderateScale(12),
-        color:Colors.black,
-        marginLeft:moderateScale(5)
+    rating_number_txt: {
+        fontFamily: FONTS.Inter.semibold,
+        fontSize: moderateScale(12),
+        color: Colors.black,
+        marginLeft: moderateScale(5)
     },
-    about_details:{
-        fontFamily:FONTS.Inter.regular,
-        fontSize:moderateScale(12),
-        color:'#333333'
+    about_details: {
+        fontFamily: FONTS.Inter.regular,
+        fontSize: moderateScale(12),
+        color: '#333333'
     }
 });
 

@@ -38,7 +38,7 @@ const SubCatForm = (props) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    // console.log('formDataformDataformDataformData', formData);
+    console.log('formDataformDataformDataformData', formData);
     // console.log('frommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmimageeeeeeeeeeeeeeeeeeeeeeee', ImageData);
 
     useEffect(() => {
@@ -53,7 +53,7 @@ const SubCatForm = (props) => {
         };
         HomeService.get_profilefrom(data)
             .then((res) => {
-                // console.log('Response:===================================', JSON.stringify(res));
+                console.log('Response:===================================', JSON.stringify(res));
                 setLoading(false);
                 if (res.status === true) {
                     setgetFormData(res.data.id)
@@ -147,7 +147,7 @@ const SubCatForm = (props) => {
         const data = { option: pickerId };
         HomeService.setOptionList(data)
             .then((res) => {
-                console.log('ggggggggggggggg==========================', res);
+                // console.log('ggggggggggggggg==========================', res);
                 if (res.status === true) {
                     setDropdownValues((prev) => ({
                         ...prev,
@@ -163,36 +163,37 @@ const SubCatForm = (props) => {
     const handleInputChange = (name, value) => {
         setFormValues((prevValues) => ({
             ...prevValues,
+
             [name]: value,
         }));
         if (name === 'state') {
             setSelectedState(value);
             if (value) {
-                console.log('State selected:===============', value);
+                // console.log('State selected:===============', value);
                 getStateList(value);
             }
         }
     };
 
     const getStateList = (stateId) => {
-        console.log('Fetching districts for stateId:=======================', stateId);
+        // console.log('Fetching districts for stateId:=======================', stateId);
         const value = {
             "option_list_id": stateId,
             "option": 2
         };
-        console.log('Districts putttttttttttttttt======================', value);
+        // console.log('Districts putttttttttttttttt======================', value);
         HomeService.setOption_DisttrictList(value)
             .then((res) => {
-                console.log('Districts fetched=======================', res);
+                // console.log('Districts fetched=======================', res);
                 if (res.status === true) {
-                    console.log('Districts fetched successfully:=======================', res.data);
+                    // console.log('Districts fetched successfully:=======================', res.data);
                     const newDistricts = res.data || [];
                     setDropdownValues(prev => ({
                         ...prev,
                         district: newDistricts
                     }));
                 } else {
-                    console.error('Failed to fetch districts:==========', res.message);
+                    // console.error('Failed to fetch districts:==========', res.message);
                     setDropdownValues(prev => ({
                         ...prev,
                         district: []
@@ -200,7 +201,7 @@ const SubCatForm = (props) => {
                 }
             })
             .catch((err) => {
-                console.error('Error fetching districts:', err);
+                // console.error('Error fetching districts:', err);
                 setDropdownValues(prev => ({
                     ...prev,
                     district: []
@@ -211,6 +212,8 @@ const SubCatForm = (props) => {
 
     const handleSubmit = () => {
         const finalFormData = formData.map(field => {
+           
+            
             if (field.type === 'file') {
                 return {
                     ...field,
@@ -247,6 +250,7 @@ const SubCatForm = (props) => {
                 } else {
                     setBtnLoader(false);
                     Toast.show(res.message, Toast.SHORT, Toast.BOTTOM);
+                    console.log('else    Submission Response:===========================', res);
                 }
             })
             .catch((err) => {

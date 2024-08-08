@@ -1,32 +1,3 @@
-// //import liraries
-// import { useRoute } from '@react-navigation/native';
-// import React, { Component } from 'react';
-// import { View, Text, StyleSheet } from 'react-native';
-
-// // create a component
-// const ForgetPassword = () => {
-//     const route = useRoute()
-//     const getPhone = route.params.PhNumber
-//     console.log('forgotpageeeeeeeeeeeeeeee',getPhone);
-//     return (
-//         <View style={styles.container}>
-//             <Text>ForgetPassword</Text>
-//         </View>
-//     );
-// };
-
-// // define your styles
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         backgroundColor: '#2c3e50',
-//     },
-// });
-
-// //make this component available to the app
-// export default ForgetPassword;
 
 
 //import liraries

@@ -39,9 +39,11 @@ const ViewSubcategory = () => {
             "category_id": cat_idData,
             "sub_category_id": Sub_idData
         }
+        console.log('fatchhhhhhhhhhhhhhhhhhhhhhhhhhh================',data);
+        
         HomeService.get_subcategory_list(data)
             .then((res) => {
-                console.log("Response:aiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", res);
+                console.log("Response:aiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", JSON.stringify(res));
                 setLoading(false);
                 if (res.status === true) {
                     setsubCatDataList(res.data)
