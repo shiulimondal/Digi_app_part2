@@ -17,20 +17,20 @@ import AllBottonComponent from '../../Components/BottomComponent/AllBottonCompon
 const MyBankAccount = () => {
     const [accountList, setAccountList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true); 
 
     const fatchBank_list = async () => {
-        setLoading(true); // Show loader
+        setLoading(true); 
         HomeService.getBankAccList()
             .then((res) => {
                 console.log('blockdataaa1111111111111111111111111', res);
                 if (res && res.status === true) {
                     setAccountList(res.data);
                 }
-                setLoading(false); // Hide loader
+                setLoading(false); 
             })
             .catch((err) => {
-                setLoading(false); // Hide loader
+                setLoading(false); 
             });
     };
 

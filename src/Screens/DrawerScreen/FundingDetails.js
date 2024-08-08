@@ -1,6 +1,6 @@
 // Import libraries
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image, ActivityIndicator } from 'react-native';
 import { Colors } from '../../Constants/Colors';
 import { FONTS } from '../../Constants/Fonts';
 import { moderateScale } from '../../Constants/PixelRatio';
@@ -16,12 +16,14 @@ const { height, width } = Dimensions.get('window');
 const FundingDetails = ({ navigation }) => {
     const [fundingData, setFundingData] = useState([]);
     const { userData } = useSelector(state => state.User);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchFundingDetails();
     }, []);
 
     const fetchFundingDetails = async () => {
+        setLoading(true); 
         let data = {
             "user_id": userData?.id
         };
@@ -29,12 +31,14 @@ const FundingDetails = ({ navigation }) => {
             .then((res) => {
                 console.log('funddataaaaaaaaaaaaaaaaaaaresssssssssssssssssss', res);
                 console.log('funddataaaaaaaaaaaaaaaaaaa', res.data);
+                setLoading(false); 
                 if (res && res.status === true) {
                     setFundingData(res.data);
                 }
             })
             .catch((err) => {
                 console.log('errrrr', err);
+                setLoading(false); 
             });
     };
 
@@ -49,6 +53,12 @@ const FundingDetails = ({ navigation }) => {
                     </View>
                 </View>
             </View>
+            {
+                loading ? (
+                    <View style={styles.loader}>
+                        <ActivityIndicator size="large" color={Colors.buttonColor} />
+                    </View>
+                ) : (<>
             {
                 fundingData.length === 0 ?
                     <View style={styles.loader}>
@@ -93,6 +103,8 @@ const FundingDetails = ({ navigation }) => {
                         </View>
                     </ScrollView>
             }
+            </>)
+}
 
             <View style={{
                 height: moderateScale(60),
@@ -164,6 +176,11 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.Inter.semibold,
         fontSize: responsiveFontSize(2.5)
     },
+    loader: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 });
 
 export default FundingDetails;
